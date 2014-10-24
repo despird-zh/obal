@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import com.obal.core.accessor.RawEntry;
 import com.obal.core.meta.AttrMode;
 import com.obal.core.meta.EntityAttr;
+import com.obal.core.meta.EntityManager;
+import com.obal.core.meta.EntityMeta;
 
 /**
  * Hbase Raw entry wrapper in charge of hbase Result to object list conversion.
@@ -25,12 +27,56 @@ public class HRawWrapper extends HEntryWrapper<RawEntry>{
 	public static Logger LOGGER = LoggerFactory.getLogger(HRawWrapper.class);
 
 	@Override
-	public RawEntry wrap(Object rawEntry) {
+	public RawEntry wrap(String entityName,Object rawEntry) {
 						
-		Result entry = (Result)rawEntry;				
-		RawEntry gei = new RawEntry(getEntityMeta().getEntityName(),new String(entry.getRow()));
+		Result entry = (Result)rawEntry;	
+		EntityMeta meta = EntityManager.getInstance().getEntityMeta(entityName);
 		
-		for(EntityAttr attr:getEntityMeta().getAllAttrs()){
+		List<EntityAttr> attrs = meta.getAllAttrs();
+		
+		RawEntry gei = new RawEntry(entityName,new String(entry.getRow()));
+		
+		for(EntityAttr attr: attrs){
+			byte[] column = attr.getColumn().getBytes();
+			byte[] qualifier = attr.getQualifier().getBytes();
+			if(attr.mode == AttrMode.PRIMITIVE){
+				
+				Cell cell = entry.getColumnLatestCell(column, qualifier);
+				Object value = super.getPrimitiveValue(attr, cell);
+				gei.put(attr.getAttrName(), value);				
+			}
+			
+			if(attr.mode == AttrMode.MAP){
+				
+				List<Cell> cells = entry.getColumnCells(column, qualifier);
+				Map<String, Object> map = super.getMapValue(attr, cells);				
+				gei.put(attr.getAttrName(), map);
+			}
+			
+			if(attr.mode == AttrMode.LIST){
+
+				List<Cell> cells = entry.getColumnCells(column, qualifier);
+				List<Object> list = super.getListValue(attr, cells);
+				
+				gei.put(attr.getAttrName(), list);
+			}
+		}
+		
+		return gei;
+	}
+	
+	@Override
+	public RawEntry wrap(List<EntityAttr> attrs,Object rawEntry) {
+						
+		Result entry = (Result)rawEntry;
+		String entityName = attrs.size()>0? (attrs.get(0).getEntityName()):EntityManager.ENTITY_BLIND;
+		if(entityName == null || entityName.length()==0){
+			
+			entityName = EntityManager.ENTITY_BLIND;
+		}
+		RawEntry gei = new RawEntry(entityName,new String(entry.getRow()));
+		
+		for(EntityAttr attr: attrs){
 			byte[] column = attr.getColumn().getBytes();
 			byte[] qualifier = attr.getQualifier().getBytes();
 			if(attr.mode == AttrMode.PRIMITIVE){
@@ -73,9 +119,9 @@ public class HRawWrapper extends HEntryWrapper<RawEntry>{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Object parse(RawEntry entryInfo) {
+	public Object parse(List<EntityAttr> attrs,RawEntry entryInfo) {
 		Put put = new Put(entryInfo.getKeyBytes());
-        List<EntityAttr> attrs = getEntityMeta().getAllAttrs();
+
         for(EntityAttr attr:attrs){
 
         	Object value = entryInfo.get(attr.getAttrName());

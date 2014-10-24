@@ -36,7 +36,7 @@ public class EntityAttr {
 	private String attrName;
 	private String format;
 	private String column;
-	private String entryName;
+	private String entityName;
 	private String qualifier;	
 	private boolean hidden = false;
 	private boolean readonly = false;
@@ -222,12 +222,12 @@ public class EntityAttr {
 		this.primary = primary;
 	}
 
-	public String getEntryName() {
-		return entryName;
+	public String getEntityName() {
+		return entityName;
 	}
 
-	public void setEntryName(String entryName) {
-		this.entryName = entryName;
+	public void setEntityName(String entityName) {
+		this.entityName = entityName;
 	}	
 	
 }

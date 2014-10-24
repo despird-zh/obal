@@ -21,8 +21,7 @@ public class MetaAccessor extends HEntityAccessor<RawEntry>{
 	public EntryWrapper<RawEntry> getEntryWrapper() {
 		
 		HRawWrapper wrapper = new HRawWrapper();		
-		wrapper.setEntityMeta(super.getEntitySchema().getEntityMeta());
-		
+
 		return wrapper;
 	}
 	

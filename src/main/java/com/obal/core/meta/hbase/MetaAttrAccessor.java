@@ -46,7 +46,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 			AttrMode mode = AttrMode.valueOf((String)minfo.get("i_mode"));
 			
 			attr = new EntityAttr(attrName,mode,type,column,qualifier);
-			attr.setEntryName((String)minfo.get("i_entry"));
+			attr.setEntityName((String)minfo.get("i_entity"));
 			attr.setDescription((String)minfo.get("i_description"));
 			attr.setFormat((String)minfo.get("i_format"));
 			attr.setHidden((Boolean)minfo.get("i_hidden"));
@@ -89,7 +89,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 				AttrMode mode = AttrMode.valueOf((String)minfo.get("i_mode"));
 				
 				EntityAttr attr = new EntityAttr(attrName,mode,type,column,qualifier);
-				attr.setEntryName((String)minfo.get("i_entry"));
+				attr.setEntityName((String)minfo.get("i_entity"));
 				attr.setDescription((String)minfo.get("i_description"));
 				attr.setFormat((String)minfo.get("i_format"));
 				attr.setHidden((Boolean)minfo.get("i_hidden"));
@@ -128,7 +128,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 			minfo.put("i_readonly", attr.isReadonly());
 			minfo.put("i_type", attr.type.toString());
 			minfo.put("i_mode", attr.mode.toString());
-			minfo.put("i_entry", attr.getEntryName());
+			minfo.put("i_entity", attr.getEntityName());
 			
 			minfo.put("i_creator",attraccessor.getEntitySchema().getPrincipal().getName());
 			minfo.put("i_modifier",attraccessor.getEntitySchema().getPrincipal().getName());
@@ -232,7 +232,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 			
 			for(EntityAttr tattr:meta.getAllAttrs()){
 				
-				tattr.setEntryName(meta.getEntityName());
+				tattr.setEntityName(meta.getEntityName());
 				
 				EntryKey akey = putEntryAttr(tattr);
 				attrmap.put(tattr.getAttrName(),akey.getKey());

@@ -173,6 +173,14 @@ public abstract class HEntryWrapper<GB extends EntryInfo> extends EntryWrapper<G
 		return list;
 	}
 	
+	/**
+	 * Put the Primitive value to target Put operation
+	 * 
+	 * @param put the Hbase Put operation object
+	 * @param attr the target attribute object
+	 * @param value the value to be put 
+	 * 
+	 **/
 	public void putPrimitiveValue(Put put, EntityAttr attr, Object value){
 		byte[] bval = null;
     	if(value == null) return;    	
@@ -202,6 +210,13 @@ public abstract class HEntryWrapper<GB extends EntryInfo> extends EntryWrapper<G
     	put.add(attr.getColumn().getBytes(), attr.getQualifier().getBytes(), bval);
 	}
 	
+	/**
+	 * Put the map value to target Put operation object
+	 * 
+	 * @param put the Hbase Put operation object
+	 * @param attr the target attribute object
+	 * @param value the value to be put 
+	 **/
 	public void putMapValue(Put put, EntityAttr attr, Map<String,Object> mapVal){
 		byte[] bval = null;
     	if(mapVal == null) return;    	
@@ -234,7 +249,14 @@ public abstract class HEntryWrapper<GB extends EntryInfo> extends EntryWrapper<G
     	}
     	
 	}
-	
+
+	/**
+	 * Put the list value to target Put operation object
+	 * 
+	 * @param put the Hbase Put operation object
+	 * @param attr the target attribute object
+	 * @param value the value to be put 
+	 **/
 	public void putListValue(Put put, EntityAttr attr, List<Object> listVal){
 		byte[] bval = null;
     	if(listVal == null) return;    	

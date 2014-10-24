@@ -19,6 +19,9 @@
  */
 package com.obal.core;
 
+import java.util.List;
+
+import com.obal.core.meta.EntityAttr;
 import com.obal.core.meta.EntityMeta;
 
 /**
@@ -31,19 +34,19 @@ public abstract class  EntryWrapper<GB extends EntryInfo> {
 	
 	/**
 	 * set the entrymeta 
-	 **/
+	 *
 	public void setEntityMeta(EntityMeta entityMeta){
 		
 		this.entityMeta = entityMeta;
-	}
+	}*/
 	
 	/**
 	 * get the entrymeta
-	 **/
+	 *
 	public EntityMeta getEntityMeta(){
 		
 		return this.entityMeta;
-	}
+	}*/
 	
 	/**
 	 * Check if the wrapper support the entry information
@@ -54,10 +57,21 @@ public abstract class  EntryWrapper<GB extends EntryInfo> {
 	
 	/**
 	 * Wrap the rawentry into bean object
+	 * @param entityName the entity name of rawEntry
+	 * @param rawEntry the entry information
+	 * 
+	 * @return GB the bean object. 
+	 **/
+	public abstract GB wrap(String entityName, Object rawEntry);
+	
+	/**
+	 * Wrap the rawentry into bean object
+	 * 
+	 * @param attrs the attributes of rawEntry
 	 * @param rawEntry the entry information
 	 * @return GB the bean object. 
 	 **/
-	public abstract GB wrap(Object rawEntry);
+	public abstract GB wrap(List<EntityAttr> attrs, Object rawEntry);
 	
 	/**
 	 * Check if the wrapper support specified raw class
@@ -68,8 +82,10 @@ public abstract class  EntryWrapper<GB extends EntryInfo> {
 	
 	/**
 	 * Parse bean object into raw Object
+	 * 
+	 * @param attrs the attributes of target entity
 	 * @param entryInfo the entry information bean
 	 * @return Object the raw object. 
 	 **/	
-	public abstract Object parse(GB entryInfo);
+	public abstract Object parse(List<EntityAttr> attrs, GB entryInfo);
 }

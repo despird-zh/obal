@@ -80,7 +80,7 @@ public abstract class HEntityAccessor<GB extends EntryInfo> extends EntityAccess
 			ResultScanner rs = table.getScanner(scan);
 			
 			for (Result r : rs) {  
-			     GB entry = wrapper.wrap(r);
+			     GB entry = wrapper.wrap(super.getEntitySchema().getEntityName(),r);
 			     result.add(entry);
 			}
 		} catch (IOException e) {
@@ -181,7 +181,7 @@ public abstract class HEntityAccessor<GB extends EntryInfo> extends EntityAccess
            if(!wrapper.supportWrap(Result.class))
         	   throw new AccessorException("Result type is not supported by this wrapper to wrap raw entry");
            
-           rtv = wrapper.wrap(r);
+           rtv = wrapper.wrap(super.getEntitySchema().getEntityName(),r);
            
         } catch (IOException e) {  
         	
@@ -267,7 +267,7 @@ public abstract class HEntityAccessor<GB extends EntryInfo> extends EntityAccess
             if(!wrapper.supportParse(Put.class))
             	throw new AccessorException("Raw type[Put] is not supported by this wrapper to parse entryinfo");
             
-            Put put = (Put)wrapper.parse(entryInfo);
+            Put put = (Put)wrapper.parse(entrySchema.getEntityMeta().getAllAttrs(),entryInfo);
         	table.put(put);
         	table.flushCommits();
         	rtv = entryInfo.getEntryKey();
