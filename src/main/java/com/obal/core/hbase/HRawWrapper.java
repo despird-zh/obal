@@ -2,6 +2,7 @@ package com.obal.core.hbase;
 
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableMap;
 
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.client.Put;
@@ -37,6 +38,9 @@ public class HRawWrapper extends HEntryWrapper<RawEntry>{
 		RawEntry gei = new RawEntry(entityName,new String(entry.getRow()));
 		
 		for(EntityAttr attr: attrs){
+			if(LOGGER.isDebugEnabled()){
+				LOGGER.debug("Wrapping entity:{} - attribute:{}",entityName, attr.getAttrName());
+			}
 			byte[] column = attr.getColumn().getBytes();
 			byte[] qualifier = attr.getQualifier().getBytes();
 			if(attr.mode == AttrMode.PRIMITIVE){
@@ -48,14 +52,14 @@ public class HRawWrapper extends HEntryWrapper<RawEntry>{
 			
 			if(attr.mode == AttrMode.MAP){
 				
-				List<Cell> cells = entry.getColumnCells(column, qualifier);
+				NavigableMap<byte[], byte[]> cells = entry.getFamilyMap(column);
 				Map<String, Object> map = super.getMapValue(attr, cells);				
 				gei.put(attr.getAttrName(), map);
 			}
 			
 			if(attr.mode == AttrMode.LIST){
 
-				List<Cell> cells = entry.getColumnCells(column, qualifier);
+				NavigableMap<byte[], byte[]> cells = entry.getFamilyMap(column);
 				List<Object> list = super.getListValue(attr, cells);
 				
 				gei.put(attr.getAttrName(), list);
@@ -88,14 +92,14 @@ public class HRawWrapper extends HEntryWrapper<RawEntry>{
 			
 			if(attr.mode == AttrMode.MAP){
 				
-				List<Cell> cells = entry.getColumnCells(column, qualifier);
+				NavigableMap<byte[], byte[]> cells = entry.getFamilyMap(column);
 				Map<String, Object> map = super.getMapValue(attr, cells);				
 				gei.put(attr.getAttrName(), map);
 			}
 			
 			if(attr.mode == AttrMode.LIST){
 
-				List<Cell> cells = entry.getColumnCells(column, qualifier);
+				NavigableMap<byte[], byte[]> cells = entry.getFamilyMap(column);
 				List<Object> list = super.getListValue(attr, cells);
 				
 				gei.put(attr.getAttrName(), list);

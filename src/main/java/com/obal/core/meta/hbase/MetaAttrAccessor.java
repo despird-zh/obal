@@ -185,18 +185,25 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 		try{
 			
 			metaAccr = AccessorFactory.getInstance().buildEmbedEntityAccessor(this, EntityManager.ENTITY_META_INFO);
-		rlist = metaAccr.scanEntry(null);
-		rtv = new ArrayList<EntityMeta>();
-		for(RawEntry ri:rlist){
-			
-			EntityMeta meta = new EntityMeta(metaAccr.getEntitySchema().getEntityName());
-			meta.setSchemaClass((String)ri.get("i_schema_class"));
-			meta.setEntityName((String)ri.get("i_entity_name"));
-			meta.setDescription((String)ri.get("i_description"));
-			meta.setSchemas((List<String>)ri.get("i_schemas"));	
-			// set entry attributes
-			rtv.add(meta);
-		}
+			rlist = metaAccr.scanEntry(null);
+			rtv = new ArrayList<EntityMeta>();
+		
+			for(RawEntry ri:rlist){
+				
+				EntityMeta meta = new EntityMeta(metaAccr.getEntitySchema().getEntityName());
+				meta.setEntryKey(ri.getEntryKey());
+				meta.setSchemaClass((String)ri.get("i_schema_class"));
+				meta.setEntityName((String)ri.get("i_entity_name"));
+				meta.setDescription((String)ri.get("i_description"));
+				meta.setSchemas((List<String>)ri.get("i_schemas"));	
+				Map<String, String> attrMap =(Map<String, String>) ri.get("i_attributes");
+				for(Map.Entry<String, String> et:attrMap.entrySet()){
+					
+					System.out.println(et.getKey());
+				}
+				// set entry attributes
+				rtv.add(meta);
+			}
 		}catch(BaseException be){
 			
 			throw new AccessorException("Error when get meta info data.",be);

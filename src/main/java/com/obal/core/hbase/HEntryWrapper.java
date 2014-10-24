@@ -5,10 +5,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableMap;
 
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.obal.core.EntryInfo;
 import com.obal.core.EntryWrapper;
@@ -16,6 +19,7 @@ import com.obal.core.meta.EntityAttr;
 
 public abstract class HEntryWrapper<GB extends EntryInfo> extends EntryWrapper<GB> {
 
+	public static Logger LOGGER = LoggerFactory.getLogger(HEntryWrapper.class);
 	/**
 	 * Get primitive value from cell, primitive means int,long,double,string,date
 	 * 
@@ -51,7 +55,10 @@ public abstract class HEntryWrapper<GB extends EntryInfo> extends EntryWrapper<G
 			default:
 				break;
 		}
-		
+		if(LOGGER.isDebugEnabled()){
+			
+			LOGGER.debug("PRIMITIVE -> attribute:{} | value:{}", new String[]{attr.getAttrName(),String.valueOf(rtv)});
+		}
 		return rtv;
 	}
 
@@ -63,26 +70,17 @@ public abstract class HEntryWrapper<GB extends EntryInfo> extends EntryWrapper<G
 	 * 
 	 * @return Object the map object
 	 **/
-	public Map<String,Object> getMapValue(EntityAttr attr, List<Cell> cells){
-		byte[] column = attr.getColumn().getBytes();
-		// qualifier format is [{normal qualifier}-]
+	public Map<String,Object> getMapValue(EntityAttr attr, NavigableMap<byte[], byte[]> cells){
+
 		byte[] qualifier = attr.getQualifier().getBytes();
 		Map<String, Object> map = new HashMap<String, Object>();
-		boolean hitted = false; // initial flag
-		/**
-		 * The cell is sorted by KV.comparator, so the cell with same family and same qualifier prefix
-		 * be stored continuously. 
-		 * from first hitted cell to next un-hitted one, will be expected cells. other ones ignored
-		 **/
-		for(Cell cell:cells){
-			if(!Bytes.equals(column, cell.getFamilyArray()))
-				continue;
-			byte[] cqualifier = cell.getQualifierArray();
+
+		for(Map.Entry<byte[], byte[]> e:cells.entrySet()){
+
+			byte[] cqualifier = e.getKey();
 			if(Bytes.startsWith(cqualifier, qualifier)){
-				hitted = true; // set hitted flag
-				int idx = Bytes.indexOf(cqualifier, qualifier);
-				byte[] key = Bytes.tail(cqualifier, cqualifier.length - idx);
-				byte[] bytes = cell.getValueArray();
+				byte[] key = Bytes.tail(cqualifier, cqualifier.length - qualifier.length);
+				byte[] bytes = e.getValue();
 				switch(attr.type){
 					case INT:
 						map.put(new String(key), Bytes.toInt(bytes));
@@ -107,10 +105,11 @@ public abstract class HEntryWrapper<GB extends EntryInfo> extends EntryWrapper<G
 						
 						break;
 				}
-			}else{
-				// un-hitted break and ignore lefted cells
-				if(hitted) 
-					break;
+				if(LOGGER.isDebugEnabled()){
+					
+					LOGGER.debug("MAP -> attribute:{} - key:{} - value:{}", 
+							new String[]{attr.getAttrName(),new String(key),String.valueOf(map.get(new String(key)))});
+				}
 			}
 		}				
 				
@@ -125,20 +124,15 @@ public abstract class HEntryWrapper<GB extends EntryInfo> extends EntryWrapper<G
 	 * 
 	 * @return Object the list object
 	 **/
-	public List<Object> getListValue(EntityAttr attr, List<Cell> cells){
-		byte[] column = attr.getColumn().getBytes();
+	public List<Object> getListValue(EntityAttr attr, NavigableMap<byte[], byte[]> cells){
+
 		byte[] qualifier = attr.getQualifier().getBytes();
 		List<Object> list = new ArrayList<Object>();
-		boolean hitted = false; // initial flag
-		for(Cell cell:cells){
+
+		for(byte[] e:cells.descendingKeySet()){
 			
-			if(!Bytes.equals(column, cell.getFamilyArray()))
-				continue;
-			
-			byte[] cqualifier = cell.getQualifierArray();
-			if(Bytes.startsWith(cqualifier, qualifier)){
-				hitted = true; // set hitted flag
-				byte[] bytes = cell.getValueArray();
+			if(Bytes.startsWith(e, qualifier)){
+				byte[] bytes = cells.get(e);
 				switch(attr.type){
 					case INT:
 						list.add(Bytes.toInt(bytes));
@@ -163,10 +157,11 @@ public abstract class HEntryWrapper<GB extends EntryInfo> extends EntryWrapper<G
 						
 						break;
 				}
-			}else{
-				// un-hitted break and ignore lefted cells
-				if(hitted) 
-					break;
+				if(LOGGER.isDebugEnabled()){
+					
+					LOGGER.debug("LIST -> attribute:{} - key:{} - value:{}", 
+							new String[]{attr.getAttrName(),new String(e),String.valueOf(list.get(list.size()-1))});
+				}
 			}
 		}				
 				

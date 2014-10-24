@@ -21,20 +21,21 @@ public class EntitySetup {
 	
 	public void initial(){
 		
-		setupMetaSchema();
-		setupUserSchema();
+		//setupMetaSchema();
+		//setupUserSchema();
+		loadEntityMeta();
 	}
 		
 	/**
 	 * load entry meta information 
 	 **/
-	public void loadEntryMeta(){
+	public void loadEntityMeta(){
 		
 		IMetaAttrAccessor imeta = null;
 		Principal princ = new Principal();
 		try {
 			EntityManager smgr = EntityManager.getInstance();
-			imeta = AccessorUtils.getGeneralAccessor(princ, "obal.metaattr.general");
+			imeta = AccessorUtils.getGeneralAccessor(princ, EntityManager.ENTITY_META_GENERAL);
 
 			List<EntityMeta> entrymetas = imeta.getEntryMetaList();
 			for(EntityMeta em:entrymetas){

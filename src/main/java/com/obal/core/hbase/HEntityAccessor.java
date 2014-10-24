@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.hbase.Cell;
@@ -139,16 +140,15 @@ public abstract class HEntityAccessor<GB extends EntryInfo> extends EntityAccess
 			if(attr.mode == AttrMode.MAP){
 				get.addFamily(column);
 	        	Result entry = table.get(get);
-				List<Cell> cells = entry.getColumnCells(column, qualifier);
+	        	NavigableMap<byte[], byte[]> cells = entry.getFamilyMap(column);
 				rtv = wrapper.getMapValue(attr, cells);			
 			}
 			
 			if(attr.mode == AttrMode.LIST){
 				get.addFamily(column);
 	        	Result entry = table.get(get);
-				List<Cell> cells = entry.getColumnCells(column, qualifier);
-				rtv = wrapper.getListValue(attr, cells);
-				
+	        	NavigableMap<byte[], byte[]> cells = entry.getFamilyMap(column);
+				rtv = wrapper.getListValue(attr, cells);				
 			}
            
         } catch (IOException e) {  
