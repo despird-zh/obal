@@ -30,24 +30,6 @@ import com.obal.core.meta.EntityMeta;
  **/
 public abstract class  EntryWrapper<GB extends EntryInfo> {
 	
-	private EntityMeta entityMeta;
-	
-	/**
-	 * set the entrymeta 
-	 *
-	public void setEntityMeta(EntityMeta entityMeta){
-		
-		this.entityMeta = entityMeta;
-	}*/
-	
-	/**
-	 * get the entrymeta
-	 *
-	public EntityMeta getEntityMeta(){
-		
-		return this.entityMeta;
-	}*/
-	
 	/**
 	 * Check if the wrapper support the entry information
 	 * @param rawEntry the entry information
