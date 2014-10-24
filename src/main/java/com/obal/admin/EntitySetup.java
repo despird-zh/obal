@@ -1,7 +1,6 @@
 package com.obal.admin;
 
 import java.util.List;
-import com.obal.core.EntryKey;
 import com.obal.core.meta.AttrMode;
 import com.obal.core.meta.AttrType;
 import com.obal.core.meta.EntityAttr;
@@ -117,7 +116,7 @@ public class EntitySetup {
 			aa.createSchema("obal.user",meta.getAllAttrs());		
 			imeta = AccessorUtils.getEntryAccessor(princ, EntityManager.ENTITY_META_INFO);
 
-			EntryKey mkey = imeta.putEntryMeta(meta);
+			imeta.putEntryMeta(meta);
 
 			
 		} catch (AccessorException e) {
