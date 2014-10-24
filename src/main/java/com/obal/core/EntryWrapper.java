@@ -22,7 +22,6 @@ package com.obal.core;
 import java.util.List;
 
 import com.obal.core.meta.EntityAttr;
-import com.obal.core.meta.EntityMeta;
 
 /**
  * EntryWrapper wrap the entry information
