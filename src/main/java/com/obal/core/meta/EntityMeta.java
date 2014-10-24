@@ -28,6 +28,8 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.obal.core.EntryKey;
+
 /**
  * The meta information of Entry records.
  * 
@@ -47,7 +49,7 @@ public class EntityMeta{
 	private String entityName;
 	private String description;
 	private List<String> schemas;
-	
+	private EntryKey entryKey = null;
 	/**
 	 * Entry Meta constructor 
 	 * 
@@ -134,6 +136,16 @@ public class EntityMeta{
 	public void addAttr(EntityAttr attr){
 
 		attrMap.put(attr.getAttrName(), attr);
+	}
+	
+	public EntryKey getEntryKey(){
+		
+		return this.entryKey;
+	}
+	
+	public void setEntryKey(EntryKey entryKey){
+		
+		this.entryKey = entryKey;		
 	}
 	
 	/**

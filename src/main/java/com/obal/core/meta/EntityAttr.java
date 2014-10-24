@@ -21,6 +21,7 @@
 package com.obal.core.meta;
 
 import com.obal.core.CoreConstants;
+import com.obal.core.EntryKey;
 
 /**
  * EntryAttr wrap the setting of entry attribute.
@@ -43,7 +44,7 @@ public class EntityAttr {
 	private boolean required = false;
 	private boolean primary = false;
 	private String description = null;
-	
+	private EntryKey entryKey = null;
 	/**
 	 * Constructor
 	 * <p>The attribute default mode is PRIMITVE, default type is STRING</p>
@@ -230,4 +231,13 @@ public class EntityAttr {
 		this.entityName = entityName;
 	}	
 	
+	public EntryKey getEntryKey(){
+		
+		return this.entryKey;
+	}
+	
+	public void setEntryKey(EntryKey entryKey){
+		
+		this.entryKey = entryKey;		
+	}
 }
