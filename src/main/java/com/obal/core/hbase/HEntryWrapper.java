@@ -37,6 +37,7 @@ public abstract class HEntryWrapper<GB extends EntryInfo> extends EntryWrapper<G
 				rtv = Bytes.toInt(bytes);
 				break;
 			case BOOL:
+				System.out.println(String.valueOf(bytes));
 				rtv = Bytes.toBoolean(bytes);
 				break;
 			case DOUBLE:
@@ -57,7 +58,7 @@ public abstract class HEntryWrapper<GB extends EntryInfo> extends EntryWrapper<G
 		}
 		if(LOGGER.isDebugEnabled()){
 			
-			LOGGER.debug("PRIMITIVE -> attribute:{} | value:{}", new String[]{attr.getAttrName(),String.valueOf(rtv)});
+			LOGGER.debug("PRIMITIVE -> attribute:{} | value:{}", new String[]{attr.getAttrName(),String.valueOf(bytes)});
 		}
 		return rtv;
 	}

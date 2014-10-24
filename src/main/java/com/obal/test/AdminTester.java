@@ -2,6 +2,8 @@ package com.obal.test;
 
 import java.util.ArrayList;
 
+import org.apache.hadoop.hbase.util.Bytes;
+
 import com.obal.admin.EntityAdmin;
 import com.obal.admin.EntitySetup;
 import com.obal.admin.IAdminAccessor;
@@ -16,7 +18,11 @@ public class AdminTester extends BlankTester{
 		initLog4j();
 		AdminTester tester = new AdminTester();
 		//tester.testCreateSchema();
+		byte[] bytes = Bytes.toBytes((Boolean)false);
+		boolean t = Bytes.toBoolean(bytes);
+		System.out.println(String.valueOf(bytes));		
 		tester.testInitializer();
+
 	}
 	
 	public void testInitializer(){

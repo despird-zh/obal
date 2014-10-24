@@ -197,11 +197,12 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 				meta.setDescription((String)ri.get("i_description"));
 				meta.setSchemas((List<String>)ri.get("i_schemas"));	
 				Map<String, String> attrMap =(Map<String, String>) ri.get("i_attributes");
+				
 				for(Map.Entry<String, String> et:attrMap.entrySet()){
 					
-					System.out.println(et.getKey());
+					EntityAttr attr = getAttr(et.getValue());
+					meta.addAttr(attr);
 				}
-				// set entry attributes
 				rtv.add(meta);
 			}
 		}catch(BaseException be){
