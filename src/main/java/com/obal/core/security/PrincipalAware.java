@@ -35,17 +35,17 @@ public interface PrincipalAware {
 	 * 
 	 * @param principal The principal object
 	 **/
-	public void setPrincipal(Principal principal);
+	public abstract void setPrincipal(Principal principal);
 	
 	/**
 	 * Get principal object
 	 * 
 	 * @return Principal The principal object
 	 **/
-	public Principal getPrincipal();
+	public abstract Principal getPrincipal();
 	
 	/**
 	 * Clear the principal object
 	 **/
-	public void clearPrincipal();
+	public abstract void clearPrincipal();
 }

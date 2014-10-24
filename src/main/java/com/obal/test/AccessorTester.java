@@ -1,14 +1,7 @@
 package com.obal.test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.obal.admin.EntityAdmin;
 import com.obal.admin.IAdminAccessor;
-import com.obal.core.AccessorFactory;
-import com.obal.core.EntryKey;
 import com.obal.core.meta.AttrMode;
 import com.obal.core.meta.AttrType;
 import com.obal.core.meta.EntityAttr;

@@ -47,7 +47,7 @@ public class EntityManager {
 	public static String ENTITY_BLIND = "obal.blind";
 	public static String ENTITY_META_INFO = "obal.meta.info";
 	public static String ENTITY_META_ATTR = "obal.meta.attr";
-	
+	public static String ENTITY_META_GENERAL = "obal.meta.general";
 	private static EntityManager instance;
 	
 	/** cache map for EntryMeta */

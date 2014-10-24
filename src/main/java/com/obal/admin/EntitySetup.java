@@ -114,7 +114,7 @@ public class EntitySetup {
 			meta.addAttr(attr);
 			
 			aa.createSchema("obal.user",meta.getAllAttrs());		
-			imeta = AccessorUtils.getEntryAccessor(princ, EntityManager.ENTITY_META_INFO);
+			imeta = AccessorUtils.getGeneralAccessor(princ, EntityManager.ENTITY_META_GENERAL);
 
 			imeta.putEntryMeta(meta);
 

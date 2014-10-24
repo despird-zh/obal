@@ -114,6 +114,8 @@ public class HAccessorBuilder extends AccessorBuilder{
 				principal = ((PrincipalAware) accessor).getPrincipal();
 				((PrincipalAware) accessor).setPrincipal(principal);		
 			}
+			// Set embed flag
+			accessor.setEmbed(true);
 		}
 	}
 }

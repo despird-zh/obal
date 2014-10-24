@@ -20,13 +20,18 @@
 package com.obal.core.accessor;
 
 import com.obal.core.IBaseAccessor;
+import com.obal.core.security.Principal;
+import com.obal.core.security.PrincipalAware;
 
 /**
  * The interface general use Accessor, these accessor provides method not
  * constraint on certain entry. eg a method might operation on more than one
  * entry, we will write it in GeneralAccessor.
  **/
-public abstract class GeneralAccessor implements IBaseAccessor {
+public abstract class GeneralAccessor implements IBaseAccessor,PrincipalAware {
+	
+	/** threadlocal */
+	private ThreadLocal<Principal> localPrincipal = new ThreadLocal<Principal>();
 	
 	private boolean embed = false;
 	
@@ -38,5 +43,23 @@ public abstract class GeneralAccessor implements IBaseAccessor {
 	public void setEmbed(boolean embed){
 		
 		this.embed = embed;
+	}
+		
+	@Override
+	public void setPrincipal(Principal principal){
+		
+		this.localPrincipal.set(principal);
+	}
+	
+	@Override
+	public Principal getPrincipal(){
+		
+		return this.localPrincipal.get();
+	}
+	
+	@Override
+	public void clearPrincipal(){
+		
+		this.localPrincipal.remove();
 	}
 }
