@@ -22,6 +22,7 @@ import com.obal.core.meta.EntityAttr;
 import com.obal.core.meta.EntityManager;
 import com.obal.core.meta.EntityMeta;
 import com.obal.core.meta.accessor.IMetaAttrAccessor;
+import com.obal.core.util.AccessorUtils;
 import com.obal.exception.AccessorException;
 import com.obal.exception.BaseException;
 import com.obal.exception.EntityException;
@@ -58,7 +59,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 			throw new AccessorException("Error when build embed accessor:{}",ee,EntityManager.ENTITY_META_ATTR);
 		}finally{
 			
-			attraccessor.release();
+			AccessorUtils.releaseAccessor(attraccessor);
 		}
 		return attr;
 
@@ -102,7 +103,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 			
 		}finally{
 			
-			attraccessor.release();
+			AccessorUtils.releaseAccessor(attraccessor);
 		}
 		return rtv;
 	}
@@ -144,7 +145,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 			throw new AccessorException("Error when create meta attr key.",e);
 		}finally{
 			
-			attraccessor.release();
+			AccessorUtils.releaseAccessor(attraccessor);
 		}
 
 	}
@@ -168,6 +169,9 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 		}catch (EntityException ee){
 			
 			throw new AccessorException("Error when get meta info data.",ee);
+		}finally{
+			
+			AccessorUtils.releaseAccessor(metaAccr);
 		}
 		return meta;
 	}
@@ -199,7 +203,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 			
 		}finally{
 			
-			metaAccr.release();
+			AccessorUtils.releaseAccessor(metaAccr);
 		}
 		return rtv;
 	}
@@ -244,7 +248,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 			throw new AccessorException("Error when put metadata.",e);
 		}finally{
 			
-			metaAccr.release();
+			AccessorUtils.releaseAccessor(metaAccr);
 		}
 
 	}
