@@ -25,21 +25,21 @@ package com.obal.core;
 public class EntryKey {
 
 	private String key = null;
-	private String entryName = null;
+	private String entityName = null;
 	
-	public EntryKey(String entryName,String key){
-		this.entryName = entryName;
+	public EntryKey(String entityName,String key){
+		this.entityName = entityName;
 		this.key = key;
 	}
 	
-	public String getEntryName() {
+	public String getEntityName() {
 		
-		return entryName;
+		return entityName;
 	}
 
-	public void setEntryName(String entryName) {
+	public void setEntityName(String entityName) {
 		
-		this.entryName = entryName;
+		this.entityName = entityName;
 	}
 	
 	public String getKey(){

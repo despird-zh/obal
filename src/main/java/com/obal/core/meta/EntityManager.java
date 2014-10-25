@@ -43,11 +43,7 @@ import com.obal.exception.MetaException;
  * @author G.Obal
  **/
 public class EntityManager {
-
-	public static String ENTITY_BLIND = "obal.blind";
-	public static String ENTITY_META_INFO = "obal.meta.info";
-	public static String ENTITY_META_ATTR = "obal.meta.attr";
-	public static String ENTITY_META_GENERAL = "obal.meta.general";
+	
 	private static EntityManager instance;
 	
 	/** cache map for EntryMeta */
@@ -161,7 +157,7 @@ public class EntityManager {
 	/** initial the meta schema*/
 	private void initialMetaSchema(){
 		
-		EntityMeta meta = new EntityMeta(ENTITY_META_ATTR);
+		EntityMeta meta = new EntityMeta(EntityConstants.ENTITY_META_ATTR);
 		meta.setSchemaClass(GeneralEntity.class.getName());
 		EntityAttr attr = new EntityAttr("i_attr_name","c0","attr_name");
 		meta.addAttr(attr);
@@ -197,7 +193,7 @@ public class EntityManager {
 		metaMap.put(ae.getEntityName(), ae.getEntityMeta());
 		schemaMap.put(ae.getEntityName(), ae);
 		/** -------------------------------------------- */
-		meta = new EntityMeta(ENTITY_META_INFO);
+		meta = new EntityMeta(EntityConstants.ENTITY_META_INFO);
 		meta.setSchemaClass(GeneralEntity.class.getName());
 		attr = new EntityAttr("i_schema_class","c0","schemaclass");
 		meta.addAttr(attr);

@@ -36,12 +36,12 @@ public abstract class EntryInfo extends EntryKey implements Serializable{
 
 	public EntryInfo(EntryKey key){
 		
-		super(key.getEntryName(), key.getKey());
+		super(key.getEntityName(), key.getKey());
 	}
 	
 	public EntryKey getEntryKey(){
 		
-		return new EntryKey(getEntryName(), getKey());
+		return new EntryKey(getEntityName(), getKey());
 	}
 	
 	private String creator ;

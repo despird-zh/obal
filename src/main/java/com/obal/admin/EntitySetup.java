@@ -1,9 +1,11 @@
 package com.obal.admin;
 
 import java.util.List;
+
 import com.obal.core.meta.AttrMode;
 import com.obal.core.meta.AttrType;
 import com.obal.core.meta.EntityAttr;
+import com.obal.core.meta.EntityConstants;
 import com.obal.core.meta.EntityMeta;
 import com.obal.core.meta.GeneralEntity;
 import com.obal.core.meta.EntityManager;
@@ -32,10 +34,10 @@ public class EntitySetup {
 	public void loadEntityMeta(){
 		
 		IMetaAttrAccessor imeta = null;
-		Principal princ = new Principal();
+		Principal princ = new Principal("acc","demo","pwd");
 		try {
 			EntityManager smgr = EntityManager.getInstance();
-			imeta = AccessorUtils.getGeneralAccessor(princ, EntityManager.ENTITY_META_GENERAL);
+			imeta = AccessorUtils.getGeneralAccessor(princ, EntityConstants.ENTITY_META_GENERAL);
 
 			List<EntityMeta> entrymetas = imeta.getEntryMetaList();
 			for(EntityMeta em:entrymetas){
@@ -57,16 +59,16 @@ public class EntitySetup {
 	private void setupMetaSchema(){
 		
 		EntityAdmin ea = EntityAdmin.getInstance();
-		Principal princ = new Principal();
+		Principal princ = new Principal("acc","demo","pwd");
 		
 		IAdminAccessor aa = ea.getAdminAccessor(princ);
 		
 		try {
 			
-			EntityMeta infoMeta = EntityUtils.getEntityMeta(EntityManager.ENTITY_META_INFO);			
+			EntityMeta infoMeta = EntityUtils.getEntityMeta(EntityConstants.ENTITY_META_INFO);			
 			aa.createSchema(infoMeta.getEntityName(),infoMeta.getAllAttrs());			
 			
-			EntityMeta arrtMeta = EntityUtils.getEntityMeta(EntityManager.ENTITY_META_ATTR);
+			EntityMeta arrtMeta = EntityUtils.getEntityMeta(EntityConstants.ENTITY_META_ATTR);
 			aa.createSchema(arrtMeta.getEntityName(),arrtMeta.getAllAttrs());
 			
 		} catch (AccessorException e) {
@@ -81,7 +83,7 @@ public class EntitySetup {
 	private void setupUserSchema(){
 		
 		EntityAdmin ea = EntityAdmin.getInstance();
-		Principal princ = new Principal();
+		Principal princ = new Principal("acc","demo","pwd");
 		
 		IAdminAccessor aa = ea.getAdminAccessor(princ);
 		IMetaAttrAccessor imeta = null;
@@ -115,10 +117,9 @@ public class EntitySetup {
 			meta.addAttr(attr);
 			
 			aa.createSchema("obal.user",meta.getAllAttrs());		
-			imeta = AccessorUtils.getGeneralAccessor(princ, EntityManager.ENTITY_META_GENERAL);
+			imeta = AccessorUtils.getGeneralAccessor(princ, EntityConstants.ENTITY_META_GENERAL);
 
 			imeta.putEntryMeta(meta);
-
 			
 		} catch (AccessorException e) {
 			// TODO Auto-generated catch block

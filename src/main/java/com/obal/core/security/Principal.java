@@ -19,6 +19,11 @@
  */
 package com.obal.core.security;
 
+import java.util.List;
+
+import com.obal.core.EntryKey;
+import com.obal.core.meta.EntityConstants;
+
 /**
  * Store the pincipal info of user
  * 
@@ -26,7 +31,23 @@ package com.obal.core.security;
  * @version 1.0 2014-01-01
  * @see com.obal.core.security.Profile
  **/
-public class Principal {
+public class Principal extends EntryKey{
+
+	/**
+	 * Constructor for new Principal
+	 * 
+	 * @param account the logon account 
+	 * @param name the user name
+	 * @param password the password
+	 * 
+	 **/
+	public Principal(String account, String name, String password) {
+		
+		super(EntityConstants.ENTITY_PRINCIPAL, null);
+		this.account = account;
+		this.name = name;
+		this.password = password;
+	}
 
 	/** the domain name*/
 	private String domain = "";
@@ -63,33 +84,48 @@ public class Principal {
 		return account;
 	}
 	
-	
-	public void setAccount(String account) {
-		this.account = account;
-	}
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
-		this.name = name;
-	}
+
 	public String getPassword() {
 		return password;
 	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
+
 	public String getSource() {
 		return source;
 	}
+	
 	public void setSource(String source) {
 		this.source = source;
 	}
+	
 	public Profile getProfile() {
+		
 		return profile;
 	}
 	public void setProfile(Profile profile) {
+		
 		this.profile = profile;
 	}	
 	
+	public boolean inGroup(String group){
+		
+		return false;
+	}
+
+	public boolean inRole(String role){
+		
+		return false;
+	}
+	
+	public List<UserGroup> getUserGroups(){
+		
+		return null;
+	}
+	
+	public List<UserRole> getUserRoles(){
+		
+		return null;
+	}
 }

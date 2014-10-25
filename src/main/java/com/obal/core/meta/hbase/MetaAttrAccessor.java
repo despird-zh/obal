@@ -19,7 +19,7 @@ import com.obal.core.hbase.HGeneralAccessor;
 import com.obal.core.meta.AttrMode;
 import com.obal.core.meta.AttrType;
 import com.obal.core.meta.EntityAttr;
-import com.obal.core.meta.EntityManager;
+import com.obal.core.meta.EntityConstants;
 import com.obal.core.meta.EntityMeta;
 import com.obal.core.meta.accessor.IMetaAttrAccessor;
 import com.obal.core.util.AccessorUtils;
@@ -36,7 +36,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 		AttrAccessor attraccessor = null;
 		EntityAttr attr = null;
 		try{
-			attraccessor = AccessorFactory.getInstance().buildEmbedEntityAccessor(this, EntityManager.ENTITY_META_ATTR);
+			attraccessor = AccessorFactory.getInstance().buildEmbedEntityAccessor(this, EntityConstants.ENTITY_META_ATTR);
 			RawEntry minfo = attraccessor.getEntry(attrKey);
 			String attrName = (String)minfo.get("i_attr_name");
 			String column = (String)minfo.get("i_column");
@@ -56,7 +56,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 			
 		}catch(EntityException ee){
 			
-			throw new AccessorException("Error when build embed accessor:{}",ee,EntityManager.ENTITY_META_ATTR);
+			throw new AccessorException("Error when build embed accessor:{}",ee,EntityConstants.ENTITY_META_ATTR);
 		}finally{
 			
 			AccessorUtils.releaseAccessor(attraccessor);
@@ -74,7 +74,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 		List<RawEntry> attrs = null;
 		List<EntityAttr> rtv = null;
 		try{
-			attraccessor = AccessorFactory.getInstance().buildEmbedEntityAccessor(this, EntityManager.ENTITY_META_ATTR);
+			attraccessor = AccessorFactory.getInstance().buildEmbedEntityAccessor(this, EntityConstants.ENTITY_META_ATTR);
 		
 			attrs = attraccessor.scanEntry(new EntryFilter<Filter>(filter1));
 			
@@ -113,7 +113,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 		AttrAccessor attraccessor = null;
 		
 		try {
-			attraccessor = AccessorFactory.getInstance().buildEmbedEntityAccessor(this, EntityManager.ENTITY_META_ATTR);
+			attraccessor = AccessorFactory.getInstance().buildEmbedEntityAccessor(this, EntityConstants.ENTITY_META_ATTR);
 			EntryKey key = attraccessor.getEntitySchema().newKey();
 			RawEntry minfo = new RawEntry(key);
 
@@ -157,7 +157,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 		MetaAccessor metaAccr = null;
 		EntityMeta meta = null;
 		try{
-			metaAccr = AccessorFactory.getInstance().buildEmbedEntityAccessor(this, EntityManager.ENTITY_META_INFO);
+			metaAccr = AccessorFactory.getInstance().buildEmbedEntityAccessor(this, EntityConstants.ENTITY_META_INFO);
 		
 			RawEntry minfo = metaAccr.getEntry(entityName);
 			meta = new EntityMeta(entityName);
@@ -184,7 +184,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 		List<EntityMeta> rtv = null;
 		try{
 			
-			metaAccr = AccessorFactory.getInstance().buildEmbedEntityAccessor(this, EntityManager.ENTITY_META_INFO);
+			metaAccr = AccessorFactory.getInstance().buildEmbedEntityAccessor(this, EntityConstants.ENTITY_META_INFO);
 			rlist = metaAccr.scanEntry(null);
 			rtv = new ArrayList<EntityMeta>();
 		
@@ -221,7 +221,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 		
 		MetaAccessor metaAccr = null;
 		try {
-			metaAccr = AccessorFactory.getInstance().buildEmbedEntityAccessor(this, EntityManager.ENTITY_META_INFO);
+			metaAccr = AccessorFactory.getInstance().buildEmbedEntityAccessor(this, EntityConstants.ENTITY_META_INFO);
 			EntryKey key = metaAccr.getEntitySchema().newKey();
 			RawEntry minfo = new RawEntry(key);
 

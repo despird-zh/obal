@@ -18,6 +18,7 @@ public class NodeInfo {
 		
 		return this.nodeName;
 	}
+	
 	public List<NodeInfo> childNodes(){
 		return null;
 		

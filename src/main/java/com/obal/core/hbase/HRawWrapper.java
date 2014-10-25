@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import com.obal.core.accessor.RawEntry;
 import com.obal.core.meta.AttrMode;
 import com.obal.core.meta.EntityAttr;
+import com.obal.core.meta.EntityConstants;
 import com.obal.core.meta.EntityManager;
 import com.obal.core.meta.EntityMeta;
 
@@ -73,10 +74,10 @@ public class HRawWrapper extends HEntryWrapper<RawEntry>{
 	public RawEntry wrap(List<EntityAttr> attrs,Object rawEntry) {
 						
 		Result entry = (Result)rawEntry;
-		String entityName = attrs.size()>0? (attrs.get(0).getEntityName()):EntityManager.ENTITY_BLIND;
+		String entityName = attrs.size()>0? (attrs.get(0).getEntityName()):EntityConstants.ENTITY_BLIND;
 		if(entityName == null || entityName.length()==0){
 			
-			entityName = EntityManager.ENTITY_BLIND;
+			entityName = EntityConstants.ENTITY_BLIND;
 		}
 		RawEntry gei = new RawEntry(entityName,new String(entry.getRow()));
 		

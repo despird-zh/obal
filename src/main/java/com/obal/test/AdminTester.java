@@ -18,11 +18,33 @@ public class AdminTester extends BlankTester{
 		initLog4j();
 		AdminTester tester = new AdminTester();
 		//tester.testCreateSchema();
+		Object value = false;
+		byte[] bval = Bytes.toBytes((Boolean)value);
+		printHexString("--1st:",bval);
+		Object t = Bytes.toBoolean(bval);
+		System.out.println(t);	
 		byte[] bytes = Bytes.toBytes((Boolean)false);
-		boolean t = Bytes.toBoolean(bytes);
-		System.out.println(String.valueOf(bytes));		
-		tester.testInitializer();
+		printHexString("--2nd:",bytes);
+		t = Bytes.toBoolean(bytes);
+		
+		System.out.println(t);		
+		//tester.testInitializer();
 
+	}
+	
+	public static void printHexString(String hint, byte[] b)  
+	{  
+	    System.out.print(hint);  
+	    for (int i = 0; i < b.length; i++)  
+	    {  
+	        String hex = Integer.toHexString(b[i] & 0xFF);  
+	        if (hex.length() == 1)  
+	        {  
+	            hex = '0' + hex;  
+	        }  
+	        System.out.print(hex.toUpperCase() + " ");  
+	    }  
+	    System.out.println("");  
 	}
 	
 	public void testInitializer(){
@@ -35,7 +57,7 @@ public class AdminTester extends BlankTester{
 	public void testCreateSchema(){
 		
 		EntityAdmin ea = EntityAdmin.getInstance();
-		Principal princ = new Principal();
+		Principal princ = new Principal("acc","demo","pwd");
 		
 		IAdminAccessor aa = ea.getAdminAccessor(princ);
 		

@@ -198,7 +198,7 @@ public class AuditEvent extends EntryInfo{
 		
 		this.setKey(fromOne.getKey());
 		this.setTimestamp(fromOne.getTimestamp());
-		this.setEntryName(fromOne.getEntryName());
+		this.setEntityName(fromOne.getEntityName());
 		this.setVerb(fromOne.getVerb());
 		this.setSubject(fromOne.getSubject());
 		this.setObject(fromOne.getObject());

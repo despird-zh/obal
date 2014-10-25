@@ -5,6 +5,7 @@ import com.obal.admin.IAdminAccessor;
 import com.obal.core.meta.AttrMode;
 import com.obal.core.meta.AttrType;
 import com.obal.core.meta.EntityAttr;
+import com.obal.core.meta.EntityConstants;
 import com.obal.core.meta.EntityManager;
 import com.obal.core.meta.EntityMeta;
 import com.obal.core.meta.GeneralEntity;
@@ -27,7 +28,7 @@ public class AccessorTester extends BlankTester{
 	private void createTestSchema(){
 		
 		EntityAdmin ea = EntityAdmin.getInstance();
-		Principal princ = new Principal();
+		Principal princ = new Principal("useracc","demouser","pwd");
 		
 		IAdminAccessor aa = ea.getAdminAccessor(princ);
 		IMetaAttrAccessor imeta = null;
@@ -69,7 +70,7 @@ public class AccessorTester extends BlankTester{
 			
 			aa.createSchema("obal.test",meta.getAllAttrs());
 			
-			imeta = AccessorUtils.getEntryAccessor(princ, EntityManager.ENTITY_META_INFO);
+			imeta = AccessorUtils.getEntryAccessor(princ, EntityConstants.ENTITY_META_INFO);
 
 			imeta.putEntryMeta(meta);
 						
