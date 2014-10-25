@@ -47,7 +47,7 @@ public class AccessorUtils {
 	}	
 
 	/**
-	 * Get Gereral Accessor
+	 * Get General Accessor
 	 * @param principal the user principal
 	 * @param accessorName
 	 * 

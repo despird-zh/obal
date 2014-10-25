@@ -12,7 +12,7 @@ public class DocEntry extends EntryInfo{
 
 	public DocEntry(EntryKey key) {
 		super(key);
-		// TODO Auto-generated constructor stub
 	}
 
+	
 }

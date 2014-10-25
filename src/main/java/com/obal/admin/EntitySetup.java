@@ -63,10 +63,10 @@ public class EntitySetup {
 		
 		try {
 			
-			EntityMeta infoMeta = EntityUtils.getEntryMeta(EntityManager.ENTITY_META_INFO);			
+			EntityMeta infoMeta = EntityUtils.getEntityMeta(EntityManager.ENTITY_META_INFO);			
 			aa.createSchema(infoMeta.getEntityName(),infoMeta.getAllAttrs());			
 			
-			EntityMeta arrtMeta = EntityUtils.getEntryMeta(EntityManager.ENTITY_META_ATTR);
+			EntityMeta arrtMeta = EntityUtils.getEntityMeta(EntityManager.ENTITY_META_ATTR);
 			aa.createSchema(arrtMeta.getEntityName(),arrtMeta.getAllAttrs());
 			
 		} catch (AccessorException e) {
