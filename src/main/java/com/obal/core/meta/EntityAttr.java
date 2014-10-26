@@ -45,6 +45,7 @@ public class EntityAttr {
 	private boolean primary = false;
 	private String description = null;
 	private EntryKey entryKey = null;
+	
 	/**
 	 * Constructor
 	 * <p>The attribute default mode is PRIMITVE, default type is STRING</p>

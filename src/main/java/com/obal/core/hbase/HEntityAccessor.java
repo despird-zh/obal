@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.NavigableMap;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.client.Delete;
 import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.client.HConnection;
@@ -133,7 +132,7 @@ public abstract class HEntityAccessor<GB extends EntryInfo> extends EntityAccess
 			if(attr.mode == AttrMode.PRIMITIVE){
 				get.addColumn(column, qualifier);
 	        	Result entry = table.get(get);
-				Cell cell = entry.getColumnLatestCell(column, qualifier);
+	        	byte[] cell = entry.getValue(column, qualifier);
 				rtv = wrapper.getPrimitiveValue(attr, cell);		
 			}
 			

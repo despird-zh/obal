@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
 
-import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.slf4j.Logger;
@@ -46,7 +45,7 @@ public class HRawWrapper extends HEntryWrapper<RawEntry>{
 			byte[] qualifier = attr.getQualifier().getBytes();
 			if(attr.mode == AttrMode.PRIMITIVE){
 				
-				Cell cell = entry.getColumnLatestCell(column, qualifier);
+				byte[] cell = entry.getValue(column, qualifier);
 				Object value = super.getPrimitiveValue(attr, cell);
 				gei.put(attr.getAttrName(), value);				
 			}
@@ -86,7 +85,7 @@ public class HRawWrapper extends HEntryWrapper<RawEntry>{
 			byte[] qualifier = attr.getQualifier().getBytes();
 			if(attr.mode == AttrMode.PRIMITIVE){
 				
-				Cell cell = entry.getColumnLatestCell(column, qualifier);
+				byte[] cell = entry.getValue(column, qualifier);
 				Object value = super.getPrimitiveValue(attr, cell);
 				gei.put(attr.getAttrName(), value);				
 			}

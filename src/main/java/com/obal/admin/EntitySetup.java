@@ -25,6 +25,8 @@ public class EntitySetup {
 		
 		//setupMetaSchema();
 		//setupUserSchema();
+		//setupGroupSchema();
+		//setupRoleSchema();
 		loadEntityMeta();
 	}
 		
@@ -39,7 +41,7 @@ public class EntitySetup {
 			EntityManager smgr = EntityManager.getInstance();
 			imeta = AccessorUtils.getGeneralAccessor(princ, EntityConstants.ENTITY_META_GENERAL);
 
-			List<EntityMeta> entrymetas = imeta.getEntryMetaList();
+			List<EntityMeta> entrymetas = imeta.getEntityMetaList();
 			for(EntityMeta em:entrymetas){
 				
 				smgr.putEntityMeta(em);
@@ -89,9 +91,9 @@ public class EntitySetup {
 		IMetaAttrAccessor imeta = null;
 		try {
 			
-			EntityMeta meta = new EntityMeta("obal.user");
+			EntityMeta meta = new EntityMeta(EntityConstants.ENTITY_PRINCIPAL);
 			meta.setSchemaClass(GeneralEntity.class.getName());
-			meta.setDescription("user schema descriptionxxx");
+			meta.setDescription("user schema ");
 			
 			EntityAttr attr = new EntityAttr("i_account","c0","account");
 			meta.addAttr(attr);
@@ -119,7 +121,99 @@ public class EntitySetup {
 			aa.createSchema("obal.user",meta.getAllAttrs());		
 			imeta = AccessorUtils.getGeneralAccessor(princ, EntityConstants.ENTITY_META_GENERAL);
 
-			imeta.putEntryMeta(meta);
+			imeta.putEntityMeta(meta);
+			
+		} catch (AccessorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (EntityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}finally{
+			
+			AccessorUtils.releaseAccessor(imeta,aa);
+		}
+	}
+	
+	private void setupGroupSchema(){
+		
+		EntityAdmin ea = EntityAdmin.getInstance();
+		Principal princ = new Principal("acc","demo","pwd");
+		
+		IAdminAccessor aa = ea.getAdminAccessor(princ);
+		IMetaAttrAccessor imeta = null;
+		try {
+			
+			EntityMeta meta = new EntityMeta(EntityConstants.ENTITY_USER_GROUP);
+			meta.setSchemaClass(GeneralEntity.class.getName());
+			meta.setDescription("user Group schema ");
+			
+			EntityAttr attr = new EntityAttr("i_group_name","c0","groupname");
+			meta.addAttr(attr);
+			attr = new EntityAttr("i_users",AttrMode.MAP,AttrType.STRING,"c1","u");
+			meta.addAttr(attr);
+			attr = new EntityAttr("i_groups",AttrMode.MAP,AttrType.STRING,"c1","g");
+			meta.addAttr(attr);			
+			attr = new EntityAttr("i_creator","c0","creator");
+			meta.addAttr(attr);
+			attr = new EntityAttr("i_modifier","c0","modifier");
+			meta.addAttr(attr);
+			attr = new EntityAttr("i_newcreate",AttrType.DATE,"c0","newcreate");
+			meta.addAttr(attr);
+			attr = new EntityAttr("i_lastmodify",AttrType.DATE,"c0","lastmodify");
+			meta.addAttr(attr);
+			
+			aa.createSchema(EntityConstants.ENTITY_USER_GROUP, meta.getAllAttrs());	
+			
+			imeta = AccessorUtils.getGeneralAccessor(princ, EntityConstants.ENTITY_META_GENERAL);
+
+			imeta.putEntityMeta(meta);
+			
+		} catch (AccessorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (EntityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}finally{
+			
+			AccessorUtils.releaseAccessor(imeta,aa);
+		}
+	}
+	
+	private void setupRoleSchema(){
+		
+		EntityAdmin ea = EntityAdmin.getInstance();
+		Principal princ = new Principal("acc","demo","pwd");
+		
+		IAdminAccessor aa = ea.getAdminAccessor(princ);
+		IMetaAttrAccessor imeta = null;
+		try {
+			
+			EntityMeta meta = new EntityMeta(EntityConstants.ENTITY_USER_ROLE);
+			meta.setSchemaClass(GeneralEntity.class.getName());
+			meta.setDescription("user Group schema ");
+			
+			EntityAttr attr = new EntityAttr("i_role_name","c0","rolename");
+			meta.addAttr(attr);
+			attr = new EntityAttr("i_users",AttrMode.MAP,AttrType.STRING,"c1","u");
+			meta.addAttr(attr);			
+			attr = new EntityAttr("i_creator","c0","creator");
+			meta.addAttr(attr);
+			attr = new EntityAttr("i_modifier","c0","modifier");
+			meta.addAttr(attr);
+			attr = new EntityAttr("i_newcreate",AttrType.DATE,"c0","newcreate");
+			meta.addAttr(attr);
+			attr = new EntityAttr("i_lastmodify",AttrType.DATE,"c0","lastmodify");
+			meta.addAttr(attr);
+			
+			aa.createSchema(EntityConstants.ENTITY_USER_ROLE, meta.getAllAttrs());	
+			
+			imeta = AccessorUtils.getGeneralAccessor(princ, EntityConstants.ENTITY_META_GENERAL);
+
+			imeta.putEntityMeta(meta);
 			
 		} catch (AccessorException e) {
 			// TODO Auto-generated catch block

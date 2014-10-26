@@ -9,7 +9,10 @@ import java.util.List;
 
 
 
+
+
 import org.apache.hadoop.conf.Configuration;  
+import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.HBaseConfiguration;  
 import org.apache.hadoop.hbase.HColumnDescriptor;  
 import org.apache.hadoop.hbase.HTableDescriptor;  
@@ -33,6 +36,8 @@ import org.apache.hadoop.hbase.filter.FilterList;
 import org.apache.hadoop.hbase.filter.SingleColumnValueFilter;  
 import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp;  
 import org.apache.hadoop.hbase.util.Bytes;  
+
+import com.obal.util.ByteValueUtils;
   
 public class HTester extends BlankTester{  
   
@@ -59,10 +64,10 @@ public class HTester extends BlankTester{
     public static void main(String[] args) {  
     	
     	initLog4j();
-         createTable("wujintao");  
+        // createTable("wujintao");  
        //  insertData("wujintao");  
        //  QueryAll("wujintao");  
-        // QueryByCondition1("wujintao");  
+         QueryByCondition1("obal.meta.attr");  
         // QueryByCondition2("wujintao");  
        // QueryByCondition3("wujintao");  
        // deleteRow("wujintao","abcdef");  
@@ -228,12 +233,17 @@ public class HTester extends BlankTester{
         try {  
             connection = HConnectionManager.createConnection(configuration);
             table = connection.getTable(tableName);
-            Get scan = new Get("abcdef".getBytes());// 根据rowkey查询  
+            Get scan = new Get("1414165569189".getBytes());// 根据rowkey查询  
             Result r = table.get(scan);  
             System.out.println("获得到rowkey:" + new String(r.getRow()));  
+            Cell cell = r.getColumnLatestCell("c0".getBytes(), "readonly".getBytes());
+            byte[] bval = cell.getValueArray();
+            
             for (KeyValue keyValue : r.raw()) {  
-                System.out.println("列：" + new String(keyValue.getFamily())  
-                        + "====值:" + new String(keyValue.getValue()));  
+                System.out.println("列:" + new String(keyValue.getFamily())  
+                		+ "/Q:" + new String(keyValue.getQualifier()));
+                
+                ByteValueUtils.printHexString("value:", keyValue.getValueArray());
             }  
         } catch (IOException e) {  
             e.printStackTrace();  

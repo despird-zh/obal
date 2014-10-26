@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
 
-import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.slf4j.Logger;
@@ -28,29 +27,28 @@ public abstract class HEntryWrapper<GB extends EntryInfo> extends EntryWrapper<G
 	 * 
 	 * @return Object the value object
 	 **/
-	public Object getPrimitiveValue(EntityAttr attr, Cell cell){
+	public Object getPrimitiveValue(EntityAttr attr, byte[] value){
 		
 		Object rtv = null;
-		byte[] bytes = cell.getValueArray();
+
 		switch(attr.type){
 			case INT:
-				rtv = Bytes.toInt(bytes);
+				rtv = Bytes.toInt(value);
 				break;
 			case BOOL:
-				System.out.println(String.valueOf(bytes));
-				rtv = Bytes.toBoolean(bytes);
+				rtv = Bytes.toBoolean(value);
 				break;
 			case DOUBLE:
-				rtv = Bytes.toDouble(bytes);
+				rtv = Bytes.toDouble(value);
 				break;
 			case LONG:
-				rtv = Bytes.toLong(bytes);
+				rtv = Bytes.toLong(value);
 				break;
 			case STRING:
-				rtv = Bytes.toString(bytes);
+				rtv = Bytes.toString(value);
 				break;
 			case DATE:
-				Long time = Bytes.toLong(bytes);
+				Long time = Bytes.toLong(value);
 				rtv = new Date(time);
 				break;
 			default:
@@ -58,7 +56,7 @@ public abstract class HEntryWrapper<GB extends EntryInfo> extends EntryWrapper<G
 		}
 		if(LOGGER.isDebugEnabled()){
 			
-			LOGGER.debug("PRIMITIVE -> attribute:{} | value:{}", new String[]{attr.getAttrName(),String.valueOf(bytes)});
+			LOGGER.debug("PRIMITIVE -> attribute:{} | value:{}", new String[]{attr.getAttrName(),String.valueOf(rtv)});
 		}
 		return rtv;
 	}

@@ -72,7 +72,7 @@ public class AccessorTester extends BlankTester{
 			
 			imeta = AccessorUtils.getEntryAccessor(princ, EntityConstants.ENTITY_META_INFO);
 
-			imeta.putEntryMeta(meta);
+			imeta.putEntityMeta(meta);
 						
 		} catch (AccessorException e) {
 			// TODO Auto-generated catch block

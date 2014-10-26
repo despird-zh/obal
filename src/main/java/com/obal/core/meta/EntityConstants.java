@@ -17,7 +17,7 @@ public class EntityConstants {
 	/**
 	 * the entity name of principal
 	 **/
-	public static String ENTITY_PRINCIPAL = "obal.principal";
+	public static String ENTITY_PRINCIPAL = "obal.user";
 	
 	/**
 	 * the entity name of role

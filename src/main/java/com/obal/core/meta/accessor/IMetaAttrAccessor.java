@@ -10,16 +10,16 @@ import com.obal.exception.AccessorException;
 
 public interface IMetaAttrAccessor extends IBaseAccessor{
 
-	public EntityAttr getAttr(String attrId )throws AccessorException;
+	public EntityAttr getEntityAttr(String attrId )throws AccessorException;
 	
 	public List<EntityAttr> getAttrList(String entryName)throws AccessorException;
 	
-	public EntryKey putEntryAttr(EntityAttr attr)throws AccessorException;
+	public EntryKey putEntityAttr(EntityAttr attr)throws AccessorException;
 	
-	public EntityMeta getEntryMeta(String entryName)throws AccessorException;
+	public EntityMeta getEntityMeta(String entryName)throws AccessorException;
 	
-	public List<EntityMeta> getEntryMetaList()throws AccessorException;
+	public List<EntityMeta> getEntityMetaList()throws AccessorException;
 	
-	public EntryKey putEntryMeta(EntityMeta meta)throws AccessorException;
+	public EntryKey putEntityMeta(EntityMeta meta)throws AccessorException;
 	
 }

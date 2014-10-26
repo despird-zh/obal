@@ -28,7 +28,7 @@ public class AdminTester extends BlankTester{
 		t = Bytes.toBoolean(bytes);
 		
 		System.out.println(t);		
-		//tester.testInitializer();
+		tester.testInitializer();
 
 	}
 	

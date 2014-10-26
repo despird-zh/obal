@@ -31,7 +31,7 @@ import com.obal.exception.MetaException;
 public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAccessor{
 
 	@Override
-	public EntityAttr getAttr(String attrKey) throws AccessorException {
+	public EntityAttr getEntityAttr(String attrKey) throws AccessorException {
 		
 		AttrAccessor attraccessor = null;
 		EntityAttr attr = null;
@@ -46,6 +46,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 			AttrMode mode = AttrMode.valueOf((String)minfo.get("i_mode"));
 			
 			attr = new EntityAttr(attrName,mode,type,column,qualifier);
+			attr.setEntryKey(minfo.getEntryKey());
 			attr.setEntityName((String)minfo.get("i_entity"));
 			attr.setDescription((String)minfo.get("i_description"));
 			attr.setFormat((String)minfo.get("i_format"));
@@ -109,7 +110,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 	}
 
 	@Override
-	public EntryKey putEntryAttr(EntityAttr attr) throws AccessorException {
+	public EntryKey putEntityAttr(EntityAttr attr) throws AccessorException {
 		AttrAccessor attraccessor = null;
 		
 		try {
@@ -152,7 +153,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public EntityMeta getEntryMeta(String entityName) throws AccessorException {
+	public EntityMeta getEntityMeta(String entityName) throws AccessorException {
 
 		MetaAccessor metaAccr = null;
 		EntityMeta meta = null;
@@ -178,7 +179,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<EntityMeta> getEntryMetaList() throws AccessorException {
+	public List<EntityMeta> getEntityMetaList() throws AccessorException {
 		MetaAccessor metaAccr = null;
 		List<RawEntry> rlist = null;
 		List<EntityMeta> rtv = null;
@@ -200,7 +201,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 				
 				for(Map.Entry<String, String> et:attrMap.entrySet()){
 					
-					EntityAttr attr = getAttr(et.getValue());
+					EntityAttr attr = getEntityAttr(et.getValue());
 					meta.addAttr(attr);
 				}
 				rtv.add(meta);
@@ -217,7 +218,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 	}
 
 	@Override
-	public EntryKey putEntryMeta(EntityMeta meta) throws AccessorException {
+	public EntryKey putEntityMeta(EntityMeta meta) throws AccessorException {
 		
 		MetaAccessor metaAccr = null;
 		try {
@@ -242,7 +243,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 				
 				tattr.setEntityName(meta.getEntityName());
 				
-				EntryKey akey = putEntryAttr(tattr);
+				EntryKey akey = putEntityAttr(tattr);
 				attrmap.put(tattr.getAttrName(),akey.getKey());
 			}
 			
