@@ -1,5 +1,8 @@
 package com.obal.core.security;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import com.obal.core.EntryKey;
 import com.obal.core.meta.EntityConstants;
 
@@ -51,6 +54,29 @@ public class UserRole extends EntryKey{
 	public boolean hasUser(String account){
 		
 		return false;
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		// step 1
+		if (other == this) {
+			return true;
+		}
+		// step 2
+		if (!(other instanceof UserRole)) {
+			return false;
+		}
+		// step 3
+		UserRole that = (UserRole) other;
+		// step 4
+		return new EqualsBuilder()
+			.append(this.role, that.roleName()).isEquals();
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(17, 37).append(this.role)
+				.toHashCode();
 	}
 	
 }

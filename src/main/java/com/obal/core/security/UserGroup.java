@@ -3,22 +3,28 @@ package com.obal.core.security;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import com.obal.core.EntryKey;
 import com.obal.core.meta.EntityConstants;
 
 /**
  * UserGroup collects users from same business entity or organization,
  * the user group usually used define the organize hierarchy.
- * <p>A group include many subgroups, but has only one parent group<br>
- * GroupA<br>
- * GrpupA1<br>
- * &nbsp &nbsp |-GroupA11<br>
- * &nbsp &nbsp |-GroupA12<br>
- * &nbsp &nbsp &nbsp &nbsp|-User1<br>
- * GrpupA2<br>
- * ...
+ * <p>A group include many subgroups, but has only one parent group
  * </p>
- * 
+ * <pre>
+ * GroupA
+ *   |-GrpupA1
+ *   |  |-GroupA11
+ *   |  |-GroupA12
+ *   |     |-User1
+ *   |     |- ...
+ *   |-GrpupA2
+ * ...
+ * </pre>
+ *  
  * @author despird
  * @version 0.1 2014-3-1
  * @since 0.1
@@ -90,5 +96,28 @@ public class UserGroup extends EntryKey{
 	public void getUsers(Set<String> users){
 		
 		this.users = users;
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		// step 1
+		if (other == this) {
+			return true;
+		}
+		// step 2
+		if (!(other instanceof UserGroup)) {
+			return false;
+		}
+		// step 3
+		UserGroup that = (UserGroup) other;
+		// step 4
+		return new EqualsBuilder()
+			.append(this.group, that.groupName()).isEquals();
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(17, 37).append(this.group)
+				.toHashCode();
 	}
 }

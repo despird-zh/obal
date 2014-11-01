@@ -22,6 +22,19 @@ public class EntryAce {
 	/**
 	 * Constructor for user ACE item.
 	 * 
+	 * @param combinedValue
+	 *  
+	 **/
+	public EntryAce(String combinedValue){
+		
+		this.type = CoreConstants.ACE_TYPE_USER;
+		this.name = name;
+		this.privilege = privilege;
+	}
+	
+	/**
+	 * Constructor for user ACE item.
+	 * 
 	 * @param roleName the role name
 	 * @param privilege the access control privilege
 	 *  
@@ -86,5 +99,10 @@ public class EntryAce {
 		}
 		
 		return sbuf.toString();
+	}
+	
+	public void initial(String combinedValue){
+		
+		
 	}
 }

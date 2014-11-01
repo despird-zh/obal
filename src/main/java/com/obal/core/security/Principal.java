@@ -21,6 +21,9 @@ package com.obal.core.security;
 
 import java.util.List;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import com.obal.core.EntryKey;
 import com.obal.core.meta.EntityConstants;
 
@@ -49,8 +52,23 @@ public class Principal extends EntryKey{
 		this.password = password;
 	}
 
-	/** the domain name*/
-	private String domain = "";
+	/**
+	 * Constructor for new Principal
+	 * 
+	 * @param account the logon account 
+	 * @param name the user name
+	 * @param password the password
+	 * @param source the account source
+	 **/	
+	public Principal(String account, String name, String password, String source) {
+		
+		super(EntityConstants.ENTITY_PRINCIPAL, null);
+		this.account = account;
+		this.name = name;
+		this.password = password;
+		this.source = source;
+	}
+	
 	/** the account information */
 	private String account = "";
 	/** the name  */
@@ -64,40 +82,22 @@ public class Principal extends EntryKey{
 	private Profile profile = null;
 	
 	/**
-	 * Get the domain information 
-	 **/
-	public String getDomain() {
-		return domain;
-	}
-	
-	/**
-	 * Set the domain information 
-	 **/
-	public void setDomain(String domain) {
-		this.domain = domain;
-	}
-	
-	/**
 	 * Get Account information 
 	 **/
-	public String getAccount() {
+	public String account() {
 		return account;
 	}
 	
-	public String getName() {
+	public String name() {
 		return name;
 	}
 
-	public String getPassword() {
+	public String password() {
 		return password;
 	}
 
-	public String getSource() {
+	public String source() {
 		return source;
-	}
-	
-	public void setSource(String source) {
-		this.source = source;
 	}
 	
 	public Profile getProfile() {
@@ -127,5 +127,29 @@ public class Principal extends EntryKey{
 	public List<UserRole> getUserRoles(){
 		
 		return null;
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		// step 1
+		if (other == this) {
+			return true;
+		}
+		// step 2
+		if (!(other instanceof Principal)) {
+			return false;
+		}
+		// step 3
+		Principal that = (Principal) other;
+		// step 4
+		return new EqualsBuilder()
+			.append(this.source(), that.source())
+			.append(this.account(), that.account()).isEquals();
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(17, 37).append(this.source())
+				.append(this.account()).toHashCode();
 	}
 }
