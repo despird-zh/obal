@@ -26,5 +26,6 @@ public class UserRole extends EntryKey{
 	public boolean hasUser(String account){
 		
 		return false;
-	}	
+	}
+	
 }

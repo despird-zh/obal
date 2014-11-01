@@ -1,5 +1,7 @@
 package com.obal.core.security;
 
+import java.util.List;
+
 import com.obal.core.EntryKey;
 import com.obal.core.meta.EntityConstants;
 
@@ -31,5 +33,10 @@ public class UserGroup extends EntryKey{
 	public boolean hasGroup(String group){
 		
 		return false;
+	}
+	
+	public List<UserGroup> getGroups(){
+		
+		return null;
 	}
 }

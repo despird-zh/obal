@@ -20,8 +20,8 @@
 
 package com.obal.core.meta;
 
-import com.obal.core.CoreConstants;
 import com.obal.core.EntryKey;
+import com.obal.core.util.CoreConstants;
 
 /**
  * EntryAttr wrap the setting of entry attribute.

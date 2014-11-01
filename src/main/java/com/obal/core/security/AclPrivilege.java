@@ -6,7 +6,7 @@ public enum AclPrivilege {
 	BROWSE("BROWSE"),
 	READ("READ"),
 	WRITE("WRITE"),
-	DELETE("DELETE");
+	EXECUTE("EXECUTE");
 	
 	private String privilege = null;
 	
@@ -20,5 +20,15 @@ public enum AclPrivilege {
 	@Override
 	public String toString(){
 		return this.privilege;
+	}
+	
+	@Deprecated
+	public byte toByte(){
+		
+		byte b = (byte)1;
+		for(int i = 0; i< this.ordinal();i++)
+			b = (byte)(b << 1);
+		
+		return b;
 	}
 }

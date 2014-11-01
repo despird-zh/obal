@@ -1,4 +1,4 @@
-package com.obal.core;
+package com.obal.core.util;
 
 public class CoreConstants {
 	
@@ -15,7 +15,7 @@ public class CoreConstants {
 	/**
 	 * Separtor to combine key and value->(char)31
 	 **/
-	public static char KEY_VAL_SEPARATOR = (char)31;
+	public static char KEY_VAL_SEPARATOR1 = (char)31;
 	
 	/**
 	 * Separator to combine more k-v pairs ->(char)30
@@ -26,4 +26,11 @@ public class CoreConstants {
 	 * Separator to combine more lines ->(char)29
 	 **/
 	public static char LINE_SEPARATOR = (char)29;
+	
+	/** Ace type user */
+	public static final String ACE_TYPE_USER = "_user";
+	/** Ace type role */
+	public static final String ACE_TYPE_ROLE = "_role";
+	/** Ace type group */
+	public static final String ACE_TYPE_GROUP = "_group";
 }

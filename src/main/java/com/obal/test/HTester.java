@@ -243,7 +243,7 @@ public class HTester extends BlankTester{
                 System.out.println("列:" + new String(keyValue.getFamily())  
                 		+ "/Q:" + new String(keyValue.getQualifier()));
                 
-                ByteValueUtils.printHexString("value:", keyValue.getValueArray());
+                
             }  
         } catch (IOException e) {  
             e.printStackTrace();  

@@ -204,7 +204,6 @@ public class AuditEvent extends EntryInfo{
 		this.setObject(fromOne.getObject());
 		this.setClientApp(fromOne.getClientApp());
 		this.setOriginApp(fromOne.getOriginApp());
-		this.setObject(fromOne.getObject());
 		this.setPredicateMap(fromOne.getPredicateMap());
 	}
 	
