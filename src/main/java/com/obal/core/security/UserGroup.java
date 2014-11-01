@@ -1,6 +1,7 @@
 package com.obal.core.security;
 
 import java.util.List;
+import java.util.Set;
 
 import com.obal.core.EntryKey;
 import com.obal.core.meta.EntityConstants;
@@ -18,7 +19,7 @@ import com.obal.core.meta.EntityConstants;
  * ...
  * </p>
  * 
- * @author desprid
+ * @author despird
  * @version 0.1 2014-3-1
  * @since 0.1
  **/
@@ -26,6 +27,8 @@ public class UserGroup extends EntryKey{
 
 	/** the group */
 	private String group = null;
+	
+	private Set<String> users = null;
 	
 	/**
 	 * the constructor 
@@ -77,5 +80,15 @@ public class UserGroup extends EntryKey{
 	public List<UserGroup> getGroups(){
 		
 		return null;
+	}
+	
+	public Set<String> getUsers(){
+		
+		return users;
+	}
+	
+	public void getUsers(Set<String> users){
+		
+		this.users = users;
 	}
 }

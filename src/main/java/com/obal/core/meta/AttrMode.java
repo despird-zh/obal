@@ -20,13 +20,17 @@
 package com.obal.core.meta;
 
 /**
+ * The attribute support four kinds of value store mode:
+ * MAP,LIST,SET,PRIMITIVE.
+ *  
  * @author despird 
  **/
 public enum AttrMode {
 	
 	PRIMITIVE("PRIMITIVE"), // Primitive :int ,long etc single element
 	MAP("MAP"), // Map key-value pair
-	LIST("LIST"); // List the array of element
+	LIST("LIST"), // List the array of element
+	SET("SET"); // Set the array of element
 	
 	private String mode = null;
 	

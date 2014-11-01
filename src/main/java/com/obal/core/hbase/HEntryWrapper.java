@@ -3,9 +3,12 @@ package com.obal.core.hbase;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.Set;
 
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.util.Bytes;
@@ -166,6 +169,60 @@ public abstract class HEntryWrapper<GB extends EntryInfo> extends EntryWrapper<G
 				
 		return list;
 	}
+
+
+	/**
+	 * Get Set value from cells, every cell is the element of set
+	 * 
+	 * @param attr the attribute of entry
+	 * @param cells the Cells of certain Row in hbase
+	 * 
+	 * @return Object the list object
+	 **/
+	public Set<Object> getSetValue(EntityAttr attr, NavigableMap<byte[], byte[]> cells){
+
+		byte[] qualifier = attr.getQualifier().getBytes();
+		Set<Object> set = new HashSet<Object>();
+
+		for(byte[] e:cells.descendingKeySet()){
+			
+			if(Bytes.startsWith(e, qualifier)){
+				byte[] bytes = cells.get(e);
+				switch(attr.type){
+					case INT:
+						set.add(Bytes.toInt(bytes));
+						break;
+					case BOOL:
+						set.add(Bytes.toBoolean(bytes));
+						break;
+					case DOUBLE:
+						set.add(Bytes.toDouble(bytes));
+						break;
+					case LONG:
+						set.add(Bytes.toLong(bytes));
+						break;
+					case STRING:
+						set.add(Bytes.toString(bytes));
+						break;
+					case DATE:
+						Long time = Bytes.toLong(bytes);
+						set.add(new Date(time));
+						break;
+					default:
+						
+						break;
+				}
+				
+				if(LOGGER.isDebugEnabled()){
+					
+					LOGGER.debug("LIST -> attribute:{} - key:{} - value:{}", 
+							new String[]{attr.getAttrName(),new String(e), set.toArray().toString()});
+				}
+			}
+		}				
+				
+		return set;
+	}
 	
 	/**
 	 * Put the Primitive value to target Put operation
@@ -281,6 +338,53 @@ public abstract class HEntryWrapper<GB extends EntryInfo> extends EntryWrapper<G
 			}
 	    	String newQualifier = attr.getQualifier() + i;
 	    	put.add(attr.getColumn().getBytes(), newQualifier.getBytes(), bval);
+    	}
+    	
+	}
+	
+
+	/**
+	 * Put the set value to target Put operation object
+	 * 
+	 * @param put the Hbase Put operation object
+	 * @param attr the target attribute object
+	 * @param value the value to be put 
+	 **/
+	public void putSetValue(Put put, EntityAttr attr, Set<Object> setVal){
+		byte[] bval = null;
+    	if(setVal == null) return;  
+    	Iterator<Object> iterator = setVal.iterator();
+    	int i = 0;
+    	while(iterator.hasNext()){
+    		
+    		Object val = iterator.next();
+	    	switch(attr.type){
+				case INT:
+					bval = Bytes.toBytes((Integer)val);
+					break;
+				case BOOL:
+					bval = Bytes.toBytes((Boolean)val);
+					break;
+				case DOUBLE:
+					bval = Bytes.toBytes((Double)val);
+					break;
+				case LONG:
+					bval = Bytes.toBytes((Long)val);
+					break;							
+				case STRING:
+					bval = Bytes.toBytes((String)val);
+					break;
+				case DATE:
+					bval = Bytes.toBytes(((Date)val).getTime());
+					break;						
+				default:
+					
+					break;					
+			}
+	    	
+	    	String newQualifier = attr.getQualifier() + i;
+	    	put.add(attr.getColumn().getBytes(), newQualifier.getBytes(), bval);
+	    	i++;
     	}
     	
 	}

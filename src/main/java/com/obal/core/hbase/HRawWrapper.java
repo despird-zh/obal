@@ -3,6 +3,7 @@ package com.obal.core.hbase;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.Set;
 
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
@@ -43,26 +44,34 @@ public class HRawWrapper extends HEntryWrapper<RawEntry>{
 			}
 			byte[] column = attr.getColumn().getBytes();
 			byte[] qualifier = attr.getQualifier().getBytes();
-			if(attr.mode == AttrMode.PRIMITIVE){
-				
-				byte[] cell = entry.getValue(column, qualifier);
-				Object value = super.getPrimitiveValue(attr, cell);
-				gei.put(attr.getAttrName(), value);				
-			}
+			NavigableMap<byte[], byte[]> cells = null;
+			switch(attr.mode){
 			
-			if(attr.mode == AttrMode.MAP){
+				case PRIMITIVE :
+					byte[] cell = entry.getValue(column, qualifier);
+					Object value = super.getPrimitiveValue(attr, cell);
+					gei.put(attr.getAttrName(), value);	
+					break;
+				case MAP :
+					cells = entry.getFamilyMap(column);
+					Map<String, Object> map = super.getMapValue(attr, cells);				
+					gei.put(attr.getAttrName(), map);
+					break;
+				case LIST :
+					cells = entry.getFamilyMap(column);
+					List<Object> list = super.getListValue(attr, cells);					
+					gei.put(attr.getAttrName(), list);
+					break;
+					
+				case SET :
+					cells = entry.getFamilyMap(column);
+					Set<Object> set = super.getSetValue(attr, cells);					
+					gei.put(attr.getAttrName(), set);
+					break;
+					
+				default:
+					break;
 				
-				NavigableMap<byte[], byte[]> cells = entry.getFamilyMap(column);
-				Map<String, Object> map = super.getMapValue(attr, cells);				
-				gei.put(attr.getAttrName(), map);
-			}
-			
-			if(attr.mode == AttrMode.LIST){
-
-				NavigableMap<byte[], byte[]> cells = entry.getFamilyMap(column);
-				List<Object> list = super.getListValue(attr, cells);
-				
-				gei.put(attr.getAttrName(), list);
 			}
 		}
 		
@@ -83,27 +92,36 @@ public class HRawWrapper extends HEntryWrapper<RawEntry>{
 		for(EntityAttr attr: attrs){
 			byte[] column = attr.getColumn().getBytes();
 			byte[] qualifier = attr.getQualifier().getBytes();
-			if(attr.mode == AttrMode.PRIMITIVE){
+			NavigableMap<byte[], byte[]> cells = null;
+			switch(attr.mode){
+			
+				case PRIMITIVE :
+					byte[] cell = entry.getValue(column, qualifier);
+					Object value = super.getPrimitiveValue(attr, cell);
+					gei.put(attr.getAttrName(), value);	
+					break;
+				case MAP :
+					cells = entry.getFamilyMap(column);
+					Map<String, Object> map = super.getMapValue(attr, cells);				
+					gei.put(attr.getAttrName(), map);
+					break;
+				case LIST :
+					cells = entry.getFamilyMap(column);
+					List<Object> list = super.getListValue(attr, cells);
+					
+					gei.put(attr.getAttrName(), list);
+					break;
+				case SET :
+					cells = entry.getFamilyMap(column);
+					Set<Object> set = super.getSetValue(attr, cells);
+					
+					gei.put(attr.getAttrName(), set);
+					break;
+				default:
+					break;
 				
-				byte[] cell = entry.getValue(column, qualifier);
-				Object value = super.getPrimitiveValue(attr, cell);
-				gei.put(attr.getAttrName(), value);				
 			}
 			
-			if(attr.mode == AttrMode.MAP){
-				
-				NavigableMap<byte[], byte[]> cells = entry.getFamilyMap(column);
-				Map<String, Object> map = super.getMapValue(attr, cells);				
-				gei.put(attr.getAttrName(), map);
-			}
-			
-			if(attr.mode == AttrMode.LIST){
-
-				NavigableMap<byte[], byte[]> cells = entry.getFamilyMap(column);
-				List<Object> list = super.getListValue(attr, cells);
-				
-				gei.put(attr.getAttrName(), list);
-			}
 		}
 		
 		return gei;
@@ -134,20 +152,25 @@ public class HRawWrapper extends HEntryWrapper<RawEntry>{
         	}
         	if(null == value) continue;
         	
-			if(attr.mode == AttrMode.PRIMITIVE){
-				
-				super.putPrimitiveValue(put, attr, value);		
-			}
-			
-			if(attr.mode == AttrMode.MAP){
-				
-				super.putMapValue(put, attr, (Map<String,Object>)value);	
-			}
-			
-			if(attr.mode == AttrMode.LIST){
-
-				super.putListValue(put, attr, (List<Object>)value);	
-			}
+        	switch(attr.mode){
+        	
+        		case PRIMITIVE:
+        			super.putPrimitiveValue(put, attr, value);					
+        			break;
+        		case MAP:
+        			super.putMapValue(put, attr, (Map<String,Object>)value);	
+        			break;
+        		case LIST:
+        			super.putListValue(put, attr, (List<Object>)value);	
+        			
+        			break;
+        		case SET:
+        			super.putSetValue(put, attr, (Set<Object>)value);				
+        			break;
+        		default:
+        			break;
+        	
+        	}
         }
         return put;
 	}
