@@ -1,49 +1,61 @@
 package com.obal.core.security;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.obal.core.util.CoreConstants;
 
 public class EntryAcl {
 
+	List<EntryAce> aces = new ArrayList<EntryAce>();
+	
 	/**
-	 * class to store Access control entry 
-	 * 
+	 * Get the user aces
+	 * @return the entry ace list 
 	 **/
-	public static class EntryAce{
+	public List<EntryAce> userAces(){
+		List<EntryAce> races = new ArrayList<EntryAce>();
 		
-		/** the role name */
-		public String name;
-		
-		/** the privilege of role*/
-		public AclPrivilege privilege;
-		
-		/** the entry type */
-		public String type;
-		
-		/**
-		 * constructor 
-		 * @param roleName the role name
-		 * @param privilege the access control privilege
-		 *  
-		 **/
-		public EntryAce(String name, AclPrivilege privilege){
+		for(EntryAce e:aces){
 			
-			this.type = CoreConstants.ACE_TYPE_USER;
-			this.name = name;
-			this.privilege = privilege;
+			if(CoreConstants.ACE_TYPE_USER.equals(e.type))
+				races.add(e);
 		}
 		
-		/**
-		 * constructor 
-		 * @param aceType the ace type
-		 * @param role the role name
-		 * @param privilege the access control privilege
-		 *  
-		 **/
-		public EntryAce(String aceType, String name, AclPrivilege privilege){
-			
-			this.type = aceType;
-			this.name = name;
-			this.privilege = privilege;
-		}
+		return races;
 	}
+	
+	/**
+	 * Get the role aces
+	 * @return the entry ace list 
+	 **/
+	public List<EntryAce> roleAces(){
+		
+		List<EntryAce> races = new ArrayList<EntryAce>();
+		
+		for(EntryAce e:aces){
+			
+			if(CoreConstants.ACE_TYPE_ROLE.equals(e.type))
+				races.add(e);
+		}
+		
+		return races;
+	}
+	
+	/**
+	 * Get the group aces
+	 * @return the entry ace list 
+	 **/
+	public List<EntryAce> groupAces(){
+		
+		List<EntryAce> races = new ArrayList<EntryAce>();
+		
+		for(EntryAce e:aces){
+			
+			if(CoreConstants.ACE_TYPE_GROUP.equals(e.type))
+				races.add(e);
+		}
+		
+		return races;
+	}
+
 }

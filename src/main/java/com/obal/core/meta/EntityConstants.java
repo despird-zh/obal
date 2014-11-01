@@ -1,5 +1,9 @@
 package com.obal.core.meta;
 
+/**
+ * Define necessary entity names
+ *  
+ **/
 public class EntityConstants {
 
 	/** the blind entity */
