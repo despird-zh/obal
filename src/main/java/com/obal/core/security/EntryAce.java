@@ -71,4 +71,20 @@ public class EntryAce {
 			permissionSet.add(permission);
 		}
 	}
+	
+	@Override
+	public String toString(){
+		
+		StringBuffer sbuf = new StringBuffer();
+		sbuf.append(this.name).append(CoreConstants.VALUE_SEPARATOR);
+		sbuf.append(this.type).append(CoreConstants.VALUE_SEPARATOR);
+		sbuf.append(this.privilege).append(CoreConstants.VALUE_SEPARATOR);
+		
+		for(String perm:permissionSet){
+			
+			sbuf.append(perm).append(CoreConstants.COLLECT_ELM_SEPARATOR);
+		}
+		
+		return sbuf.toString();
+	}
 }

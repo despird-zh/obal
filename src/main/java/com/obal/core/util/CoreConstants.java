@@ -13,19 +13,14 @@ public class CoreConstants {
 	public static String KEYS_SEPARATOR = ":";
 
 	/**
-	 * Separtor to combine key and value->(char)31
+	 * Separtor to combine value-> "|"
 	 **/
-	public static char KEY_VAL_SEPARATOR1 = (char)31;
+	public static String VALUE_SEPARATOR = "|";
 	
 	/**
-	 * Separator to combine more k-v pairs ->(char)30
+	 * Separtor to combine collection element-> ","
 	 **/
-	public static char PAIRS_SEPARATOR = (char)30;
-	
-	/**
-	 * Separator to combine more lines ->(char)29
-	 **/
-	public static char LINE_SEPARATOR = (char)29;
+	public static String COLLECT_ELM_SEPARATOR = ",";
 	
 	/** Ace type user */
 	public static final String ACE_TYPE_USER = "_user";
