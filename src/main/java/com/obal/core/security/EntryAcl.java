@@ -17,7 +17,7 @@ public class EntryAcl {
 		
 		for(EntryAce e:aces){
 			
-			if(CoreConstants.ACE_TYPE_USER.equals(e.type))
+			if(CoreConstants.ACE_TYPE_USER.equals(e.type()))
 				races.add(e);
 		}
 		
@@ -34,7 +34,7 @@ public class EntryAcl {
 		
 		for(EntryAce e:aces){
 			
-			if(CoreConstants.ACE_TYPE_ROLE.equals(e.type))
+			if(CoreConstants.ACE_TYPE_ROLE.equals(e.type()))
 				races.add(e);
 		}
 		
@@ -51,7 +51,7 @@ public class EntryAcl {
 		
 		for(EntryAce e:aces){
 			
-			if(CoreConstants.ACE_TYPE_GROUP.equals(e.type))
+			if(CoreConstants.ACE_TYPE_GROUP.equals(e.type()))
 				races.add(e);
 		}
 		
