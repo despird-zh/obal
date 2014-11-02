@@ -1,7 +1,8 @@
-package com.obal.core.hbase;
+package com.obal.core.security.hbase;
 
 import com.obal.core.EntryWrapper;
 import com.obal.core.accessor.RawEntry;
+import com.obal.core.hbase.HEntityAccessor;
 import com.obal.core.meta.BaseEntity;
 import com.obal.core.security.accessor.IUserAccessor;
 
