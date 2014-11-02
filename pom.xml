@@ -7,7 +7,7 @@
 	<jdk.version>1.6.0</jdk.version>
 	<hbase.version>0.98.5-hadoop2</hbase.version>
 	<jdk.home>C:\Program Files (x86)\Java\jdk1.6.0_45</jdk.home>
-
+	<jedis.version>2.6.0</jedis.version>
   </properties>
   <dependencies >
   	<dependency>  
@@ -26,6 +26,12 @@
 		<groupId>org.apache.hbase</groupId>
 		<artifactId>hbase-server</artifactId>
 		<version>${hbase.version}</version>
+	</dependency>
+
+	<dependency>
+		<groupId>redis.clients</groupId>
+		<artifactId>jedis</artifactId>
+		<version>${jedis.version}</version>
 	</dependency>
 
 	<dependency>
