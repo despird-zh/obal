@@ -13,15 +13,15 @@ import com.obal.core.security.Principal;
 import com.obal.core.security.PrincipalAware;
 import com.obal.exception.EntityException;
 /**
- * Hbase-wise implementation of AccessorBuilder.
- * All accessors access the hbase will be created by this class
+ * Jedis-wise implementation of AccessorBuilder.
+ * All accessors that access the Redis will be created by this class
  * 
  * @author despird
  * @version 0.1 2014-3-1
  * 
  * @see AccessorBuilder
- * @see HEntityAccessor
- * @see HGeneralAccessor
+ * @see REntityAccessor
+ * @see RGeneralAccessor
  **/
 public class RAccessorBuilder extends AccessorBuilder{
 
@@ -29,7 +29,7 @@ public class RAccessorBuilder extends AccessorBuilder{
 	
 	private JedisPoolConfig  config = null;
 	
-	private JedisPool pool = null;
+	private JedisPool jedisPool = null;
 	
 	/**
 	 * constructor 
@@ -45,13 +45,11 @@ public class RAccessorBuilder extends AccessorBuilder{
 	    config.setTestOnBorrow(true);  
 	    config.setTestOnReturn(true);
 	    try{    
-            /** 
-             *如果你遇到 java.net.SocketTimeoutException: Read timed out exception的异常信息 
-             *请尝试在构造JedisPool的时候设置自己的超时值. JedisPool默认的超时时间是2秒(单位毫秒) 
-             */  
-            pool = new JedisPool(config, "127.0.0.1", 6379 , 12000);  
+ 
+	    	jedisPool = new JedisPool(config, "127.0.0.1", 6379 , 12000);  
         } catch(Exception e) {  
-            e.printStackTrace();  
+        	
+        	LOGGER.error("Error when create JedisPool object",e); 
         } 
 	}
 
@@ -62,11 +60,12 @@ public class RAccessorBuilder extends AccessorBuilder{
 			
 			try {
 				
-				jedis = pool.getResource();
+				jedis = jedisPool.getResource();
 				((RJedisAware) accessor).setJedis(jedis);
 				
 			} catch (Exception e) {
-				LOGGER.error("Error when assembly Accessor:set HConnection",e);
+				
+				LOGGER.error("Error when assembly Accessor:set Jedis",e);
 			}			
 		}
 				
@@ -98,5 +97,13 @@ public class RAccessorBuilder extends AccessorBuilder{
 			// Set embed flag
 			accessor.setEmbed(true);
 		}
+	}
+	
+	/**
+	 * Return the Jedis object 
+	 **/
+	public void returnJedis(Jedis jedis){
+		
+		jedisPool.returnResource(jedis);
 	}
 }
