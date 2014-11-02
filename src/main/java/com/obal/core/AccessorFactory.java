@@ -33,6 +33,7 @@ import com.obal.core.accessor.GeneralAccessor;
 import com.obal.core.hbase.HAccessorBuilder;
 import com.obal.core.security.Principal;
 import com.obal.core.security.PrincipalAware;
+import com.obal.core.util.CoreConstants;
 import com.obal.exception.EntityException;
 
 /**
@@ -54,23 +55,30 @@ public class AccessorFactory {
 	private AccessorFactory(){
 		
 		try{
-			defaultBuilder = new HAccessorBuilder("hbase","com/obal/core/AccessorMap.hbase.properties");
-			builderMap.put(defaultBuilder.getBuilderName(), defaultBuilder);
-			appendMapping("hbase","com/obal/core/meta/AccessorMap.hbase.properties");
+			
+			AccessorBuilder hbaseBuilder = new HAccessorBuilder(CoreConstants.BULDER_HBASE,"com/obal/core/AccessorMap.hbase.properties");
+
+			builderMap.put(hbaseBuilder.getBuilderName(), hbaseBuilder);
+			
+			appendMapping(CoreConstants.BULDER_HBASE,"com/obal/core/meta/AccessorMap.hbase.properties");
+		
 		}catch(EntityException ee){
 			
-			ee.printStackTrace();
+			LOGGER.error("Error when initialize the Accessor Factory.", ee);;
 		}
 	}
+	
 	/** singleton */
 	private static AccessorFactory instance;
 	
 	/** default builder */
-	private AccessorBuilder defaultBuilder = null;
+	//private AccessorBuilder defaultBuilder = null;
+	
+	private String defaultBuilder = null;
 	
 	/**
-	 * Singleton intance
-	 * @retrun  AccessorFactory the singleton instance.
+	 * Singleton instance
+	 * @return  AccessorFactory the singleton instance.
 	 **/
 	public static AccessorFactory getInstance(){
 		
@@ -78,6 +86,38 @@ public class AccessorFactory {
 			instance = new AccessorFactory();
 		
 		return instance;
+	}
+	
+	/**
+	 * Set the default builder name
+	 * 
+	 * @param defaultBuilder the default builder name
+	 *  
+	 **/
+	public void setDefaultBuilder(String defaultBuilder){
+		
+		this.defaultBuilder = defaultBuilder;
+	}
+	
+	/**
+	 * Get the default builder name 
+	 **/
+	public String getDefaultBuilder(){
+		
+		return this.defaultBuilder;
+	}
+	
+	/**
+	 * Get the AccessorBuilder instance 
+	 * 
+	 * @param builderName the builder name
+	 * 
+	 * @return AccessorBuilder the builder instance
+	 * 
+	 **/
+	public AccessorBuilder getAccessorBuilder(String builderName){
+		
+		return builderMap.get(builderName);
 	}
 	
 	/**
@@ -99,7 +139,7 @@ public class AccessorFactory {
 			for (final String name: prop.stringPropertyNames())
 				entries.put(name, prop.getProperty(name));
 			
-			appendMapping("hbase", entries);
+			appendMapping(builderName, entries);
 			
 		} catch (IOException e) {
 			
@@ -125,6 +165,11 @@ public class AccessorFactory {
 	 **/
 	public <K> K buildEntityAccessor(Principal principal,String entryName)throws EntityException{
 		
+		AccessorBuilder defaultBuilder = builderMap.get(this.defaultBuilder);
+		if(null == defaultBuilder){
+			
+			throw new EntityException("The Default AccessorBuilder instance:{} not existed.", this.defaultBuilder);
+		}
 		K accessor = defaultBuilder.newEntityAccessor(entryName,principal);
 		defaultBuilder.assembly(principal, (EntityAccessor<?>)accessor);
 		return accessor;
@@ -136,7 +181,11 @@ public class AccessorFactory {
 	 * @param accessorName the name of entry, eg. the map key of service class
 	 **/
 	public <K> K buildGeneralAccessor(Principal principal,String accessorName)throws EntityException{
-		
+		AccessorBuilder defaultBuilder = builderMap.get(this.defaultBuilder);
+		if(null == defaultBuilder){
+			
+			throw new EntityException("The Default AccessorBuilder instance:{} not existed.", this.defaultBuilder);
+		}
 		K accessor = defaultBuilder.newGeneralAccessor(accessorName);
 		defaultBuilder.assembly(principal, (GeneralAccessor)accessor);
 		return accessor;
@@ -152,7 +201,11 @@ public class AccessorFactory {
 	 **/
 	@Deprecated 
 	public <K> K buildGeneralAccessor(Principal principal,Class<K> clazz)throws EntityException{
-		
+		AccessorBuilder defaultBuilder = builderMap.get(this.defaultBuilder);
+		if(null == defaultBuilder){
+			
+			throw new EntityException("The Default AccessorBuilder instance:{} not existed.", this.defaultBuilder);
+		}
 		K accessor = defaultBuilder.newGeneralAccessor(clazz);
 		defaultBuilder.assembly(principal, (GeneralAccessor)accessor);
 		return accessor;
@@ -164,6 +217,12 @@ public class AccessorFactory {
 	 * @param entryName the name of entry 
 	 **/
 	public <K> K buildEmbedEntityAccessor(IBaseAccessor mockupAccessor,String entryName)throws EntityException{
+		
+		AccessorBuilder defaultBuilder = builderMap.get(this.defaultBuilder);
+		if(null == defaultBuilder){
+			
+			throw new EntityException("The Default AccessorBuilder instance:{} not existed.", this.defaultBuilder);
+		}
 		Principal principal = null;
 		if(mockupAccessor instanceof PrincipalAware)
 			principal = ((PrincipalAware) mockupAccessor).getPrincipal();
@@ -179,9 +238,117 @@ public class AccessorFactory {
 	 * @param entryName the name of entry 
 	 **/
 	public <K> K buildEmbedGeneralAccessor(IBaseAccessor mockupAccessor,String accessorName)throws EntityException{
-
+		
+		AccessorBuilder defaultBuilder = builderMap.get(this.defaultBuilder);
+		if(null == defaultBuilder){
+			
+			throw new EntityException("The Default AccessorBuilder instance:{} not existed.", this.defaultBuilder);
+		}
 		K accessor = defaultBuilder.newGeneralAccessor(accessorName);
 		defaultBuilder.assembly(mockupAccessor, (IBaseAccessor)accessor);
+		return accessor;
+	}
+	
+
+	/**
+	 * Build entry service
+	 * 
+	 * @param builderName the builder name
+	 * @param principal the principal
+	 * @param entryName the name of entry, eg. the map key of service class
+	 **/
+	public <K> K buildEntityAccessor(String builderName, Principal principal,String entryName)throws EntityException{
+		
+		AccessorBuilder accessorbuilder = builderMap.get(builderName);
+		if(null == accessorbuilder){
+			
+			throw new EntityException("The AccessorBuilder instance:{} not existed.", builderName);
+		}
+		K accessor = accessorbuilder.newEntityAccessor(entryName,principal);
+		accessorbuilder.assembly(principal, (EntityAccessor<?>)accessor);
+		return accessor;
+	}	
+	
+	/**
+	 * Build General service
+	 * 
+	 * @param builderName the builder name
+	 * @param principal the principal
+	 * @param accessorName the name of entry, eg. the map key of service class
+	 **/
+	public <K> K buildGeneralAccessor(String builderName, Principal principal,String accessorName)throws EntityException{
+		
+		AccessorBuilder accessorbuilder = builderMap.get(builderName);
+		if(null == accessorbuilder){
+			
+			throw new EntityException("The AccessorBuilder instance:{} not existed.", builderName);
+		}
+		K accessor = accessorbuilder.newGeneralAccessor(accessorName);
+		accessorbuilder.assembly(principal, (GeneralAccessor)accessor);
+		return accessor;
+	}
+
+	/**
+	 * Build General service
+	 * 
+	 * It's not suggested to use class build service.
+	 * 
+	 * @param builderName the builder name
+	 * @param principal the principal
+	 * @param clazz the name of entry interface class, eg. the map key of service class
+	 **/
+	@Deprecated 
+	public <K> K buildGeneralAccessor(String builderName, Principal principal,Class<K> clazz)throws EntityException{
+		
+		AccessorBuilder accessorbuilder = builderMap.get(builderName);
+		if(null == accessorbuilder){
+			
+			throw new EntityException("The AccessorBuilder instance:{} not existed.", builderName);
+		}
+		K accessor = accessorbuilder.newGeneralAccessor(clazz);
+		accessorbuilder.assembly(principal, (GeneralAccessor)accessor);
+		return accessor;
+	}
+	
+	/**
+	 * Build embed EntryAccessor instance
+	 * 
+	 * @param builderName the builder name
+	 * @param mockupAccessor the mock-up accessor instance
+	 * @param entryName the name of entry 
+	 **/
+	public <K> K buildEmbedEntityAccessor(String builderName, IBaseAccessor mockupAccessor,String entryName)throws EntityException{
+		
+		AccessorBuilder accessorbuilder = builderMap.get(builderName);
+		if(null == accessorbuilder){
+			
+			throw new EntityException("The AccessorBuilder instance:{} not existed.", builderName);
+		}
+		Principal principal = null;
+		if(mockupAccessor instanceof PrincipalAware)
+			principal = ((PrincipalAware) mockupAccessor).getPrincipal();
+		
+		K accessor = accessorbuilder.newEntityAccessor(entryName, principal);
+		accessorbuilder.assembly(mockupAccessor, (IBaseAccessor)accessor);
+		return accessor;
+	}
+
+	/**
+	 * Build embed GeneralAccessor instance
+	 * 
+	 * @param builderName the builder name
+	 * @param mockupAccessor the mock-up accessor instance
+	 * @param entryName the name of entry 
+	 **/
+	public <K> K buildEmbedGeneralAccessor(String builderName, IBaseAccessor mockupAccessor,String accessorName)throws EntityException{
+
+		AccessorBuilder accessorbuilder = builderMap.get(builderName);
+		if(null == accessorbuilder){
+			
+			throw new EntityException("The AccessorBuilder instance:{} not existed.", builderName);
+		}
+		K accessor = accessorbuilder.newGeneralAccessor(accessorName);
+		accessorbuilder.assembly(mockupAccessor, (IBaseAccessor)accessor);
 		return accessor;
 	}
 }
