@@ -127,18 +127,6 @@ public class HRawWrapper extends HEntryWrapper<RawEntry>{
 		return gei;
 	}
 
-	@Override
-	public boolean supportWrap(Class<?> clazz) {
-		
-		return clazz == Result.class;
-	}
-
-	@Override
-	public boolean supportParse(Class<?> clazz) {
-		
-		return clazz == Put.class;
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object parse(List<EntityAttr> attrs,RawEntry entryInfo) {

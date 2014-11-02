@@ -1,6 +1,5 @@
 package com.obal.core.redis;
 
-import java.io.IOException;
 import java.util.List;
 
 import redis.clients.jedis.Jedis;

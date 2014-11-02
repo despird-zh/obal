@@ -1,4 +1,4 @@
-package com.obal.core.hbase;
+package com.obal.core.redis;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,7 +11,6 @@ import java.util.NavigableMap;
 import java.util.Set;
 
 import org.apache.hadoop.hbase.client.Put;
-import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +19,9 @@ import com.obal.core.EntryInfo;
 import com.obal.core.EntryWrapper;
 import com.obal.core.meta.EntityAttr;
 
-public abstract class HEntryWrapper<GB extends EntryInfo> extends EntryWrapper<GB> {
+public abstract class REntryWrapper<GB extends EntryInfo> extends EntryWrapper<GB> {
 
-	public static Logger LOGGER = LoggerFactory.getLogger(HEntryWrapper.class);
+	public static Logger LOGGER = LoggerFactory.getLogger(REntryWrapper.class);
 	/**
 	 * Get primitive value from cell, primitive means int,long,double,string,date
 	 * 
@@ -390,15 +389,4 @@ public abstract class HEntryWrapper<GB extends EntryInfo> extends EntryWrapper<G
     	
 	}
 	
-	@Override
-	public boolean supportWrap(Class<?> clazz) {
-		
-		return clazz == Result.class;
-	}
-
-	@Override
-	public boolean supportParse(Class<?> clazz) {
-		
-		return clazz == Put.class;
-	}
 }
