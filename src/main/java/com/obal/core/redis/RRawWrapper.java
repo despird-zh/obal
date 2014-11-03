@@ -10,6 +10,8 @@ import org.apache.hadoop.hbase.client.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import redis.clients.jedis.Jedis;
+
 import com.obal.core.accessor.RawEntry;
 import com.obal.core.meta.AttrMode;
 import com.obal.core.meta.EntityAttr;
@@ -24,143 +26,152 @@ import com.obal.core.meta.EntityMeta;
  * @version 0.1 2014-3-1
  * 
  **/
-public class RRawWrapper extends REntryWrapper<RawEntry>{
+public class RRawWrapper extends REntryWrapper<RawEntry> {
 
 	public static Logger LOGGER = LoggerFactory.getLogger(RRawWrapper.class);
 
 	@Override
-	public RawEntry wrap(String entityName,Object rawEntry) {
-						
-		Result entry = (Result)rawEntry;	
+	public RawEntry wrap(String entityName, String key, Jedis rawEntry) {
+
+		Jedis entry = rawEntry;
 		EntityMeta meta = EntityManager.getInstance().getEntityMeta(entityName);
-		
+
 		List<EntityAttr> attrs = meta.getAllAttrs();
-		
-		RawEntry gei = new RawEntry(entityName,new String(entry.getRow()));
-		
-		for(EntityAttr attr: attrs){
-			if(LOGGER.isDebugEnabled()){
-				LOGGER.debug("Wrapping entity:{} - attribute:{}",entityName, attr.getAttrName());
+
+		RawEntry gei = new RawEntry(entityName, key);
+
+		for (EntityAttr attr : attrs) {
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Wrapping entity:{} - attribute:{}", entityName,
+						attr.getAttrName());
 			}
-			byte[] column = attr.getColumn().getBytes();
-			byte[] qualifier = attr.getQualifier().getBytes();
-			NavigableMap<byte[], byte[]> cells = null;
-			switch(attr.mode){
-			
-				case PRIMITIVE :
-					byte[] cell = entry.getValue(column, qualifier);
-					Object value = super.getPrimitiveValue(attr, cell);
-					gei.put(attr.getAttrName(), value);	
-					break;
-				case MAP :
-					cells = entry.getFamilyMap(column);
-					Map<String, Object> map = super.getMapValue(attr, cells);				
-					gei.put(attr.getAttrName(), map);
-					break;
-				case LIST :
-					cells = entry.getFamilyMap(column);
-					List<Object> list = super.getListValue(attr, cells);					
-					gei.put(attr.getAttrName(), list);
-					break;
-					
-				case SET :
-					cells = entry.getFamilyMap(column);
-					Set<Object> set = super.getSetValue(attr, cells);					
-					gei.put(attr.getAttrName(), set);
-					break;
-					
-				default:
-					break;
-				
+			Map<byte[], byte[]> cells = null;
+			switch (attr.mode) {
+
+			case PRIMITIVE:
+				byte[] cell = entry.hget(key.getBytes(), attr.getAttrName()
+						.getBytes());
+				Object value = super.getPrimitiveValue(attr, cell);
+				gei.put(attr.getAttrName(), value);
+				break;
+			case MAP:
+				String mapkey = key + ":" + attr.getAttrName();
+				cells = entry.hgetAll(mapkey.getBytes());
+				Map<String, Object> map = super.getMapValue(attr, cells);
+				gei.put(attr.getAttrName(), map);
+				break;
+			case LIST:
+				String listkey = key + ":" + attr.getAttrName();
+				List<byte[]> listcells = entry.lrange(listkey.getBytes(), 0,
+						10000);
+				List<Object> list = super.getListValue(attr, listcells);
+				gei.put(attr.getAttrName(), list);
+				break;
+
+			case SET:
+				String setkey = key + ":" + attr.getAttrName();
+				Set<byte[]> setcells = entry.smembers(setkey.getBytes());
+
+				Set<Object> set = super.getSetValue(attr, setcells);
+				gei.put(attr.getAttrName(), set);
+				break;
+
+			default:
+				break;
+
 			}
 		}
-		
+
 		return gei;
 	}
-	
+
 	@Override
-	public RawEntry wrap(List<EntityAttr> attrs,Object rawEntry) {
-						
-		Result entry = (Result)rawEntry;
-		String entityName = attrs.size()>0? (attrs.get(0).getEntityName()):EntityConstants.ENTITY_BLIND;
-		if(entityName == null || entityName.length()==0){
-			
+	public RawEntry wrap(List<EntityAttr> attrs, String key, Jedis rawEntry) {
+
+		Jedis entry = rawEntry;
+		String entityName = attrs.size() > 0 ? (attrs.get(0).getEntityName())
+				: EntityConstants.ENTITY_BLIND;
+		if (entityName == null || entityName.length() == 0) {
+
 			entityName = EntityConstants.ENTITY_BLIND;
 		}
-		RawEntry gei = new RawEntry(entityName,new String(entry.getRow()));
-		
-		for(EntityAttr attr: attrs){
-			byte[] column = attr.getColumn().getBytes();
-			byte[] qualifier = attr.getQualifier().getBytes();
-			NavigableMap<byte[], byte[]> cells = null;
-			switch(attr.mode){
-			
-				case PRIMITIVE :
-					byte[] cell = entry.getValue(column, qualifier);
+		RawEntry gei = new RawEntry(entityName, key);
+
+		for (EntityAttr attr : attrs) {
+
+			Map<byte[], byte[]> cells = null;
+			switch (attr.mode) {
+
+				case PRIMITIVE:
+					byte[] cell = entry.hget(key.getBytes(), attr.getAttrName()
+							.getBytes());
 					Object value = super.getPrimitiveValue(attr, cell);
-					gei.put(attr.getAttrName(), value);	
+					gei.put(attr.getAttrName(), value);
 					break;
-				case MAP :
-					cells = entry.getFamilyMap(column);
-					Map<String, Object> map = super.getMapValue(attr, cells);				
+				case MAP:
+					String mapkey = key + ":" + attr.getAttrName();
+					cells = entry.hgetAll(mapkey.getBytes());
+					Map<String, Object> map = super.getMapValue(attr, cells);
 					gei.put(attr.getAttrName(), map);
 					break;
-				case LIST :
-					cells = entry.getFamilyMap(column);
-					List<Object> list = super.getListValue(attr, cells);
-					
+				case LIST:
+					String listkey = key + ":" + attr.getAttrName();
+					List<byte[]> listcells = entry.lrange(listkey.getBytes(), 0,
+							10000);
+					List<Object> list = super.getListValue(attr, listcells);
 					gei.put(attr.getAttrName(), list);
 					break;
-				case SET :
-					cells = entry.getFamilyMap(column);
-					Set<Object> set = super.getSetValue(attr, cells);
-					
+	
+				case SET:
+					String setkey = key + ":" + attr.getAttrName();
+					Set<byte[]> setcells = entry.smembers(setkey.getBytes());
+	
+					Set<Object> set = super.getSetValue(attr, setcells);
 					gei.put(attr.getAttrName(), set);
 					break;
 				default:
 					break;
-				
+
 			}
-			
+
 		}
-		
+
 		return gei;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Object parse(List<EntityAttr> attrs,RawEntry entryInfo) {
-		Put put = new Put(entryInfo.getKeyBytes());
+	public void parse(List<EntityAttr> attrs,Jedis jedis, RawEntry entryInfo) {
 
-        for(EntityAttr attr:attrs){
+		for (EntityAttr attr : attrs) {
 
-        	Object value = entryInfo.get(attr.getAttrName());
-        	if(LOGGER.isDebugEnabled()){
-        		LOGGER.debug("--==>>attr:{} - value:{}",attr.getAttrName(),value);
-        	}
-        	if(null == value) continue;
-        	
-        	switch(attr.mode){
-        	
-        		case PRIMITIVE:
-        			super.putPrimitiveValue(put, attr, value);					
-        			break;
-        		case MAP:
-        			super.putMapValue(put, attr, (Map<String,Object>)value);	
-        			break;
-        		case LIST:
-        			super.putListValue(put, attr, (List<Object>)value);	
-        			
-        			break;
-        		case SET:
-        			super.putSetValue(put, attr, (Set<Object>)value);				
-        			break;
-        		default:
-        			break;
-        	
-        	}
-        }
-        return put;
+			Object value = entryInfo.get(attr.getAttrName());
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("--==>>attr:{} - value:{}", attr.getAttrName(),
+						value);
+			}
+			if (null == value)
+				continue;
+
+			switch (attr.mode) {
+
+			case PRIMITIVE:
+				super.putPrimitiveValue(jedis,entryInfo.getKey(), attr, value);
+				break;
+			case MAP:
+				super.putMapValue(jedis, entryInfo.getKey(), attr, (Map<String, Object>) value);
+				break;
+			case LIST:
+				super.putListValue(jedis, entryInfo.getKey(), attr, (List<Object>) value);
+				break;
+			case SET:
+				super.putSetValue(jedis, entryInfo.getKey(), attr, (Set<Object>) value);
+				break;
+			default:
+				break;
+
+			}
+		}
 	}
 
 }

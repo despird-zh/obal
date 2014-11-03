@@ -175,7 +175,7 @@ public abstract class REntryWrapper<GB extends EntryInfo> {
 	 * 
 	 * @return Object the list object
 	 **/
-	public Set<Object> getSetValue(EntityAttr attr, List<byte[]> cells){
+	public Set<Object> getSetValue(EntityAttr attr, Set<byte[]> cells){
 
 		Set<Object> set = new HashSet<Object>();
 
@@ -390,33 +390,14 @@ public abstract class REntryWrapper<GB extends EntryInfo> {
 	}
 
 	/**
-	 * Check if the wrapper support the entry information
-	 * @param clazz the entry information
-	 * @return boolean true:surport ;flase:unsupport 
-	 **/
-	public boolean supportWrap(Class<?> clazz) {
-		
-		return clazz == Jedis.class;
-	}
-
-	/**
 	 * Wrap the rawentry into bean object
 	 * 
 	 * @param attrs the attributes of rawEntry
 	 * @param rawEntry the entry information
 	 * @return GB the bean object. 
 	 **/
-	public abstract GB wrap(List<EntityAttr> attrs, Object rawEntry);
-	
-	/**
-	 * Check if the wrapper support specified raw class
-	 * @param clazz the raw class
-	 * @return boolean true:surport ;flase:unsupport 
-	 **/	
-	public boolean supportParse(Class<?> clazz) {
-		
-		return clazz == Jedis.class;
-	}
+	public abstract GB wrap(List<EntityAttr> attrs, String key, Jedis rawEntry);
+
 	
 	/**
 	 * Parse bean object into raw Object
@@ -425,7 +406,7 @@ public abstract class REntryWrapper<GB extends EntryInfo> {
 	 * @param entryInfo the entry information bean
 	 * @return Object the raw object. 
 	 **/	
-	public abstract Object parse(List<EntityAttr> attrs, GB entryInfo);
+	public abstract void parse(List<EntityAttr> attrs,Jedis jedis, GB entryInfo);
 
 	
 	/**
@@ -435,5 +416,5 @@ public abstract class REntryWrapper<GB extends EntryInfo> {
 	 * 
 	 * @return GB the bean object. 
 	 **/
-	public abstract GB wrap(String entityName, Object rawEntry);
+	public abstract GB wrap(String entityName, String key, Jedis rawEntry);
 }
