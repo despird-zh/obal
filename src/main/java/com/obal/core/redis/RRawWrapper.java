@@ -34,8 +34,11 @@ public class RRawWrapper extends REntryWrapper<RawEntry> {
 	public RawEntry wrap(String entityName, String key, Jedis rawEntry) {
 
 		Jedis entry = rawEntry;
+		// not exist return null;
+		if(!entry.exists(key))
+			return null;		
 		EntityMeta meta = EntityManager.getInstance().getEntityMeta(entityName);
-
+				
 		List<EntityAttr> attrs = meta.getAllAttrs();
 
 		RawEntry gei = new RawEntry(entityName, key);
@@ -46,6 +49,7 @@ public class RRawWrapper extends REntryWrapper<RawEntry> {
 						attr.getAttrName());
 			}
 			Map<byte[], byte[]> cells = null;
+			
 			switch (attr.mode) {
 
 			case PRIMITIVE:
@@ -62,8 +66,9 @@ public class RRawWrapper extends REntryWrapper<RawEntry> {
 				break;
 			case LIST:
 				String listkey = key + ":" + attr.getAttrName();
-				Long llen  =entry.llen(listkey.getBytes());
-				List<byte[]> listcells = entry.lrange(listkey.getBytes(), 0, llen);
+				Long llen = entry.llen(listkey.getBytes());
+				List<byte[]> listcells = entry.lrange(listkey.getBytes(), 0,
+						llen);
 				List<Object> list = super.getListValue(attr, listcells);
 				gei.put(attr.getAttrName(), list);
 				break;
