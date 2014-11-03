@@ -20,6 +20,7 @@
 package com.obal.core.accessor;
 
 import com.obal.core.EntryInfo;
+import com.obal.core.EntryKey;
 import com.obal.core.IEntityAccessor;
 import com.obal.core.meta.BaseEntity;
 
@@ -27,7 +28,7 @@ import com.obal.core.meta.BaseEntity;
  * Abstract EntryAccessor with EntrySchema information, it provides operation on
  * certain Entity
  **/
-public abstract class EntityAccessor<GB extends EntryInfo> implements IEntityAccessor <GB>{
+public abstract class EntityAccessor<GB extends EntryKey> implements IEntityAccessor <GB>{
 
 	private BaseEntity entitySchema = null;// entry meta information holder
 	private boolean embed = false;

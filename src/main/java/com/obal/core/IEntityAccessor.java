@@ -34,7 +34,7 @@ import com.obal.exception.AccessorException;
  * @see EntryWrapper
  * @see EntryKey
  **/
-public interface IEntityAccessor <GB extends EntryInfo> extends IBaseAccessor{
+public interface IEntityAccessor <GB extends EntryKey> extends IBaseAccessor{
 	
 	/**
 	 * Get the entry schema  

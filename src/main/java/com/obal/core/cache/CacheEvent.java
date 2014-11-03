@@ -7,12 +7,12 @@ public class CacheEvent {
 	
     private EntryKey entry;
 
-    public EntryKey getValue() {
+    public EntryKey getEntry() {
     	
     	return this.entry;
     }
 
-    public void setValue(EntryKey entry) {
+    public void setEntry(EntryKey entry) {
     	
     	this.entry = entry;
     }
