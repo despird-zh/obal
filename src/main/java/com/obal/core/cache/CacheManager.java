@@ -10,7 +10,7 @@ import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import com.obal.core.EntryKey;
 
-public class CacheManager {
+public class CacheManager{
 
 	Disruptor<CacheEvent> disruptor = null;
 	RingBuffer<CacheEvent> ringBuffer = null;
@@ -32,11 +32,11 @@ public class CacheManager {
 		return instance;
 	}
 	
-	public void cachePut(EntryKey entry){
+	public <K> void cachePut(K entry){
 				
 	}
 	
-	public <K> K catchGet(Class<K> clazz, String key){
+	public <K> K catchGet(String entityName, String key){
 		
 		return null;
 	}
