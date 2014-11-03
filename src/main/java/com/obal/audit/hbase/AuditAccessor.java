@@ -1,8 +1,8 @@
 package com.obal.audit.hbase;
 
 import com.obal.audit.AuditEvent;
-import com.obal.core.EntryWrapper;
 import com.obal.core.hbase.HEntityAccessor;
+import com.obal.core.hbase.HEntryWrapper;
 import com.obal.core.meta.BaseEntity;
 
 public class AuditAccessor extends HEntityAccessor<AuditEvent>{
@@ -18,7 +18,7 @@ public class AuditAccessor extends HEntityAccessor<AuditEvent>{
 	}
 
 	@Override
-	public EntryWrapper<AuditEvent> getEntryWrapper() {
+	public HEntryWrapper<AuditEvent> getEntryWrapper() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.NavigableMap;
 import java.util.Set;
 
 import org.apache.hadoop.hbase.client.Put;
@@ -19,10 +18,9 @@ import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 
 import com.obal.core.EntryInfo;
-import com.obal.core.EntryWrapper;
 import com.obal.core.meta.EntityAttr;
 
-public abstract class REntryWrapper<GB extends EntryInfo> extends EntryWrapper<GB> {
+public abstract class REntryWrapper<GB extends EntryInfo> {
 
 	public static Logger LOGGER = LoggerFactory.getLogger(REntryWrapper.class);
 	/**
@@ -390,17 +388,52 @@ public abstract class REntryWrapper<GB extends EntryInfo> extends EntryWrapper<G
     	
     	jedis.sadd(newkey.getBytes(), values);
 	}
-	
 
-	@Override
+	/**
+	 * Check if the wrapper support the entry information
+	 * @param clazz the entry information
+	 * @return boolean true:surport ;flase:unsupport 
+	 **/
 	public boolean supportWrap(Class<?> clazz) {
 		
 		return clazz == Jedis.class;
 	}
 
-	@Override
+	/**
+	 * Wrap the rawentry into bean object
+	 * 
+	 * @param attrs the attributes of rawEntry
+	 * @param rawEntry the entry information
+	 * @return GB the bean object. 
+	 **/
+	public abstract GB wrap(List<EntityAttr> attrs, Object rawEntry);
+	
+	/**
+	 * Check if the wrapper support specified raw class
+	 * @param clazz the raw class
+	 * @return boolean true:surport ;flase:unsupport 
+	 **/	
 	public boolean supportParse(Class<?> clazz) {
 		
 		return clazz == Jedis.class;
 	}
+	
+	/**
+	 * Parse bean object into raw Object
+	 * 
+	 * @param attrs the attributes of target entity
+	 * @param entryInfo the entry information bean
+	 * @return Object the raw object. 
+	 **/	
+	public abstract Object parse(List<EntityAttr> attrs, GB entryInfo);
+
+	
+	/**
+	 * Wrap the rawentry into bean object
+	 * @param entityName the entity name of rawEntry
+	 * @param rawEntry the entry information
+	 * 
+	 * @return GB the bean object. 
+	 **/
+	public abstract GB wrap(String entityName, Object rawEntry);
 }

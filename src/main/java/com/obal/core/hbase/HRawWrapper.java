@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.obal.core.accessor.RawEntry;
-import com.obal.core.meta.AttrMode;
 import com.obal.core.meta.EntityAttr;
 import com.obal.core.meta.EntityConstants;
 import com.obal.core.meta.EntityManager;
@@ -29,7 +28,7 @@ public class HRawWrapper extends HEntryWrapper<RawEntry>{
 	public static Logger LOGGER = LoggerFactory.getLogger(HRawWrapper.class);
 
 	@Override
-	public RawEntry wrap(String entityName,Object rawEntry) {
+	public RawEntry wrap(String entityName,Result rawEntry) {
 						
 		Result entry = (Result)rawEntry;	
 		EntityMeta meta = EntityManager.getInstance().getEntityMeta(entityName);
@@ -79,7 +78,7 @@ public class HRawWrapper extends HEntryWrapper<RawEntry>{
 	}
 	
 	@Override
-	public RawEntry wrap(List<EntityAttr> attrs,Object rawEntry) {
+	public RawEntry wrap(List<EntityAttr> attrs,Result rawEntry) {
 						
 		Result entry = (Result)rawEntry;
 		String entityName = attrs.size()>0? (attrs.get(0).getEntityName()):EntityConstants.ENTITY_BLIND;
@@ -127,9 +126,8 @@ public class HRawWrapper extends HEntryWrapper<RawEntry>{
 		return gei;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Object parse(List<EntityAttr> attrs,RawEntry entryInfo) {
+	public Put parse(List<EntityAttr> attrs,RawEntry entryInfo) {
 		Put put = new Put(entryInfo.getKeyBytes());
 
         for(EntityAttr attr:attrs){

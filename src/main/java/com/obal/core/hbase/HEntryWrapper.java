@@ -17,10 +17,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.obal.core.EntryInfo;
-import com.obal.core.EntryWrapper;
 import com.obal.core.meta.EntityAttr;
 
-public abstract class HEntryWrapper<GB extends EntryInfo> extends EntryWrapper<GB> {
+public abstract class HEntryWrapper<GB extends EntryInfo> {
 
 	public static Logger LOGGER = LoggerFactory.getLogger(HEntryWrapper.class);
 	/**
@@ -389,16 +388,32 @@ public abstract class HEntryWrapper<GB extends EntryInfo> extends EntryWrapper<G
     	}
     	
 	}
-	
-	@Override
-	public boolean supportWrap(Class<?> clazz) {
-		
-		return clazz == Result.class;
-	}
 
-	@Override
-	public boolean supportParse(Class<?> clazz) {
-		
-		return clazz == Put.class;
-	}
+	/**
+	 * Wrap the rawentry into bean object
+	 * 
+	 * @param attrs the attributes of rawEntry
+	 * @param rawEntry the entry information
+	 * @return GB the bean object. 
+	 **/
+	public abstract GB wrap(List<EntityAttr> attrs, Result rawEntry);
+	
+	/**
+	 * Parse bean object into raw Object
+	 * 
+	 * @param attrs the attributes of target entity
+	 * @param entryInfo the entry information bean
+	 * @return Object the raw object. 
+	 **/	
+	public abstract Put parse(List<EntityAttr> attrs, GB entryInfo);
+
+	
+	/**
+	 * Wrap the rawentry into bean object
+	 * @param entityName the entity name of rawEntry
+	 * @param rawEntry the entry information
+	 * 
+	 * @return GB the bean object. 
+	 **/
+	public abstract GB wrap(String entityName, Result rawEntry);
 }

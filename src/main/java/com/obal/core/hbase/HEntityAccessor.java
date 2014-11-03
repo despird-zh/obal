@@ -23,7 +23,6 @@ import org.slf4j.LoggerFactory;
 import com.obal.core.EntryFilter;
 import com.obal.core.EntryInfo;
 import com.obal.core.EntryKey;
-import com.obal.core.EntryWrapper;
 import com.obal.core.accessor.EntityAccessor;
 import com.obal.core.meta.AttrMode;
 import com.obal.core.meta.BaseEntity;
@@ -57,12 +56,19 @@ public abstract class HEntityAccessor<GB extends EntryInfo> extends EntityAccess
 		
 		return true;
 	}
-	
+
+
+	/**
+	 * get entry wrapper
+	 * @return wrapper object 
+	 **/
+	public abstract HEntryWrapper<GB> getEntryWrapper();
+		
 	@Override
 	public List<GB> scanEntry(EntryFilter<?> scanfilter) throws AccessorException{
 		
 		List<GB> result = new LinkedList<GB>();
-		EntryWrapper<GB> wrapper = this.getEntryWrapper();
+		HEntryWrapper<GB> wrapper = this.getEntryWrapper();
 		HTableInterface table = null;
 		Scan scan=new Scan();
 		try {
@@ -125,11 +131,8 @@ public abstract class HEntityAccessor<GB extends EntryInfo> extends EntityAccess
         	Get get = new Get(entryKey.getBytes());
         	
         	HEntryWrapper<GB> wrapper = (HEntryWrapper<GB>)getEntryWrapper();
-        	// support check
-        	if(!wrapper.supportWrap(Result.class))
-        	   throw new AccessorException("Result type is not supported by this wrapper to wrap raw entry");
 
-			if(attr.mode == AttrMode.PRIMITIVE){
+        	if(attr.mode == AttrMode.PRIMITIVE){
 				get.addColumn(column, qualifier);
 	        	Result entry = table.get(get);
 	        	byte[] cell = entry.getValue(column, qualifier);
@@ -176,10 +179,7 @@ public abstract class HEntityAccessor<GB extends EntryInfo> extends EntityAccess
            
            Result r = table.get(get);
            HEntryWrapper<GB> wrapper = (HEntryWrapper<GB>)getEntryWrapper();
-           // support check
-           if(!wrapper.supportWrap(Result.class))
-        	   throw new AccessorException("Result type is not supported by this wrapper to wrap raw entry");
-           
+
            rtv = wrapper.wrap(super.getEntitySchema().getEntityName(),r);
            
         } catch (IOException e) {  
@@ -207,9 +207,7 @@ public abstract class HEntityAccessor<GB extends EntryInfo> extends EntityAccess
             table = getConnection().getTable(entitySchema.getSchema());
             // support check.
             HEntryWrapper<GB> wrapper = (HEntryWrapper<GB>)this.getEntryWrapper();
-            if(!wrapper.supportParse(Put.class))
-            	throw new AccessorException("Raw type[Put] is not supported by this wrapper to parse entryinfo");
-            
+
             Put put =  new Put(entryKey.getBytes());
             
             if(LOGGER.isDebugEnabled()){
@@ -261,11 +259,8 @@ public abstract class HEntityAccessor<GB extends EntryInfo> extends EntityAccess
 		BaseEntity entrySchema = (BaseEntity)getEntitySchema();
         try {  
             table = getConnection().getTable(entrySchema.getSchema());
-            EntryWrapper<GB> wrapper = this.getEntryWrapper();
-            // support check.
-            if(!wrapper.supportParse(Put.class))
-            	throw new AccessorException("Raw type[Put] is not supported by this wrapper to parse entryinfo");
-            
+            HEntryWrapper<GB> wrapper = this.getEntryWrapper();
+ 
             Put put = (Put)wrapper.parse(entrySchema.getEntityMeta().getAllAttrs(),entryInfo);
         	table.put(put);
         	table.flushCommits();

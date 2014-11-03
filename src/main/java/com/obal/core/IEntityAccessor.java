@@ -43,12 +43,6 @@ public interface IEntityAccessor <GB extends EntryInfo> extends IBaseAccessor{
 	public abstract BaseEntity getEntitySchema();
 
 	/**
-	 * get entry wrapper
-	 * @return wrapper object 
-	 **/
-	public abstract EntryWrapper<GB> getEntryWrapper();
-	
-	/**
 	 * put entry object
 	 * @param entryInfo the entry information
 	 **/

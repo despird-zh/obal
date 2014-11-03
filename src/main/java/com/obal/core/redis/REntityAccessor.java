@@ -8,7 +8,6 @@ import com.obal.core.AccessorFactory;
 import com.obal.core.EntryFilter;
 import com.obal.core.EntryInfo;
 import com.obal.core.EntryKey;
-import com.obal.core.EntryWrapper;
 import com.obal.core.accessor.EntityAccessor;
 import com.obal.core.meta.BaseEntity;
 import com.obal.core.util.CoreConstants;
@@ -20,12 +19,6 @@ public class REntityAccessor <GB extends EntryInfo> extends EntityAccessor<GB> i
 	
 	public REntityAccessor(BaseEntity entitySchema) {
 		super(entitySchema);
-	}
-
-	@Override
-	public EntryWrapper<GB> getEntryWrapper() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
