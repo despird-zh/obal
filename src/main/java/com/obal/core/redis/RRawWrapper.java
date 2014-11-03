@@ -62,8 +62,8 @@ public class RRawWrapper extends REntryWrapper<RawEntry> {
 				break;
 			case LIST:
 				String listkey = key + ":" + attr.getAttrName();
-				List<byte[]> listcells = entry.lrange(listkey.getBytes(), 0,
-						10000);
+				Long llen  =entry.llen(listkey.getBytes());
+				List<byte[]> listcells = entry.lrange(listkey.getBytes(), 0, llen);
 				List<Object> list = super.getListValue(attr, listcells);
 				gei.put(attr.getAttrName(), list);
 				break;
