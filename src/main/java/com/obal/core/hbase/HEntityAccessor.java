@@ -25,6 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.hbase.client.Delete;
@@ -148,30 +149,37 @@ public abstract class HEntityAccessor<GB extends EntryInfo> extends EntityAccess
         	byte[] qualifier = attr.getQualifier().getBytes();
         	table = getConnection().getTable(entitySchema.getSchema());
         	Get get = new Get(entryKey.getBytes());
-        	
+        	Result entry = null;
+        	NavigableMap<byte[], byte[]> cells = null;
         	HEntryWrapper<GB> wrapper = (HEntryWrapper<GB>)getEntryWrapper();
-
-        	if(attr.mode == AttrMode.PRIMITIVE){
+        	switch(attr.mode){
+        	case PRIMITIVE:
 				get.addColumn(column, qualifier);
-	        	Result entry = table.get(get);
+	        	entry = table.get(get);
 	        	byte[] cell = entry.getValue(column, qualifier);
 				rtv = wrapper.getPrimitiveValue(attr, cell);		
-			}
-			
-			if(attr.mode == AttrMode.MAP){
+        		break;
+        	case MAP:
 				get.addFamily(column);
-	        	Result entry = table.get(get);
-	        	NavigableMap<byte[], byte[]> cells = entry.getFamilyMap(column);
-				rtv = wrapper.getMapValue(attr, cells);			
-			}
-			
-			if(attr.mode == AttrMode.LIST){
+	        	entry = table.get(get);
+	        	cells = entry.getFamilyMap(column);
+				rtv = wrapper.getMapValue(attr, cells);
+				break;
+        	case LIST:
 				get.addFamily(column);
-	        	Result entry = table.get(get);
-	        	NavigableMap<byte[], byte[]> cells = entry.getFamilyMap(column);
-				rtv = wrapper.getListValue(attr, cells);				
-			}
-           
+	        	entry = table.get(get);
+	        	cells = entry.getFamilyMap(column);
+				rtv = wrapper.getListValue(attr, cells);
+				break;
+        	case SET:
+        		get.addFamily(column);
+	        	entry = table.get(get);
+	        	cells = entry.getFamilyMap(column);
+				rtv = wrapper.getSetValue(attr, cells);
+				break;
+			default:
+				break;
+        	}
         } catch (IOException e) {  
         	
             throw new AccessorException("Error get entry row,key:{} attr:{}",e,entryKey,attr.getAttrName());
@@ -232,27 +240,29 @@ public abstract class HEntityAccessor<GB extends EntryInfo> extends EntityAccess
             if(LOGGER.isDebugEnabled()){
                 LOGGER.debug("--==>>attr:{} - value:{}",attr.getAttrName(),value);
             }
-
-            if(attr.mode == AttrMode.PRIMITIVE){
-        				
-            	wrapper.putPrimitiveValue(put, attr, value);		
+            switch(attr.mode){
+            
+	            case PRIMITIVE:
+	            	wrapper.putPrimitiveValue(put, attr, value);
+	            	break;
+	            case MAP:
+	            	if(!(value instanceof Map<?,?>))
+	        			throw new AccessorException("the attr:{} value is not Map object",attrName);        		
+	        		wrapper.putMapValue(put, attr, (Map<String,Object>)value);	
+	        		break;
+	            case LIST:
+	            	if(!(value instanceof List<?>))
+	        			throw new AccessorException("the attr:{} value is not List object",attrName);        		
+	        		wrapper.putListValue(put, attr, (List<Object>)value);	
+	        		break;
+	            case SET:
+	            	if(!(value instanceof List<?>))
+	        			throw new AccessorException("the attr:{} value is not List object",attrName);        		
+	        		wrapper.putSetValue(put, attr, (Set<Object>)value);	
+	        		break;
+	            default:
+	            	break;      	
             }
-        			
-        	if(attr.mode == AttrMode.MAP){
-
-        		if(!(value instanceof Map<?,?>))
-        			throw new AccessorException("the attr:{} value is not Map object",attrName);
-        		
-        		wrapper.putMapValue(put, attr, (Map<String,Object>)value);	
-        	}
-        			
-        	if(attr.mode == AttrMode.LIST){
-        		
-        		if(!(value instanceof List<?>))
-        			throw new AccessorException("the attr:{} value is not List object",attrName);
-        		
-        		wrapper.putListValue(put, attr, (List<Object>)value);	
-        	}
         	
         	table.put(put);
         	table.flushCommits();

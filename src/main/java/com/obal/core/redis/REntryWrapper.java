@@ -36,12 +36,13 @@ import redis.clients.jedis.Jedis;
 
 import com.obal.core.EntryInfo;
 import com.obal.core.meta.EntityAttr;
+import com.obal.exception.AccessorException;
 
 public abstract class REntryWrapper<GB extends EntryInfo> {
 
 	public static Logger LOGGER = LoggerFactory.getLogger(REntryWrapper.class);
 	/**
-	 * Get primitive value from cell, primitive means int,long,double,string,date
+	 * Get primitive value from cell, primitive type include: int,long,double,string,date
 	 * 
 	 * @param attr the attribute of entry
 	 * @param cell the Cell of certain Row in hbase
@@ -236,12 +237,12 @@ public abstract class REntryWrapper<GB extends EntryInfo> {
 	}
 	
 	/**
-	 * Put the Primitive value to target Put operation
+	 * Put the map value to target Jedis operation object
 	 * 
-	 * @param put the Hbase Put operation object
+	 * @param jedis the redis operation object
+	 * @param key the entry key
 	 * @param attr the target attribute object
 	 * @param value the value to be put 
-	 * 
 	 **/
 	public void putPrimitiveValue(Jedis jedis,String key, EntityAttr attr, Object value){
 		byte[] bval = null;
@@ -275,11 +276,12 @@ public abstract class REntryWrapper<GB extends EntryInfo> {
 	}
 	
 	/**
-	 * Put the map value to target Put operation object
+	 * Put the map value to target Jedis operation object
 	 * 
-	 * @param put the Hbase Put operation object
+	 * @param jedis the redis operation object
+	 * @param key the entry key
 	 * @param attr the target attribute object
-	 * @param value the value to be put 
+	 * @param mapVal the value to be put 
 	 **/
 	public void putMapValue(Jedis jedis,String key, EntityAttr attr, Map<String,Object> mapVal){
 		byte[] bval = null;
@@ -316,11 +318,12 @@ public abstract class REntryWrapper<GB extends EntryInfo> {
 	}
 
 	/**
-	 * Put the list value to target Put operation object
+	 * Put the list value to target Jedis operation object
 	 * 
-	 * @param put the Hbase Put operation object
+	 * @param jedis the redis operation object
+	 * @param key the entry key
 	 * @param attr the target attribute object
-	 * @param value the value to be put 
+	 * @param listVal the value to be put 
 	 **/
 	public void putListValue(Jedis jedis, String key, EntityAttr attr, List<Object> listVal){
 		byte[] bval = null;
@@ -359,11 +362,12 @@ public abstract class REntryWrapper<GB extends EntryInfo> {
 	
 
 	/**
-	 * Put the set value to target Put operation object
+	 * Put the set value to target Jedis operation object
 	 * 
-	 * @param put the Hbase Put operation object
+	 * @param jedis the redis operation object
+	 * @param key the entry key
 	 * @param attr the target attribute object
-	 * @param value the value to be put 
+	 * @param setVal the value to be put 
 	 **/
 	public void putSetValue(Jedis jedis, String key, EntityAttr attr, Set<Object> setVal){
 		byte[] bval = null;
@@ -410,28 +414,33 @@ public abstract class REntryWrapper<GB extends EntryInfo> {
 	 * Wrap the rawentry into bean object
 	 * 
 	 * @param attrs the attributes of rawEntry
-	 * @param rawEntry the entry information
+	 * @param key the entry key
+	 * @param rawEntry the jedis object to retrieve data
+	 * 
 	 * @return GB the bean object. 
 	 **/
-	public abstract GB wrap(List<EntityAttr> attrs, String key, Jedis rawEntry);
-
+	public abstract GB wrap(List<EntityAttr> attrs, String key, Jedis rawEntry) throws AccessorException;
 	
 	/**
 	 * Parse bean object into raw Object
 	 * 
 	 * @param attrs the attributes of target entity
+	 * @param jedis the jedis object to write entry
 	 * @param entryInfo the entry information bean
+	 * 
 	 * @return Object the raw object. 
 	 **/	
-	public abstract void parse(List<EntityAttr> attrs,Jedis jedis, GB entryInfo);
+	public abstract void parse(List<EntityAttr> attrs,Jedis jedis, GB entryInfo) throws AccessorException;
 
 	
 	/**
 	 * Wrap the rawentry into bean object
+	 * 
 	 * @param entityName the entity name of rawEntry
-	 * @param rawEntry the entry information
+	 * @param key the entry key
+	 * @param rawEntry the jedis object to retrieve data
 	 * 
 	 * @return GB the bean object. 
 	 **/
-	public abstract GB wrap(String entityName, String key, Jedis rawEntry);
+	public abstract GB wrap(String entityName, String key, Jedis rawEntry) throws AccessorException;
 }

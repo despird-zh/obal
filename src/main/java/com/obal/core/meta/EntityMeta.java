@@ -283,6 +283,33 @@ public class EntityMeta{
 	}
 	
 	/**
+	 * Get the attributes as per the primitive flag.
+	 * 
+	 * @param primitiveFlag true:return only primitive attrs; false:return collection attributes
+	 * 
+	 * @return List<EntryAttr> the EntryAttribute List
+	 */
+	public List<EntityAttr> getAttrs(boolean primitiveFlag){
+	
+		ArrayList<EntityAttr> attrs = new ArrayList<EntityAttr>();
+		for(Map.Entry<String, EntityAttr> entry:attrMap.entrySet()){
+			
+			EntityAttr attr = entry.getValue();
+			if(null == attr) 
+				continue;
+			else if(primitiveFlag && attr.mode == AttrMode.PRIMITIVE){
+				
+				attrs.add(attr);
+			}else if(!primitiveFlag && attr.mode != AttrMode.PRIMITIVE){
+				
+				attrs.add(attr);
+			}
+		}
+		
+		return attrs;
+	}
+	
+	/**
 	 * Get Attr info by attrname
 	 * @param attrName the attribute name
 	 * @return EntryAttr  

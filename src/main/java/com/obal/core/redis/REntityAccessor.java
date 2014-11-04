@@ -20,6 +20,11 @@
 package com.obal.core.redis;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import redis.clients.jedis.Jedis;
 
@@ -29,49 +34,138 @@ import com.obal.core.EntryInfo;
 import com.obal.core.EntryKey;
 import com.obal.core.accessor.EntityAccessor;
 import com.obal.core.meta.BaseEntity;
+import com.obal.core.meta.EntityAttr;
 import com.obal.core.util.CoreConstants;
 import com.obal.exception.AccessorException;
 
-public class REntityAccessor <GB extends EntryInfo> extends EntityAccessor<GB> implements RJedisAware{
+public abstract class REntityAccessor <GB extends EntryInfo> extends EntityAccessor<GB> implements RJedisAware{
 
+	Logger LOGGER = LoggerFactory.getLogger(REntityAccessor.class);
+	
 	private Jedis jedis;
 	
 	public REntityAccessor(BaseEntity entitySchema) {
 		super(entitySchema);
 	}
 
+	/**
+	 * get entry wrapper
+	 * @return wrapper object 
+	 **/
+	public abstract REntryWrapper<GB> getEntryWrapper();
+	
 	@Override
 	public EntryKey putEntry(GB entryInfo) throws AccessorException {
-		// TODO Auto-generated method stub
-		return null;
+
+		EntryKey rtv = null;
+		BaseEntity entitySchema = (BaseEntity)getEntitySchema();
+
+		REntryWrapper<GB> wrapper = this.getEntryWrapper();
+
+		wrapper.parse(entitySchema.getEntityMeta().getAllAttrs(), this.jedis,entryInfo);
+
+		rtv = entryInfo.getEntryKey();
+
+		return rtv;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public EntryKey putEntryAttr(String entryKey, String attrName, Object value)
 			throws AccessorException {
-		// TODO Auto-generated method stub
-		return null;
+		EntryKey rtv = null;
+		BaseEntity entitySchema = (BaseEntity)getEntitySchema();
+		EntityAttr attr = entitySchema.getEntityMeta().getAttr(attrName);
+		REntryWrapper<GB> wrapper = this.getEntryWrapper();
+
+        if(LOGGER.isDebugEnabled()){
+            LOGGER.debug("--==>>attr:{} - value:{}",attr.getAttrName(),value);
+        }
+        switch(attr.mode){
+        
+            case PRIMITIVE:
+            	wrapper.putPrimitiveValue(jedis,entryKey, attr, value);
+            	break;
+            case MAP:
+            	if(!(value instanceof Map<?,?>))
+        			throw new AccessorException("the attr:{} value is not Map object",attrName);        		
+        		wrapper.putMapValue(jedis,entryKey, attr, (Map<String,Object>)value);	
+        		break;
+            case LIST:
+            	if(!(value instanceof List<?>))
+        			throw new AccessorException("the attr:{} value is not List object",attrName);        		
+        		wrapper.putListValue(jedis,entryKey, attr, (List<Object>)value);	
+        		break;
+            case SET:
+            	if(!(value instanceof List<?>))
+        			throw new AccessorException("the attr:{} value is not List object",attrName);        		
+        		wrapper.putSetValue(jedis, entryKey, attr, (Set<Object>)value);	
+        		break;
+            default:
+            	break;      	
+        }
+		return rtv;
 	}
 
 	@Override
 	public GB getEntry(String entryKey) throws AccessorException {
-		// TODO Auto-generated method stub
-		return null;
+		GB rtv = null;
+		BaseEntity entrySchema = (BaseEntity)getEntitySchema();
+		REntryWrapper<GB> wrapper = (REntryWrapper<GB>)getEntryWrapper();
+		rtv = wrapper.wrap(entrySchema.getEntityName(),entryKey, jedis);
+		return rtv;
 	}
 
 	@Override
 	public <K> K getEntryAttr(String entryKey, String attrName)
 			throws AccessorException {
-		
-		return null;
+		Object rtv = null;
+		BaseEntity entitySchema = (BaseEntity)getEntitySchema();
+		EntityAttr attr = entitySchema.getEntityMeta().getAttr(attrName);
+    	REntryWrapper<GB> wrapper = (REntryWrapper<GB>)getEntryWrapper();
+
+    	switch(attr.mode){
+	    	case PRIMITIVE:
+	    		byte[] cell = jedis.hget(entryKey.getBytes(), attr.getAttrName().getBytes());
+				rtv = wrapper.getPrimitiveValue(attr, cell);
+	    		break;
+	    	case MAP:			
+	        	Map<byte[], byte[]> cells = jedis.hgetAll(entryKey.getBytes());
+				rtv = wrapper.getMapValue(attr, cells);		    		
+	    		break;
+	    	case LIST:
+	    		long len = jedis.llen(entryKey);
+	    		List<byte[]> celllist = jedis.lrange(entryKey.getBytes(), 0, len);
+				rtv = wrapper.getListValue(attr, celllist);		    		
+	    		break;
+	    	case SET:
+	    		Set<byte[]> cellset = jedis.smembers(entryKey.getBytes());
+				rtv = wrapper.getSetValue(attr, cellset);	
+	    		break;
+	    	default:
+	    		break;
+    	}
+		return (K)rtv;
 	}
 
 	@Override
-	public void deleteEntry(String... entryKey) throws AccessorException {
-
-		jedis.del(entryKey);
+	public void deleteEntry(String... entryKeys) throws AccessorException {
+		BaseEntity entitySchema = (BaseEntity)getEntitySchema();
+		// get non-primitive attributes
+		List<EntityAttr> attrs = entitySchema.getEntityMeta().getAttrs(false);
+		
+		for(String entrykey:entryKeys){
+			
+			String redisKey = entitySchema.getEntityName()+ CoreConstants.KEYS_SEPARATOR + entrykey;
+			jedis.del(redisKey); // delete primitive data
+			for(EntityAttr attr:attrs){
+				// delete non-primitive data
+				jedis.del(redisKey + CoreConstants.KEYS_SEPARATOR + attr.getAttrName());
+			}
+		}
 	}
 
+	@Deprecated
 	@Override
 	public List<GB> scanEntry(EntryFilter<?> scanfilter)
 			throws AccessorException {
@@ -79,12 +173,10 @@ public class REntityAccessor <GB extends EntryInfo> extends EntityAccessor<GB> i
 		return null;
 	}
 
+	@Deprecated
 	@Override
-	public boolean isFilterSupported(EntryFilter<?> scanfilter,
-			boolean throwExcep) throws AccessorException {
-		
-		return false;
-	}
+	public abstract boolean isFilterSupported(EntryFilter<?> scanfilter,
+			boolean throwExcep) throws AccessorException ;
 
 	@Override
 	public void setJedis(Jedis jedis) {
