@@ -10,6 +10,7 @@ import com.obal.core.security.Principal;
 
 public class CacheRedisHandler<K extends EntryKey> implements EventHandler<CacheEvent> {
 		
+	@SuppressWarnings("unchecked")
 	public void onEvent(final CacheEvent event,
             final long sequence,
             final boolean endOfBatch) throws Exception {
