@@ -27,7 +27,14 @@ import com.obal.core.cache.CacheEvent;
 import com.obal.core.security.Principal;
 import com.obal.exception.AccessorException;
 import com.obal.exception.EntityException;
-
+/**
+ * Implmentation of CacheBridge for Redis cache
+ * 
+ * @author despird
+ * @version 0.1 2014-3-1
+ * @since 0.1
+ * 
+ **/
 public class CacheRedisHandler<K extends EntryKey> implements CacheBridge<K>{
 		
 	public void doCachePut(K cacheData){

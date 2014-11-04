@@ -22,20 +22,37 @@ package com.obal.core.cache;
 import com.lmax.disruptor.EventFactory;
 import com.obal.core.EntryKey;
 
+/**
+ * CacheEvent is the placeholder element in disruptor RingBuffer, it holds the entry information
+ * the entry will be processed by handler of disruptor.
+ * 
+ * @author despird
+ * @version 0.1 2014-3-1
+ * @since 0.1
+ **/
 public class CacheEvent{
 	
     private EntryKey entry;
 
+    /**
+     * Get the entry information 
+     **/
     public EntryKey getEntry() {
     	
     	return this.entry;
     }
 
+    /**
+     * Set the entry information 
+     **/
     public void setEntry(EntryKey entry) {
     	
     	this.entry = entry;
     }
 
+    /**
+     * The CacheEvent factroy disruptor use it to allocate elements in RingBuffer. 
+     **/
 	public final static EventFactory<CacheEvent> EVENT_FACTORY =
 		 new EventFactory<CacheEvent>()
 		 {

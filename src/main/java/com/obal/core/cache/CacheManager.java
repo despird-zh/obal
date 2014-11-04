@@ -27,6 +27,16 @@ import com.lmax.disruptor.SleepingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 
+/**
+ * CacheManager provide entrance to get/put entry in-out backend cache.
+ * <p>
+ * cache data <b>Put</b> operation runs in producer/consumer mode(disruptor), it's in asynchronized mode.
+ * cache data <b>Get</b> operation runs in thread safe mode. entry be fetched directly.
+ * </p>
+ *  @author desprid
+ *  @version 0.1 2014-2-1
+ *  @since 0.1
+ **/
 public class CacheManager{
 
 	Disruptor<CacheEvent> disruptor = null;
@@ -34,13 +44,18 @@ public class CacheManager{
 	ExecutorService executor = null;
 	CacheBridge<CacheEvent> cacheBridge = null;
 	
+	/** singleton instance */ 
 	private static CacheManager instance;
 	
+	/** default constructor */
 	private CacheManager(){
 
 		initial();
 	}
 	
+	/**
+	 * Get the instance of CacheManager 
+	 **/
 	public static CacheManager getInstance(){
 		
 		if(null == instance)
@@ -49,6 +64,12 @@ public class CacheManager{
 		return instance;
 	}
 	
+	/**
+	 * put entry into cache. internally entry be published into disruptor
+	 * 
+	 *  @param entry the entry object
+	 *  
+	 **/
 	public <K> void cachePut(K entry){
 		
 		// Publishers claim events in sequence
@@ -61,12 +82,20 @@ public class CacheManager{
 		ringBuffer.publish(sequence);  
 	}
 	
+	/**
+	 * fetch entry from cache 
+	 * @param entityName the entity name
+	 * @param key the key of entry data 
+	 **/
 	@SuppressWarnings("unchecked")
 	public <K> K catchGet(String entityName, String key){
 		
 		return (K)cacheBridge.doCacheGet(entityName, key);
 	}
 	
+	/**
+	 * initial process 
+	 **/
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initial(){
 		
