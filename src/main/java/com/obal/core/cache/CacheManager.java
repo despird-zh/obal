@@ -8,7 +8,6 @@ import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.SleepingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
-import com.obal.core.EntryKey;
 
 public class CacheManager{
 
@@ -33,7 +32,15 @@ public class CacheManager{
 	}
 	
 	public <K> void cachePut(K entry){
-				
+		
+		// Publishers claim events in sequence
+		long sequence = ringBuffer.next();
+		CacheEvent event = ringBuffer.get(sequence);
+
+		event.setEntry(null); // this could be more complex with multiple fields
+
+		// make the event available to EventProcessors
+		ringBuffer.publish(sequence);  
 	}
 	
 	public <K> K catchGet(String entityName, String key){
@@ -41,12 +48,13 @@ public class CacheManager{
 		return null;
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initial(){
 		
 		executor = Executors.newFixedThreadPool(3);
 		disruptor =
 		new Disruptor<CacheEvent>(CacheEvent.EVENT_FACTORY, 
-			4, 
+			256, 
 			executor,
 			ProducerType.SINGLE,
 			new SleepingWaitStrategy());
