@@ -40,6 +40,8 @@ public class CacheRedisHandler<K extends EntryKey> implements CacheBridge<K>{
 	
 	/**
 	 * cache data 
+	 * 
+	 * @param cacheDate the data to be cached
 	 **/
 	public void doCachePut(K cacheData){
 		
@@ -67,6 +69,9 @@ public class CacheRedisHandler<K extends EntryKey> implements CacheBridge<K>{
 	
 	/**
 	 * cache get  
+	 * 
+	 * @param entityName the entity name
+	 * @param key the key of target entry
 	 **/
 	public K doCacheGet(String entityName, String key){
 		
