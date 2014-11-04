@@ -2,18 +2,14 @@ package com.obal.core.redis;
 
 import java.util.List;
 import java.util.Map;
-import java.util.NavigableMap;
 import java.util.Set;
 
-import org.apache.hadoop.hbase.client.Put;
-import org.apache.hadoop.hbase.client.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import redis.clients.jedis.Jedis;
 
 import com.obal.core.accessor.RawEntry;
-import com.obal.core.meta.AttrMode;
 import com.obal.core.meta.EntityAttr;
 import com.obal.core.meta.EntityConstants;
 import com.obal.core.meta.EntityManager;
