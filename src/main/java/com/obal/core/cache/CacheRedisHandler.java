@@ -6,22 +6,52 @@ import com.obal.core.EntryKey;
 import com.obal.core.IEntityAccessor;
 import com.obal.core.cache.CacheEvent;
 import com.obal.core.security.Principal;
+import com.obal.exception.AccessorException;
+import com.obal.exception.EntityException;
 
-
-public class CacheRedisHandler<K extends EntryKey> implements EventHandler<CacheEvent> {
+public class CacheRedisHandler<K extends EntryKey> implements CacheBridge<K>{
 		
-	@SuppressWarnings("unchecked")
-	public void onEvent(final CacheEvent event,
-            final long sequence,
-            final boolean endOfBatch) throws Exception {
+	public void doCachePut(K cacheData){
 		
 		Principal principal = null;		
-		IEntityAccessor<K> eaccessor = 
+		IEntityAccessor<K> eaccessor = null;
+		try {
+			eaccessor = 
 				AccessorFactory.getInstance().buildEntityAccessor("hbase", 
 						principal, 
-						event.getEntry().getEntityName());	
+						cacheData.getEntityName());	
 		
-		eaccessor.putEntry((K)event.getEntry());
-    }
+		
+			eaccessor.putEntry(cacheData);
+		} catch (AccessorException e) {
+			
+			e.printStackTrace();
+		} catch (EntityException e) {
+			
+			e.printStackTrace();
+		}finally{
+			
+			eaccessor.release();
+		}
+	}
+	
+	public K doCacheGet(String entityName, String key){
+		
+		return null;
+	}
 
+	@Override
+	public EventHandler<CacheEvent> getEventHandler() {
+		
+		return new EventHandler<CacheEvent>(){
+
+			@SuppressWarnings("unchecked")
+			@Override
+			public void onEvent(CacheEvent event, long sequence,
+					boolean endOfBatch) throws Exception {
+				
+				doCachePut((K)event.getEntry());
+			}			
+		};
+	}
 }

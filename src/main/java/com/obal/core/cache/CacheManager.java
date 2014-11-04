@@ -3,7 +3,6 @@ package com.obal.core.cache;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.SleepingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
@@ -14,7 +13,7 @@ public class CacheManager{
 	Disruptor<CacheEvent> disruptor = null;
 	RingBuffer<CacheEvent> ringBuffer = null;
 	ExecutorService executor = null;
-	EventHandler<CacheEvent> handler = null;
+	CacheBridge<CacheEvent> cacheBridge = null;
 	
 	private static CacheManager instance;
 	
@@ -43,9 +42,10 @@ public class CacheManager{
 		ringBuffer.publish(sequence);  
 	}
 	
+	@SuppressWarnings("unchecked")
 	public <K> K catchGet(String entityName, String key){
 		
-		return null;
+		return (K)cacheBridge.doCacheGet(entityName, key);
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -59,8 +59,8 @@ public class CacheManager{
 			ProducerType.SINGLE,
 			new SleepingWaitStrategy());
 		
-		handler = new CacheRedisHandler();
-		disruptor.handleEventsWith(handler);		
+		cacheBridge = new CacheRedisHandler();
+		disruptor.handleEventsWith(cacheBridge.getEventHandler());		
 		ringBuffer = disruptor.start();
 	}
 	

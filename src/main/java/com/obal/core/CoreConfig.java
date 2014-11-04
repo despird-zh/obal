@@ -33,7 +33,7 @@ import org.apache.commons.configuration.PropertiesConfiguration;
  * 
  * @see org.apache.commons.configuration.ConfigurationException
  * @author G.Obal
- * @version 1.0 2014-1-1
+ * @version 0.1 2014-1-1
  **/
 public class CoreConfig extends PropertiesConfiguration{
 
