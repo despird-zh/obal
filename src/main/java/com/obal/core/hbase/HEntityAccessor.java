@@ -44,7 +44,6 @@ import com.obal.core.EntryFilter;
 import com.obal.core.EntryInfo;
 import com.obal.core.EntryKey;
 import com.obal.core.accessor.EntityAccessor;
-import com.obal.core.meta.AttrMode;
 import com.obal.core.meta.BaseEntity;
 import com.obal.core.meta.EntityAttr;
 import com.obal.exception.AccessorException;
