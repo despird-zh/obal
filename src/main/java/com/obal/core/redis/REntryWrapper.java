@@ -36,6 +36,7 @@ import redis.clients.jedis.Jedis;
 
 import com.obal.core.EntryInfo;
 import com.obal.core.meta.EntityAttr;
+import com.obal.core.util.CoreConstants;
 import com.obal.exception.AccessorException;
 
 public abstract class REntryWrapper<GB extends EntryInfo> {
@@ -285,7 +286,7 @@ public abstract class REntryWrapper<GB extends EntryInfo> {
 	 **/
 	public void putMapValue(Jedis jedis,String key, EntityAttr attr, Map<String,Object> mapVal){
 		byte[] bval = null;
-		String newkey = key + ":" + attr.getQualifier();
+		String newkey = key + CoreConstants.KEYS_SEPARATOR + attr.getQualifier();
     	if(mapVal == null) return;    	
     	for(Map.Entry<String,Object> pe:mapVal.entrySet()){
 	    	switch(attr.type){
@@ -327,7 +328,7 @@ public abstract class REntryWrapper<GB extends EntryInfo> {
 	 **/
 	public void putListValue(Jedis jedis, String key, EntityAttr attr, List<Object> listVal){
 		byte[] bval = null;
-		String newkey = key + ":" + attr.getQualifier();
+		String newkey = key + CoreConstants.KEYS_SEPARATOR + attr.getQualifier();
     	if(listVal == null) return;    	
     	for(int i=0;i<listVal.size();i++){
     		
@@ -371,7 +372,7 @@ public abstract class REntryWrapper<GB extends EntryInfo> {
 	 **/
 	public void putSetValue(Jedis jedis, String key, EntityAttr attr, Set<Object> setVal){
 		byte[] bval = null;
-		String newkey = key + ":" + attr.getQualifier();
+		String newkey = key + CoreConstants.KEYS_SEPARATOR  + attr.getQualifier();
     	if(setVal == null) return;
     	byte[][] values = new byte[setVal.size()][];
     	Iterator<Object> iterator = setVal.iterator();

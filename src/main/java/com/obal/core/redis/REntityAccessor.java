@@ -81,25 +81,26 @@ public abstract class REntityAccessor <GB extends EntryInfo> extends EntityAcces
         if(LOGGER.isDebugEnabled()){
             LOGGER.debug("--==>>attr:{} - value:{}",attr.getAttrName(),value);
         }
+        String redisKey = entitySchema.getEntityName() + CoreConstants.KEYS_SEPARATOR + entryKey;
         switch(attr.mode){
         
             case PRIMITIVE:
-            	wrapper.putPrimitiveValue(jedis,entryKey, attr, value);
+            	wrapper.putPrimitiveValue(jedis,redisKey, attr, value);
             	break;
             case MAP:
             	if(!(value instanceof Map<?,?>))
         			throw new AccessorException("the attr:{} value is not Map object",attrName);        		
-        		wrapper.putMapValue(jedis,entryKey, attr, (Map<String,Object>)value);	
+        		wrapper.putMapValue(jedis,redisKey, attr, (Map<String,Object>)value);	
         		break;
             case LIST:
             	if(!(value instanceof List<?>))
         			throw new AccessorException("the attr:{} value is not List object",attrName);        		
-        		wrapper.putListValue(jedis,entryKey, attr, (List<Object>)value);	
+        		wrapper.putListValue(jedis,redisKey, attr, (List<Object>)value);	
         		break;
             case SET:
             	if(!(value instanceof List<?>))
         			throw new AccessorException("the attr:{} value is not List object",attrName);        		
-        		wrapper.putSetValue(jedis, entryKey, attr, (Set<Object>)value);	
+        		wrapper.putSetValue(jedis, redisKey, attr, (Set<Object>)value);	
         		break;
             default:
             	break;      	
