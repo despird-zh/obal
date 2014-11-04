@@ -25,7 +25,7 @@ import java.util.Date;
 /**
  * Here will extend other attributes to entryInfo
  **/
-public abstract class EntryInfo extends EntryKey implements Serializable{
+public abstract class EntryInfo extends EntryKey implements ITraceable, Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
