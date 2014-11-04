@@ -25,6 +25,7 @@ import com.obal.core.EntryKey;
 import com.obal.core.IEntityAccessor;
 import com.obal.core.cache.CacheEvent;
 import com.obal.core.security.Principal;
+import com.obal.core.util.CoreConstants;
 import com.obal.exception.AccessorException;
 import com.obal.exception.EntityException;
 /**
@@ -36,19 +37,22 @@ import com.obal.exception.EntityException;
  * 
  **/
 public class CacheRedisHandler<K extends EntryKey> implements CacheBridge<K>{
-		
+	
+	/**
+	 * cache data 
+	 **/
 	public void doCachePut(K cacheData){
 		
 		Principal principal = null;		
 		IEntityAccessor<K> eaccessor = null;
 		try {
 			eaccessor = 
-				AccessorFactory.getInstance().buildEntityAccessor("hbase", 
+				AccessorFactory.getInstance().buildEntityAccessor(CoreConstants.BUILDER_REDIS, 
 						principal, 
 						cacheData.getEntityName());	
-		
-		
+				
 			eaccessor.putEntry(cacheData);
+			
 		} catch (AccessorException e) {
 			
 			e.printStackTrace();
@@ -61,9 +65,34 @@ public class CacheRedisHandler<K extends EntryKey> implements CacheBridge<K>{
 		}
 	}
 	
+	/**
+	 * cache get  
+	 **/
 	public K doCacheGet(String entityName, String key){
 		
-		return null;
+		Principal principal = null;		
+		K cacheData = null;
+		IEntityAccessor<K> eaccessor = null;
+		try {
+			eaccessor = 
+				AccessorFactory.getInstance().buildEntityAccessor(CoreConstants.BUILDER_REDIS, 
+						principal, 
+						entityName);	
+				
+			cacheData = eaccessor.getEntry(key);
+			
+		} catch (AccessorException e) {
+			
+			e.printStackTrace();
+		} catch (EntityException e) {
+			
+			e.printStackTrace();
+		}finally{
+			
+			eaccessor.release();
+		}
+		
+		return cacheData;
 	}
 
 	@Override
