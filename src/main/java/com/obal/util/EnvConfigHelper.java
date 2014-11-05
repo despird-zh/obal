@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
+@Deprecated
 public class EnvConfigHelper extends DefaultHandler {
 
 	Logger LOGGER = LoggerFactory.getLogger(EnvConfigHelper.class);
