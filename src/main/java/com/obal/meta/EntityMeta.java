@@ -18,7 +18,7 @@
  * 
  */
 
-package com.obal.core.meta;
+package com.obal.meta;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,7 +39,7 @@ import com.obal.core.EntryKey;
  * </p>
  * 
  * @since 0.1
- * @see com.obal.core.meta.BaseEntity
+ * @see com.obal.meta.BaseEntity
  * @see com.obal.core.EntryKey
  **/
 public class EntityMeta{
@@ -57,7 +57,7 @@ public class EntityMeta{
 	 * @param schemaClazz the class name of EntrySchema
 	 * @param keyclazz the class name of EntryKey
 	 * 
-	 * @see com.obal.core.meta.BaseEntity
+	 * @see com.obal.meta.BaseEntity
 	 * @see com.obal.core.EntryKey
 	 * 
 	 **/
@@ -131,7 +131,7 @@ public class EntityMeta{
 	 * 
 	 * @param attr The Entry Attribute
 	 *  
-	 * @see com.obal.core.meta.EntityAttr
+	 * @see com.obal.meta.EntityAttr
 	 **/
 	public void addAttr(EntityAttr attr){
 
@@ -153,7 +153,7 @@ public class EntityMeta{
 	 * 
 	 * @return List<EntryAttr> the EntryAttribute List
 	 * 
-	 * @see com.obal.core.meta.EntityAttr
+	 * @see com.obal.meta.EntityAttr
 	 **/
 	public List<EntityAttr> getHiddenAttrs(){
 		
@@ -177,7 +177,7 @@ public class EntityMeta{
 	 * 
 	 * @return List<EntryAttr> the EntryAttribute List
 	 * 
-	 * @see com.obal.core.meta.EntityAttr
+	 * @see com.obal.meta.EntityAttr
 	 **/
 	public List<EntityAttr> getReadonlyAttrs(){
 		
@@ -201,7 +201,7 @@ public class EntityMeta{
 	 * 
 	 * @return List<EntryAttr> the EntryAttribute List
 	 * 
-	 * @see com.obal.core.meta.EntityAttr
+	 * @see com.obal.meta.EntityAttr
 	 **/
 	public List<EntityAttr> getMandatoryAttrs(){
 		
@@ -225,7 +225,7 @@ public class EntityMeta{
 	 * 
 	 * @return List<EntryAttr> the EntryAttribute List
 	 * 
-	 * @see com.obal.core.meta.EntityAttr
+	 * @see com.obal.meta.EntityAttr
 	 **/
 	public List<EntityAttr> getVisibleAttrs(){
 		
@@ -250,7 +250,7 @@ public class EntityMeta{
 	 * @param column the name of column family
 	 * @return List<EntryAttr> the EntryAttribute List
 	 * 
-	 * @see com.obal.core.meta.EntityAttr
+	 * @see com.obal.meta.EntityAttr
 	 **/
 	public List<EntityAttr> getAttrs(String column){
 		

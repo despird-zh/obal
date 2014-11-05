@@ -18,7 +18,7 @@
  * 
  */
 
-package com.obal.core.meta;
+package com.obal.meta;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

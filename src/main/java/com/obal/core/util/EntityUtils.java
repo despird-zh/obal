@@ -24,12 +24,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.obal.core.meta.BaseEntity;
-import com.obal.core.meta.EntityAttr;
-import com.obal.core.meta.EntityMeta;
-import com.obal.core.meta.EntityManager;
 import com.obal.core.security.Principal;
 import com.obal.exception.MetaException;
+import com.obal.meta.BaseEntity;
+import com.obal.meta.EntityAttr;
+import com.obal.meta.EntityManager;
+import com.obal.meta.EntityMeta;
 
 /**
  * Utility tool to Access meta information

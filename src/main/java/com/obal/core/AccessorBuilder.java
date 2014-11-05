@@ -28,11 +28,11 @@ import java.util.Properties;
 
 import com.obal.core.accessor.EntityAccessor;
 import com.obal.core.accessor.GeneralAccessor;
-import com.obal.core.meta.BaseEntity;
-import com.obal.core.meta.EntityManager;
 import com.obal.core.security.Principal;
 import com.obal.exception.EntityException;
 import com.obal.exception.MetaException;
+import com.obal.meta.BaseEntity;
+import com.obal.meta.EntityManager;
 
 /**
  * Base class of AccessorBuilder, provides common operation when create accessor instance

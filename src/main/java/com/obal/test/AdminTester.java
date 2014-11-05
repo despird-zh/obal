@@ -7,9 +7,9 @@ import org.apache.hadoop.hbase.util.Bytes;
 import com.obal.admin.EntityAdmin;
 import com.obal.admin.EntitySetup;
 import com.obal.admin.IAdminAccessor;
-import com.obal.core.meta.EntityAttr;
 import com.obal.core.security.Principal;
 import com.obal.exception.AccessorException;
+import com.obal.meta.EntityAttr;
 
 public class AdminTester extends BlankTester{
 

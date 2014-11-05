@@ -17,7 +17,7 @@
  * under the License.
  * 
  */
-package com.obal.core.meta;
+package com.obal.meta;
 
 /**
  * The attribute support four kinds of value store mode:

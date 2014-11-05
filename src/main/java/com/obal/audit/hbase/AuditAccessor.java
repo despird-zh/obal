@@ -3,7 +3,7 @@ package com.obal.audit.hbase;
 import com.obal.audit.AuditEvent;
 import com.obal.core.hbase.HEntityAccessor;
 import com.obal.core.hbase.HEntryWrapper;
-import com.obal.core.meta.BaseEntity;
+import com.obal.meta.BaseEntity;
 
 public class AuditAccessor extends HEntityAccessor<AuditEvent>{
 

@@ -17,32 +17,34 @@
  * under the License.
  * 
  */
-package com.obal.core.meta;
+package com.obal.meta;
 
-/**
- *
- * @author despird
- * @since 0.1
- **/
-public enum AttrType {
-	
-	INT("INTEGER"),
-	DOUBLE("DOUBLE"),
-	LONG("LONG"),
-	STRING("STRING"),
-	DATE("DATE"),
-	BOOL("BOOLEAN");
-	
-	private String type = null;
-	/**
-	 * Hide Rtype default constructor 
-	 **/
-	private AttrType(String type){  
-		this.type = type;
-    } 
-	
-	@Override
-	public String toString(){
-		return this.type;
+import com.obal.core.EntryKey;
+import com.obal.exception.MetaException;
+
+public class GeneralEntity extends BaseEntity{
+		
+	public GeneralEntity(EntityMeta meta) {
+		super(meta);
 	}
+
+	@Override
+	public String getSchema() {
+		
+		return getEntityMeta().getEntityName();
+	}
+
+	@Override
+	public EntryKey newKey(Object... parameter) throws MetaException {
+		
+		return newKey();
+	}
+
+	@Override
+	public EntryKey newKey() throws MetaException {
+		
+		String key = String.valueOf(System.currentTimeMillis());		
+		return new EntryKey(getEntityMeta().getEntityName(),key);
+	}
+	
 }

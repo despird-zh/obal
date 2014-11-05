@@ -17,7 +17,7 @@
  * under the License.
  * 
  */
-package com.obal.core.meta.hbase;
+package com.obal.meta.hbase;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,17 +35,17 @@ import com.obal.core.EntryFilter;
 import com.obal.core.EntryKey;
 import com.obal.core.accessor.RawEntry;
 import com.obal.core.hbase.HGeneralAccessor;
-import com.obal.core.meta.AttrMode;
-import com.obal.core.meta.AttrType;
-import com.obal.core.meta.EntityAttr;
-import com.obal.core.meta.EntityConstants;
-import com.obal.core.meta.EntityMeta;
-import com.obal.core.meta.accessor.IMetaAttrAccessor;
 import com.obal.core.util.AccessorUtils;
 import com.obal.exception.AccessorException;
 import com.obal.exception.BaseException;
 import com.obal.exception.EntityException;
 import com.obal.exception.MetaException;
+import com.obal.meta.AttrMode;
+import com.obal.meta.AttrType;
+import com.obal.meta.EntityAttr;
+import com.obal.meta.EntityConstants;
+import com.obal.meta.EntityMeta;
+import com.obal.meta.accessor.IMetaAttrAccessor;
 
 public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAccessor{
 

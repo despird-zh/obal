@@ -22,8 +22,8 @@ package com.obal.admin;
 import java.util.List;
 
 import com.obal.core.IBaseAccessor;
-import com.obal.core.meta.EntityAttr;
 import com.obal.exception.AccessorException;
+import com.obal.meta.EntityAttr;
 
 /**
  * Interface for administration, it extends from IBaseAccessor, means it's a GeneralAccessor.

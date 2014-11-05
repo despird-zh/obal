@@ -1,9 +1,9 @@
 package com.obal.audit.accessor;
 
 import com.obal.core.EntryKey;
-import com.obal.core.meta.BaseEntity;
-import com.obal.core.meta.EntityMeta;
 import com.obal.exception.MetaException;
+import com.obal.meta.BaseEntity;
+import com.obal.meta.EntityMeta;
 
 public class AuditEntry extends BaseEntity{
 

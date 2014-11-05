@@ -30,10 +30,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.obal.core.accessor.RawEntry;
-import com.obal.core.meta.EntityAttr;
-import com.obal.core.meta.EntityConstants;
-import com.obal.core.meta.EntityManager;
-import com.obal.core.meta.EntityMeta;
+import com.obal.meta.EntityAttr;
+import com.obal.meta.EntityConstants;
+import com.obal.meta.EntityManager;
+import com.obal.meta.EntityMeta;
 
 /**
  * Hbase Raw entry wrapper in charge of hbase Result to object list conversion.

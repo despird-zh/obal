@@ -21,8 +21,8 @@ package com.obal.core;
 
 import java.util.List;
 
-import com.obal.core.meta.BaseEntity;
 import com.obal.exception.AccessorException;
+import com.obal.meta.BaseEntity;
 /**
  * Base interface of Entry Accessor intance
  * 

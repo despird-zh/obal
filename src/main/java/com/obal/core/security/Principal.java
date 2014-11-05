@@ -25,7 +25,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.obal.core.EntryKey;
-import com.obal.core.meta.EntityConstants;
+import com.obal.meta.EntityConstants;
 
 /**
  * Store the pincipal info of user

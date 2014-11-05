@@ -17,13 +17,13 @@
  * under the License.
  * 
  */
-package com.obal.core.cache;
+package com.obal.cache;
 
 import com.lmax.disruptor.EventHandler;
+import com.obal.cache.CacheEvent;
 import com.obal.core.AccessorFactory;
 import com.obal.core.EntryKey;
 import com.obal.core.IEntityAccessor;
-import com.obal.core.cache.CacheEvent;
 import com.obal.core.security.Principal;
 import com.obal.core.util.CoreConstants;
 import com.obal.exception.AccessorException;

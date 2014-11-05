@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.obal.admin.EntityAdmin;
 import com.obal.admin.IAdminAccessor;
-import com.obal.core.meta.EntityAttr;
 import com.obal.core.security.Principal;
 import com.obal.exception.AccessorException;
+import com.obal.meta.EntityAttr;
 
 /**
  * Utility tools for administration

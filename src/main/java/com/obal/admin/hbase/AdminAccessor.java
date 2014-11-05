@@ -32,8 +32,8 @@ import org.slf4j.LoggerFactory;
 import com.obal.admin.IAdminAccessor;
 import com.obal.core.hbase.HAdminAware;
 import com.obal.core.hbase.HGeneralAccessor;
-import com.obal.core.meta.EntityAttr;
 import com.obal.exception.AccessorException;
+import com.obal.meta.EntityAttr;
 
 public class AdminAccessor extends HGeneralAccessor implements IAdminAccessor,HAdminAware{
 

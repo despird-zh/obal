@@ -1,4 +1,4 @@
-package com.obal.core.meta;
+package com.obal.meta;
 
 /**
  * Define necessary entity names

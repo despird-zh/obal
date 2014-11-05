@@ -29,9 +29,9 @@ import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;
 import org.apache.hadoop.hbase.mapreduce.TableMapper;  
 import org.apache.hadoop.mapreduce.Job;  
 
-import com.obal.core.meta.EntityAttr;
 import com.obal.core.util.AdminUtils;
 import com.obal.exception.AccessorException;
+import com.obal.meta.EntityAttr;
 
 import java.io.IOException;  
 import java.util.List;

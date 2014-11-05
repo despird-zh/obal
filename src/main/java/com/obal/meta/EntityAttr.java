@@ -18,7 +18,7 @@
  * 
  */
 
-package com.obal.core.meta;
+package com.obal.meta;
 
 import com.obal.core.EntryKey;
 import com.obal.core.util.CoreConstants;

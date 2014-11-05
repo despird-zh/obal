@@ -7,7 +7,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.obal.core.EntryKey;
-import com.obal.core.meta.EntityConstants;
+import com.obal.meta.EntityConstants;
 
 /**
  * UserGroup collects users from same business entity or organization,

@@ -2,18 +2,18 @@ package com.obal.test;
 
 import com.obal.admin.EntityAdmin;
 import com.obal.admin.IAdminAccessor;
-import com.obal.core.meta.AttrMode;
-import com.obal.core.meta.AttrType;
-import com.obal.core.meta.EntityAttr;
-import com.obal.core.meta.EntityConstants;
-import com.obal.core.meta.EntityManager;
-import com.obal.core.meta.EntityMeta;
-import com.obal.core.meta.GeneralEntity;
-import com.obal.core.meta.accessor.IMetaAttrAccessor;
 import com.obal.core.security.Principal;
 import com.obal.core.util.AccessorUtils;
 import com.obal.exception.AccessorException;
 import com.obal.exception.EntityException;
+import com.obal.meta.AttrMode;
+import com.obal.meta.AttrType;
+import com.obal.meta.EntityAttr;
+import com.obal.meta.EntityConstants;
+import com.obal.meta.EntityManager;
+import com.obal.meta.EntityMeta;
+import com.obal.meta.GeneralEntity;
+import com.obal.meta.accessor.IMetaAttrAccessor;
 
 public class AccessorTester extends BlankTester{
 

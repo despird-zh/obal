@@ -33,10 +33,10 @@ import com.obal.core.EntryFilter;
 import com.obal.core.EntryInfo;
 import com.obal.core.EntryKey;
 import com.obal.core.accessor.EntityAccessor;
-import com.obal.core.meta.BaseEntity;
-import com.obal.core.meta.EntityAttr;
 import com.obal.core.util.CoreConstants;
 import com.obal.exception.AccessorException;
+import com.obal.meta.BaseEntity;
+import com.obal.meta.EntityAttr;
 
 public abstract class REntityAccessor <GB extends EntryInfo> extends EntityAccessor<GB> implements RJedisAware{
 

@@ -2,19 +2,19 @@ package com.obal.admin;
 
 import java.util.List;
 
-import com.obal.core.meta.AttrMode;
-import com.obal.core.meta.AttrType;
-import com.obal.core.meta.EntityAttr;
-import com.obal.core.meta.EntityConstants;
-import com.obal.core.meta.EntityMeta;
-import com.obal.core.meta.GeneralEntity;
-import com.obal.core.meta.EntityManager;
-import com.obal.core.meta.accessor.IMetaAttrAccessor;
 import com.obal.core.security.Principal;
 import com.obal.core.util.AccessorUtils;
 import com.obal.core.util.EntityUtils;
 import com.obal.exception.AccessorException;
 import com.obal.exception.EntityException;
+import com.obal.meta.AttrMode;
+import com.obal.meta.AttrType;
+import com.obal.meta.EntityAttr;
+import com.obal.meta.EntityConstants;
+import com.obal.meta.EntityManager;
+import com.obal.meta.EntityMeta;
+import com.obal.meta.GeneralEntity;
+import com.obal.meta.accessor.IMetaAttrAccessor;
 
 public class EntitySetup {
 	

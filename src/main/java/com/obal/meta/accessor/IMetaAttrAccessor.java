@@ -1,12 +1,12 @@
-package com.obal.core.meta.accessor;
+package com.obal.meta.accessor;
 
 import java.util.List;
 
 import com.obal.core.EntryKey;
 import com.obal.core.IBaseAccessor;
-import com.obal.core.meta.EntityAttr;
-import com.obal.core.meta.EntityMeta;
 import com.obal.exception.AccessorException;
+import com.obal.meta.EntityAttr;
+import com.obal.meta.EntityMeta;
 
 public interface IMetaAttrAccessor extends IBaseAccessor{
 
