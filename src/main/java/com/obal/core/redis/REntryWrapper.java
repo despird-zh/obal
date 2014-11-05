@@ -286,9 +286,13 @@ public abstract class REntryWrapper<GB extends EntryInfo> {
 	 **/
 	public void putMapValue(Jedis jedis,String key, EntityAttr attr, Map<String,Object> mapVal){
 		byte[] bval = null;
+		
 		String newkey = key + CoreConstants.KEYS_SEPARATOR + attr.getQualifier();
+		
     	if(mapVal == null) return;    	
+    	
     	for(Map.Entry<String,Object> pe:mapVal.entrySet()){
+    		
 	    	switch(attr.type){
 				case INT:
 					bval = Bytes.toBytes((Integer)pe.getValue());

@@ -61,7 +61,6 @@ public abstract class REntityAccessor <GB extends EntryInfo> extends EntityAcces
 		BaseEntity entitySchema = (BaseEntity)getEntitySchema();
 
 		REntryWrapper<GB> wrapper = this.getEntryWrapper();
-
 		wrapper.parse(entitySchema.getEntityMeta().getAllAttrs(), this.jedis,entryInfo);
 
 		rtv = entryInfo.getEntryKey();
@@ -117,6 +116,7 @@ public abstract class REntityAccessor <GB extends EntryInfo> extends EntityAcces
 		return rtv;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <K> K getEntryAttr(String entryKey, String attrName)
 			throws AccessorException {
@@ -124,23 +124,26 @@ public abstract class REntityAccessor <GB extends EntryInfo> extends EntityAcces
 		BaseEntity entitySchema = (BaseEntity)getEntitySchema();
 		EntityAttr attr = entitySchema.getEntityMeta().getAttr(attrName);
     	REntryWrapper<GB> wrapper = (REntryWrapper<GB>)getEntryWrapper();
-
+    	String redisKey = entitySchema.getEntityName() + CoreConstants.KEYS_SEPARATOR + entryKey;
     	switch(attr.mode){
 	    	case PRIMITIVE:
-	    		byte[] cell = jedis.hget(entryKey.getBytes(), attr.getAttrName().getBytes());
+	    		byte[] cell = jedis.hget(redisKey.getBytes(), attr.getAttrName().getBytes());
 				rtv = wrapper.getPrimitiveValue(attr, cell);
 	    		break;
-	    	case MAP:			
-	        	Map<byte[], byte[]> cells = jedis.hgetAll(entryKey.getBytes());
+	    	case MAP:
+	    		redisKey += CoreConstants.KEYS_SEPARATOR + attr.getAttrName();
+	        	Map<byte[], byte[]> cells = jedis.hgetAll(redisKey.getBytes());
 				rtv = wrapper.getMapValue(attr, cells);		    		
 	    		break;
 	    	case LIST:
-	    		long len = jedis.llen(entryKey);
-	    		List<byte[]> celllist = jedis.lrange(entryKey.getBytes(), 0, len);
+	    		redisKey += CoreConstants.KEYS_SEPARATOR + attr.getAttrName();
+	    		long len = jedis.llen(redisKey);
+	    		List<byte[]> celllist = jedis.lrange(redisKey.getBytes(), 0, len);
 				rtv = wrapper.getListValue(attr, celllist);		    		
 	    		break;
 	    	case SET:
-	    		Set<byte[]> cellset = jedis.smembers(entryKey.getBytes());
+	    		redisKey += CoreConstants.KEYS_SEPARATOR + attr.getAttrName();
+	    		Set<byte[]> cellset = jedis.smembers(redisKey.getBytes());
 				rtv = wrapper.getSetValue(attr, cellset);	
 	    		break;
 	    	default:
@@ -158,7 +161,8 @@ public abstract class REntityAccessor <GB extends EntryInfo> extends EntityAcces
 		for(String entrykey:entryKeys){
 			
 			String redisKey = entitySchema.getEntityName()+ CoreConstants.KEYS_SEPARATOR + entrykey;
-			jedis.del(redisKey); // delete primitive data
+			// delete primitive data
+			jedis.del(redisKey); 
 			for(EntityAttr attr:attrs){
 				// delete non-primitive data
 				jedis.del(redisKey + CoreConstants.KEYS_SEPARATOR + attr.getAttrName());
@@ -166,6 +170,11 @@ public abstract class REntityAccessor <GB extends EntryInfo> extends EntityAcces
 		}
 	}
 
+	/**
+	 * Since we use redis mostly for the chache of hot data purpose, so the scan implementation most time 
+	 * is ignored. get/put by key operations is enough.
+	 *  
+	 **/
 	@Deprecated
 	@Override
 	public List<GB> scanEntry(EntryFilter<?> scanfilter)
@@ -174,6 +183,10 @@ public abstract class REntityAccessor <GB extends EntryInfo> extends EntityAcces
 		return null;
 	}
 
+	/**
+	 * Scan is deprecated, so do this. 
+	 * @see #scanEntry(EntryFilter) 
+	 **/
 	@Deprecated
 	@Override
 	public abstract boolean isFilterSupported(EntryFilter<?> scanfilter,
