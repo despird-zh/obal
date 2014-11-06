@@ -84,7 +84,7 @@ public abstract class HEntityAccessor<GB extends EntryInfo> extends EntityAccess
 	public abstract HEntryWrapper<GB> getEntryWrapper();
 		
 	@Override
-	public List<GB> scanEntry(EntryFilter<?> scanfilter) throws AccessorException{
+	public List<GB> doScanEntry(EntryFilter<?> scanfilter) throws AccessorException{
 		
 		List<GB> result = new LinkedList<GB>();
 		HEntryWrapper<GB> wrapper = this.getEntryWrapper();
@@ -137,7 +137,8 @@ public abstract class HEntityAccessor<GB extends EntryInfo> extends EntityAccess
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <K> K getEntryAttr(String entryKey ,String attrName ) throws AccessorException{
+	@Override
+	public <K> K doGetEntryAttr(String entryKey ,String attrName ) throws AccessorException{
 		
 		HTableInterface table = null;
 		Object rtv = null;
@@ -194,7 +195,7 @@ public abstract class HEntityAccessor<GB extends EntryInfo> extends EntityAccess
 	}
 	
 	@Override
-	public GB getEntry(String rowkey) throws AccessorException {
+	public GB doGetEntry(String rowkey) throws AccessorException {
 		HTableInterface table = null;
 		GB rtv = null;
 		BaseEntity entrySchema = (BaseEntity)getEntitySchema();
@@ -223,7 +224,8 @@ public abstract class HEntityAccessor<GB extends EntryInfo> extends EntityAccess
 	}
 	
 	@SuppressWarnings("unchecked")
-	public EntryKey putEntryAttr(String entryKey, String attrName,  Object value) throws AccessorException{
+	@Override
+	public EntryKey doPutEntryAttr(String entryKey, String attrName,  Object value) throws AccessorException{
 		
 		HTableInterface table = null;
 		EntryKey rtv = null;
@@ -281,7 +283,7 @@ public abstract class HEntityAccessor<GB extends EntryInfo> extends EntityAccess
 	}
 	
 	@Override
-	public EntryKey putEntry(GB entryInfo) throws AccessorException {
+	public EntryKey doPutEntry(GB entryInfo) throws AccessorException {
 		HTableInterface table = null;
 		EntryKey rtv = null;
 		BaseEntity entrySchema = (BaseEntity)getEntitySchema();
@@ -308,7 +310,7 @@ public abstract class HEntityAccessor<GB extends EntryInfo> extends EntityAccess
 	}
 	
 	@Override
-	public void deleteEntry(String... rowkey) throws AccessorException {
+	public void doDelEntry(String... rowkey) throws AccessorException {
 		HTableInterface table = null;
 		BaseEntity entrySchema = (BaseEntity)getEntitySchema();
 		try {

@@ -56,7 +56,8 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 		EntityAttr attr = null;
 		try{
 			attraccessor = AccessorFactory.getInstance().buildEmbedEntityAccessor(this, EntityConstants.ENTITY_META_ATTR);
-			RawEntry minfo = attraccessor.getEntry(attrKey);
+
+			RawEntry minfo = attraccessor.doGetEntry(attrKey);
 			String attrName = (String)minfo.get("i_attr_name");
 			String column = (String)minfo.get("i_column");
 			String qualifier = (String)minfo.get("i_qualifier");
@@ -96,7 +97,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 		try{
 			attraccessor = AccessorFactory.getInstance().buildEmbedEntityAccessor(this, EntityConstants.ENTITY_META_ATTR);
 		
-			attrs = attraccessor.scanEntry(new EntryFilter<Filter>(filter1));
+			attrs = attraccessor.doScanEntry(new EntryFilter<Filter>(filter1));
 			
 			rtv = new ArrayList<EntityAttr>();
 			for(RawEntry minfo:attrs){
@@ -155,7 +156,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 			minfo.put("i_newcreate", new Date());
 			minfo.put("i_lastmodify", new Date());
 						
-			return attraccessor.putEntry(minfo);
+			return attraccessor.doPutEntry(minfo);
 			
 		} catch (EntityException e) {
 			
@@ -179,7 +180,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 		try{
 			metaAccr = AccessorFactory.getInstance().buildEmbedEntityAccessor(this, EntityConstants.ENTITY_META_INFO);
 		
-			RawEntry minfo = metaAccr.getEntry(entityName);
+			RawEntry minfo = metaAccr.doGetEntry(entityName);
 			meta = new EntityMeta(entityName);
 			meta.setSchemaClass((String)minfo.get("i_schema_class"));
 			meta.setDescription((String)minfo.get("i_description"));
@@ -205,7 +206,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 		try{
 			
 			metaAccr = AccessorFactory.getInstance().buildEmbedEntityAccessor(this, EntityConstants.ENTITY_META_INFO);
-			rlist = metaAccr.scanEntry(null);
+			rlist = metaAccr.doScanEntry(null);
 			rtv = new ArrayList<EntityMeta>();
 		
 			for(RawEntry ri:rlist){
@@ -254,7 +255,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 			minfo.put("i_lastmodify", new Date());
 			minfo.put("i_schemas", meta.getSchemas());
 						
-			EntryKey mkey = metaAccr.putEntry(minfo);
+			EntryKey mkey = metaAccr.doPutEntry(minfo);
 			
 			Map<String,String> attrmap = new HashMap<String,String>();
 			
@@ -267,8 +268,8 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 			}
 			
 			if(!attrmap.isEmpty())
-				metaAccr.putEntryAttr(mkey.getKey(), "i_attributes", attrmap);
-			
+				metaAccr.doPutEntryAttr(mkey.getKey(), "i_attributes", attrmap);
+
 			return mkey;
 			
 		} catch (BaseException e) {

@@ -53,7 +53,8 @@ public class CacheRedisHandler<K extends EntryKey> implements CacheBridge<K>{
 						principal, 
 						cacheData.getEntityName());	
 				
-			eaccessor.putEntry(cacheData);
+
+			eaccessor.doPutEntry(cacheData);
 			
 		} catch (AccessorException e) {
 			
@@ -84,7 +85,7 @@ public class CacheRedisHandler<K extends EntryKey> implements CacheBridge<K>{
 						principal, 
 						entityName);	
 				
-			cacheData = eaccessor.getEntry(key);
+			cacheData = eaccessor.doGetEntry(key);
 			
 		} catch (AccessorException e) {
 			

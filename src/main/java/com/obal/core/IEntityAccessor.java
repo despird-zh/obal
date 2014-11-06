@@ -46,7 +46,7 @@ public interface IEntityAccessor <GB extends EntryKey> extends IBaseAccessor{
 	 * put entry object
 	 * @param entryInfo the entry information
 	 **/
-	public abstract EntryKey putEntry(GB entryInfo) throws AccessorException;
+	public abstract EntryKey doPutEntry(GB entryInfo) throws AccessorException;
 	
 	/**
 	 * put attribute to entry
@@ -57,14 +57,14 @@ public interface IEntityAccessor <GB extends EntryKey> extends IBaseAccessor{
 	 * 
 	 *  @return EntryKey the key updated
 	 **/
-	public abstract EntryKey putEntryAttr(String entryKey, String attrName, Object value) throws AccessorException;
+	public abstract EntryKey doPutEntryAttr(String entryKey, String attrName, Object value) throws AccessorException;
 	
 	/**
 	 * get entry object
 	 * @param entrykey the entry key
 	 * @return GB - the entry information
 	 **/
-	public abstract GB getEntry(String entryKey)throws AccessorException;
+	public abstract GB doGetEntry(String entryKey)throws AccessorException;
 
 	/**
 	 * get entry attribute 
@@ -73,20 +73,20 @@ public interface IEntityAccessor <GB extends EntryKey> extends IBaseAccessor{
 	 * 
 	 *  @return the value of attribute
 	 **/
-	public abstract <K> K getEntryAttr(String entryKey,String attrName) throws AccessorException;
+	public abstract <K> K doGetEntryAttr(String entryKey,String attrName) throws AccessorException;
 	
 	/**
 	 * delete entry object
 	 * @param entrykey the entry key array
 	 **/
-	public abstract void deleteEntry(String... entryKey)throws AccessorException;
+	public abstract void doDelEntry(String... entryKey)throws AccessorException;
 
 	/**
 	 * get entry object list
 	 * @param scan the scan object
 	 * @return List<GB> - the entry information
 	 **/
-	public abstract List<GB> scanEntry(EntryFilter<?> scanfilter)throws AccessorException;
+	public abstract List<GB> doScanEntry(EntryFilter<?> scanfilter)throws AccessorException;
 
 	/**
 	 * check filter object is supported or not

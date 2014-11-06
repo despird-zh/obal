@@ -55,7 +55,7 @@ public abstract class REntityAccessor <GB extends EntryInfo> extends EntityAcces
 	public abstract REntryWrapper<GB> getEntryWrapper();
 	
 	@Override
-	public EntryKey putEntry(GB entryInfo) throws AccessorException {
+	public EntryKey doPutEntry(GB entryInfo) throws AccessorException {
 
 		EntryKey rtv = null;
 		BaseEntity entitySchema = (BaseEntity)getEntitySchema();
@@ -70,7 +70,7 @@ public abstract class REntityAccessor <GB extends EntryInfo> extends EntityAcces
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public EntryKey putEntryAttr(String entryKey, String attrName, Object value)
+	public EntryKey doPutEntryAttr(String entryKey, String attrName, Object value)
 			throws AccessorException {
 		EntryKey rtv = null;
 		BaseEntity entitySchema = (BaseEntity)getEntitySchema();
@@ -108,7 +108,7 @@ public abstract class REntityAccessor <GB extends EntryInfo> extends EntityAcces
 	}
 
 	@Override
-	public GB getEntry(String entryKey) throws AccessorException {
+	public GB doGetEntry(String entryKey) throws AccessorException {
 		GB rtv = null;
 		BaseEntity entrySchema = (BaseEntity)getEntitySchema();
 		REntryWrapper<GB> wrapper = (REntryWrapper<GB>)getEntryWrapper();
@@ -118,7 +118,7 @@ public abstract class REntityAccessor <GB extends EntryInfo> extends EntityAcces
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <K> K getEntryAttr(String entryKey, String attrName)
+	public <K> K doGetEntryAttr(String entryKey, String attrName)
 			throws AccessorException {
 		Object rtv = null;
 		BaseEntity entitySchema = (BaseEntity)getEntitySchema();
@@ -153,7 +153,7 @@ public abstract class REntityAccessor <GB extends EntryInfo> extends EntityAcces
 	}
 
 	@Override
-	public void deleteEntry(String... entryKeys) throws AccessorException {
+	public void doDelEntry(String... entryKeys) throws AccessorException {
 		BaseEntity entitySchema = (BaseEntity)getEntitySchema();
 		// get non-primitive attributes
 		List<EntityAttr> attrs = entitySchema.getEntityMeta().getAttrs(false);
@@ -177,7 +177,7 @@ public abstract class REntityAccessor <GB extends EntryInfo> extends EntityAcces
 	 **/
 	@Deprecated
 	@Override
-	public List<GB> scanEntry(EntryFilter<?> scanfilter)
+	public List<GB> doScanEntry(EntryFilter<?> scanfilter)
 			throws AccessorException {
 		// TODO Auto-generated method stub
 		return null;
