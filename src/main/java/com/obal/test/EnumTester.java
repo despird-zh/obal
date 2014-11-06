@@ -13,6 +13,7 @@ public class EnumTester {
 		 System.out.println("-------a:"+a);
 		 System.out.println("-------a:"+ByteValueUtils.byteToBit(a.toByte()));
 		 a =  AclPrivilege.READ;
+		 		  System.out.println("-----asdf--a:"+a);
 		 System.out.println("-------a:"+a);
 		 System.out.println("-------a:"+ByteValueUtils.byteToBit(a.toByte()));
 	 }
