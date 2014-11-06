@@ -15,5 +15,7 @@ public class EnumTester {
 		 a =  AclPrivilege.READ;
 		 System.out.println("-------a:"+a);
 		 System.out.println("-------a:"+ByteValueUtils.byteToBit(a.toByte()));
+		 
+		 System.out.println("-------a:"+ByteValueUtils.byteToBit(a.toByte()));
 	 }
 }
