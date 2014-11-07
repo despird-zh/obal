@@ -20,11 +20,6 @@ public abstract class AuditAspect {
 	@Pointcut
 	public abstract void operation();
 
-	@After("operation()")
-	public void auditOperation(JoinPoint jp) {
-		System.out.println("--after operation");
-	}
-
 	@Before("operation()")
 	public void beforeOperation(JoinPoint jp) {
 		Object[] paramValues = jp.getArgs();
@@ -40,17 +35,17 @@ public abstract class AuditAspect {
 		AspectUtils.getLogger(jp).info(logLine.toString());
 	}
 	
-	@AfterReturning(pointcut="operation()",returning="r")
-	public void afterOperation(Object r,JoinPoint jp) {
+	@AfterReturning(pointcut="operation()",returning="rtv")
+	public void afterOperation(Object rtv,JoinPoint jp) {
 
 		Object target = jp.getTarget();
 		CacheTestAccessor cta = (CacheTestAccessor)target;
 		DemoP dp= cta.getdp();
 		System.out.println("DemoP is:"+dp.dstr);
 		
-		if (r != null && (!(r instanceof List) || ((List) r).size() != 0)) {
+		if (rtv != null && (!(rtv instanceof List) || ((List) rtv).size() != 0)) {
 			StringBuilder rv = new StringBuilder("Return Value : ");
-			rv.append(AspectUtils.toString(r));
+			rv.append(AspectUtils.toString(rtv));
 			AspectUtils.getLogger(jp).info(rv.toString());
 		}
 		
