@@ -23,22 +23,44 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Here will extend other attributes to entryInfo
+ * Here will extend other attributes to entryInfo, As for the common information they are derived from
+ * ITraceable interface.
+ * 
+ * @author despird
+ * @version 0.1 2014-2-1 
+ * 
+ * @see ITraceable
  **/
 public abstract class EntryInfo extends EntryKey implements ITraceable, Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
-	public EntryInfo(String entryName, String key){
+	/**
+	 * Constructor with entity name and entry key 
+	 * 
+	 * @param entityName the entity name
+	 * @param key the entry key
+	 **/
+	public EntryInfo(String entityName, String key){
 		
-		super(entryName, key);
+		super(entityName, key);
 	}
 
+	/**
+	 * Constructor with entry key 
+	 * 
+	 * @param key the entry key
+	 **/
 	public EntryInfo(EntryKey key){
 		
 		super(key.getEntityName(), key.getKey());
 	}
 	
+	/**
+	 * Get the entry key
+	 * 
+	 * @return EntryKey the entry key
+	 **/
 	public EntryKey getEntryKey(){
 		
 		return new EntryKey(getEntityName(), getKey());
@@ -47,7 +69,7 @@ public abstract class EntryInfo extends EntryKey implements ITraceable, Serializ
 	private String creator ;
 	private String modifier ;
 	private Date newCreate;
-	private Date lastMofify;
+	private Date lastModify;
 
 	public String getCreator() {
 		return creator;
@@ -73,12 +95,12 @@ public abstract class EntryInfo extends EntryKey implements ITraceable, Serializ
 		this.newCreate = newCreate;
 	}
 
-	public Date getLastMofify() {
-		return lastMofify;
+	public Date getLastModify() {
+		return lastModify;
 	}
 
-	public void setLastMofify(Date lastMofify) {
-		this.lastMofify = lastMofify;
+	public void setLastModify(Date lastModify) {
+		this.lastModify = lastModify;
 	}	
 	
 }

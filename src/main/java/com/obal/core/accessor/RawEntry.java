@@ -41,15 +41,16 @@ public class RawEntry extends EntryInfo{
 	
 	/**
 	 * constructor
-	 * @param entryName the entry name
+	 * @param entityName the entry name
 	 * @param key the entry key 
 	 **/
-	public RawEntry(String entryName, String key) {
-		super(entryName, key);
+	public RawEntry(String entityName, String key) {
+		super(entityName, key);
 	}
 
 	/**
 	 * constructor
+	 * 
 	 * @param key the entry key 
 	 **/
 	public RawEntry(EntryKey key) {
@@ -58,6 +59,7 @@ public class RawEntry extends EntryInfo{
 	
 	/**
 	 * store key-value pair
+	 * 
 	 * @param key
 	 * @param value
 	 *  

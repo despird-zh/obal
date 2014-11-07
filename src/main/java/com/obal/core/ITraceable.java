@@ -64,10 +64,10 @@ public interface ITraceable {
 	/**
 	 * Get modify date of entry 
 	 **/
-	public Date getLastMofify() ;
+	public Date getLastModify() ;
 
 	/**
 	 * Set modify date of entry 
 	 **/
-	public void setLastMofify(Date lastMofify) ;
+	public void setLastModify(Date lastModify) ;
 }

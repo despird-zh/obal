@@ -34,6 +34,7 @@ public abstract class EntityAccessor<GB extends EntryKey> implements IEntityAcce
 	
 	/**
 	 * Constructor with entry schema information 
+	 * 
 	 * @param entitySchema the schema of entity
 	 **/
 	public EntityAccessor(BaseEntity entitySchema){
@@ -43,6 +44,7 @@ public abstract class EntityAccessor<GB extends EntryKey> implements IEntityAcce
 	
 	/**
 	 * Get the entity schema  
+	 * 
 	 * @return entity schema
 	 **/
 	@Override

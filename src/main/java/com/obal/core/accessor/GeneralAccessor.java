@@ -30,7 +30,7 @@ import com.obal.core.security.PrincipalAware;
  **/
 public abstract class GeneralAccessor implements IBaseAccessor,PrincipalAware {
 	
-	/** threadlocal */
+	/** thread local */
 	private ThreadLocal<Principal> localPrincipal = new ThreadLocal<Principal>();
 	
 	private boolean embed = false;
