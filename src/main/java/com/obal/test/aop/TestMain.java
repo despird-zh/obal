@@ -10,9 +10,9 @@ public class TestMain extends BlankTester{
 		
 		CacheTestAccessor cta = new CacheTestAccessor();
 		
-		cta.doPutDemo1();
+		cta.doPutDemo1("ss","tt");
 		
-		String m = cta.doGetDemo1();
+		String m = cta.doGetDemo1("nn","mm");
 		System.out.println(m);
 		cta.doDelDemo1();
 	}
