@@ -10,6 +10,8 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.CodeSignature;
 
+import com.obal.test.aop.CacheTestAccessor;
+import com.obal.test.aop.DemoP;
 import com.obal.util.AspectUtils;
 
 @Aspect
@@ -41,12 +43,17 @@ public abstract class AuditAspect {
 	@AfterReturning(pointcut="operation()",returning="r")
 	public void afterOperation(Object r,JoinPoint jp) {
 
+		Object target = jp.getTarget();
+		CacheTestAccessor cta = (CacheTestAccessor)target;
+		DemoP dp= cta.getdp();
+		System.out.println("DemoP is:"+dp.dstr);
+		
 		if (r != null && (!(r instanceof List) || ((List) r).size() != 0)) {
 			StringBuilder rv = new StringBuilder("Return Value : ");
 			rv.append(AspectUtils.toString(r));
 			AspectUtils.getLogger(jp).info(rv.toString());
 		}
-
+		
 		Object[] paramValues = jp.getArgs();
 		String[] paramNames = ((CodeSignature) jp.getStaticPart()
 				.getSignature()).getParameterNames();
@@ -58,3 +65,4 @@ public abstract class AuditAspect {
 		AspectUtils.getLogger(jp).info(logLine.toString());
 	}
 }
+ 

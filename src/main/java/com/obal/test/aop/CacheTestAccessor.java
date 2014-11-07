@@ -4,6 +4,8 @@ import com.obal.audit.aop.Auditable;
 
 public class CacheTestAccessor {
 	
+	DemoP dp = new DemoP("CTA String --s-s");
+	
 	@Auditable(verb="putdemo")
 	public void doPutDemo1(String a1,String a2){
 		
@@ -20,5 +22,10 @@ public class CacheTestAccessor {
 	public void doDelDemo1(){
 		
 		System.out.println("--------calling doDelDemo1");
+	}
+	
+	public DemoP getdp(){
+		
+		return dp;
 	}
 }
