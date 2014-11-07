@@ -7,8 +7,8 @@
               <concrete-aspect name="com.obal.cache.aop.CacheAspectImpl"
                                extends="com.obal.cache.aop.CacheAspect">
                 <pointcut name="cacheput" expression="execution(* com.obal.test.aop.. *.doPut*(..))"/>
-                <pointcut name="cacheget" expression="within(com.obal.test.aop.*)"/>
-                <pointcut name="cachedel" expression="within(com.obal.test.aop.*)"/>
+                <pointcut name="cacheget" expression="execution(* com.obal.test.aop.. *.doGet*(..))"/>
+                <pointcut name="cachedel" expression="execution(* com.obal.test.aop.. *.doDel*(..))"/>
               </concrete-aspect>
 
               <!-- Of the set of aspects declared to the weaver
