@@ -27,8 +27,8 @@
               <exclude within="bar.*"/>-->
 
               <!-- Dump all types within the "com.foo.bar" package
-                   to the "./_ajdump" folder on disk (for diagnostic purposes) -->
-              <dump within="com.obal.test.aop.*"/>
+                   to the "./_ajdump" folder on disk (for diagnostic purposes) 
+              <dump within="com.obal.test.aop.*"/>-->
 
             </weaver>
 
