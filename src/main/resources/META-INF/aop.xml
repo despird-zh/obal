@@ -5,7 +5,7 @@
 
               <!-- define a concrete aspect inline -->
               <concrete-aspect name="com.obal.cache.aop.CacheAspectImpl"
-                               extends="com.obal.cache.aop.CacheAbstractAspect">
+                               extends="com.obal.cache.aop.CacheAspect">
                 <pointcut name="cacheAfterPut" expression="execution(* com.obal.test.aop..*.doPut*(..))"/>
  				<pointcut name="cacheAroundGet" expression="execution(String com.obal.test.aop..*.doGet*(..))"/>
                 <pointcut name="cacheAfterDel" expression="execution(* com.obal.test.aop..*.doDel*(..))"/>
