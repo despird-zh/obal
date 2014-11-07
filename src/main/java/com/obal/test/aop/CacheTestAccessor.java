@@ -6,7 +6,7 @@ public class CacheTestAccessor {
 	
 	DemoP dp = new DemoP("CTA String --s-s");
 	
-	@Auditable(verb="putdemo")
+	@Auditable(verb="putdemo", object = "", subject = "")
 	public void doPutDemo1(String a1,String a2){
 		
 		System.out.println("--------calling doPutDemo1");

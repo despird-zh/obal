@@ -26,6 +26,7 @@ public abstract class CacheAspect {
     	System.out.println("--around start get");
     	String result = (String)jp.proceed();
     	System.out.println("--around end get");
+    	result = "sdf33eee";
     	return result;
     }
     

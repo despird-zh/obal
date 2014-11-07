@@ -21,10 +21,10 @@ import com.obal.core.EntryInfo;
 
 public class AuditEvent extends EntryInfo{
 
-	public static final String ENTRY_TYPE_AUDIT="_ENTRY_AUDIT";
-	
 	private static final long serialVersionUID = 1L;
-	
+
+	public static final String ENTRY_TYPE_AUDIT="_ENTRY_AUDIT";
+
 	private Date timestamp;
 	String subject;
 	String verb;
@@ -32,8 +32,7 @@ public class AuditEvent extends EntryInfo{
 
 	Map<String, String> predicateMap = new HashMap<String, String>();
 
-	Application originApp;
-	Application clientApp;
+	AccessPoint accessPoint;
 	
 	public AuditEvent(String entryType, String key) {
 		super(entryType, key);
@@ -77,22 +76,6 @@ public class AuditEvent extends EntryInfo{
 		this.verb = verb;
 	}
 
-	public Application getClientApp() {
-		return clientApp;
-	}
-
-	public void setClientApp(Application clientApp) {
-		this.clientApp = clientApp;
-	}
-
-	public Application getOriginApp() {
-		return originApp;
-	}
-
-	public void setOriginApp(Application originApp) {
-		this.originApp = originApp;
-	}
-
 	public void addPredicate(Predicate predicate) {
 		predicateMap.put(predicate.getName(), predicate.getValue());
 	}
@@ -103,6 +86,14 @@ public class AuditEvent extends EntryInfo{
 
 	public Map<String, String> getPredicateMap() {
 		return predicateMap;
+	}
+
+	public AccessPoint getAccessPoint() {
+		return accessPoint;
+	}
+
+	public void setAccessPoint(AccessPoint accessPoint) {
+		this.accessPoint = accessPoint;
 	}
 
 	@Override
@@ -157,20 +148,6 @@ public class AuditEvent extends EntryInfo{
 			return false;
 		}
 
-		if (clientApp == null) {
-			if (other.clientApp != null)
-				return false;
-		} else if (!clientApp.equals(other.clientApp)) {
-			return false;
-		}
-
-		if (originApp == null) {
-			if (other.originApp != null)
-				return false;
-		} else if (!originApp.equals(other.originApp)) {
-			return false;
-		}
-
 		if (predicateMap == null) {
 			if (other.predicateMap != null)
 				return false;
@@ -189,11 +166,17 @@ public class AuditEvent extends EntryInfo{
 		retValue = "AuditEvent(key=" + this.getKey() + ", timestamp=" + this.timestamp
 				+ ", subject=" + this.subject + ", verb=" + this.verb
 				+ ", object=" + this.object + ", predicateMap = " + this.predicateMap 
-				+ ", originApp=" + this.originApp + ", clientApp=" + this.clientApp + ")";
+				+ ")";
 
 		return retValue;
 	}
 	
+	/**
+	 * Copy information from the parameter event
+	 * 
+	 * @param fromOne the event object.
+	 * 
+	 **/
 	public void copy(AuditEvent fromOne){
 		
 		this.setKey(fromOne.getKey());
@@ -202,8 +185,7 @@ public class AuditEvent extends EntryInfo{
 		this.setVerb(fromOne.getVerb());
 		this.setSubject(fromOne.getSubject());
 		this.setObject(fromOne.getObject());
-		this.setClientApp(fromOne.getClientApp());
-		this.setOriginApp(fromOne.getOriginApp());
+		this.setAccessPoint(fromOne.getAccessPoint());
 		this.setPredicateMap(fromOne.getPredicateMap());
 	}
 	
