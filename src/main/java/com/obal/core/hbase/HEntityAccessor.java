@@ -52,7 +52,7 @@ import com.obal.meta.EntityAttr;
  * Base class of entry accessor, it holds HConnection object 
  * 
  **/
-public abstract class HEntityAccessor<GB extends EntryInfo> extends EntityAccessor<GB> implements HConnAware {
+public abstract class HEntityAccessor<GB extends EntryKey> extends EntityAccessor<GB> implements HConnAware {
 	
 	Logger LOGGER = LoggerFactory.getLogger(HEntityAccessor.class);
 	
@@ -294,7 +294,7 @@ public abstract class HEntityAccessor<GB extends EntryInfo> extends EntityAccess
             Put put = (Put)wrapper.parse(entrySchema.getEntityMeta().getAllAttrs(),entryInfo);
         	table.put(put);
         	table.flushCommits();
-        	rtv = entryInfo.getEntryKey();
+        	rtv = entryInfo;
         	
         } catch (IOException e) {  
         	 throw new AccessorException("Error put entry row,key:{}",e,entryInfo.getKey());

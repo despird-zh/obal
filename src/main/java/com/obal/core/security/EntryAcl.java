@@ -8,7 +8,6 @@ import com.obal.core.util.CoreConstants;
 /**
  * EntryAcl is the entry access control list, item of it is access control setting for visitor
  * 
- * 
  * @author despird
  * @version 0.1 2014-3-1
  * @since 0.1

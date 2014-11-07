@@ -35,11 +35,12 @@ import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 
 import com.obal.core.EntryInfo;
+import com.obal.core.EntryKey;
 import com.obal.core.util.CoreConstants;
 import com.obal.exception.AccessorException;
 import com.obal.meta.EntityAttr;
 
-public abstract class REntryWrapper<GB extends EntryInfo> {
+public abstract class REntryWrapper<GB extends EntryKey> {
 
 	public static Logger LOGGER = LoggerFactory.getLogger(REntryWrapper.class);
 	/**

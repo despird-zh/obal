@@ -36,9 +36,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.obal.core.EntryInfo;
+import com.obal.core.EntryKey;
 import com.obal.meta.EntityAttr;
 
-public abstract class HEntryWrapper<GB extends EntryInfo> {
+public abstract class HEntryWrapper<GB extends EntryKey> {
 
 	public static Logger LOGGER = LoggerFactory.getLogger(HEntryWrapper.class);
 	/**

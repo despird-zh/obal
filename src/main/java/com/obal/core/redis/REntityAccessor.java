@@ -38,7 +38,7 @@ import com.obal.exception.AccessorException;
 import com.obal.meta.BaseEntity;
 import com.obal.meta.EntityAttr;
 
-public abstract class REntityAccessor <GB extends EntryInfo> extends EntityAccessor<GB> implements RJedisAware{
+public abstract class REntityAccessor <GB extends EntryKey> extends EntityAccessor<GB> implements RJedisAware{
 
 	Logger LOGGER = LoggerFactory.getLogger(REntityAccessor.class);
 	
@@ -63,7 +63,7 @@ public abstract class REntityAccessor <GB extends EntryInfo> extends EntityAcces
 		REntryWrapper<GB> wrapper = this.getEntryWrapper();
 		wrapper.parse(entitySchema.getEntityMeta().getAllAttrs(), this.jedis,entryInfo);
 
-		rtv = entryInfo.getEntryKey();
+		rtv = entryInfo;
 
 		return rtv;
 	}

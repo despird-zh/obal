@@ -5,9 +5,9 @@ import com.obal.exception.MetaException;
 import com.obal.meta.BaseEntity;
 import com.obal.meta.EntityMeta;
 
-public class AuditEntry extends BaseEntity{
+public class AuditEntity extends BaseEntity{
 
-	public AuditEntry(EntityMeta meta) {
+	public AuditEntity(EntityMeta meta) {
 		super(meta);
 	}
 

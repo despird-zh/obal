@@ -4,9 +4,9 @@ import com.obal.audit.aop.Auditable;
 
 public class CacheTestAccessor {
 	
-	DemoP dp = new DemoP("CTA String --s-s");
+	DemoBean dp = new DemoBean("CTA String --s-s");
 	
-	@Auditable(verb="putdemo")
+	@Auditable(verb="putdemo", object = "", subject = "")
 	public void doPutDemo1(String a1,String a2){
 		
 		System.out.println("--------calling doPutDemo1");
@@ -31,7 +31,7 @@ public class CacheTestAccessor {
 		System.out.println("--------calling doDelDemo1");
 	}
 	
-	public DemoP getdp(){
+	public DemoBean getdp(){
 		
 		return dp;
 	}
