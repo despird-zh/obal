@@ -7,5 +7,9 @@ public class TestMain {
 		CacheTestAccessor cta = new CacheTestAccessor();
 		
 		cta.doPutDemo1();
+		
+		String m = cta.doGetDemo1();
+		System.out.println(m);
+		cta.doDelDemo1();
 	}
 }
