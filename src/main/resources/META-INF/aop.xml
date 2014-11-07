@@ -13,7 +13,8 @@
               </concrete-aspect>
               <concrete-aspect name="com.obal.audit.aop.AuditAspectImpl"
                                extends="com.obal.audit.aop.AuditAspect">
-                <pointcut name="operation" expression="execution(* com.obal.test.aop..*.do*(..))"/>
+                
+                <pointcut name="operation" expression="execution(* com.obal.test.aop..*.do*(..)) &amp;&amp; @annotation(Auditable)"/>
  				                
               </concrete-aspect>
             </aspects>

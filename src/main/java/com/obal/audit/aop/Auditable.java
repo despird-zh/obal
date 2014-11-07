@@ -1,4 +1,4 @@
-package com.obal.audit;
+package com.obal.audit.aop;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;

@@ -1,7 +1,10 @@
 package com.obal.test.aop;
 
+import com.obal.audit.aop.Auditable;
+
 public class CacheTestAccessor {
 	
+	@Auditable(verb="putdemo")
 	public void doPutDemo1(String a1,String a2){
 		
 		System.out.println("--------calling doPutDemo1");
