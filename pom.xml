@@ -8,6 +8,9 @@
 	<hbase.version>0.98.5-hadoop2</hbase.version>
 	<jdk.home>C:\Program Files\Java\jdk1.6.0_45</jdk.home>
 	<jedis.version>2.6.0</jedis.version>
+	<comm.config>1.10</comm.config>
+	<aspectj.version>1.8.3</aspectj.version>
+	<disruptor.version>3.3.0</disruptor.version>
   </properties>
   <dependencies >
   	<dependency>  
@@ -33,26 +36,26 @@
 		<artifactId>jedis</artifactId>
 		<version>${jedis.version}</version>
 	</dependency>
-<dependency>
-	<groupId>org.aspectj</groupId>
-	<artifactId>aspectjrt</artifactId>
-	<version>1.8.3</version>
-</dependency>
-<dependency>
-	<groupId>org.aspectj</groupId>
-	<artifactId>aspectjweaver</artifactId>
-	<version>1.8.3</version>
-</dependency>
-
 	<dependency>
-		<groupId>com.lmax</groupId>
-		<artifactId>disruptor</artifactId>
-		<version>3.3.0</version>
+		<groupId>org.aspectj</groupId>
+		<artifactId>aspectjrt</artifactId>
+		<version>${aspectj.version}</version>
 	</dependency>
-	<dependency>  
+	<dependency>
+		<groupId>org.aspectj</groupId>
+		<artifactId>aspectjweaver</artifactId>
+		<version>${aspectj.version}</version>
+	</dependency>
+	
+		<dependency>
+			<groupId>com.lmax</groupId>
+			<artifactId>disruptor</artifactId>
+			<version>${disruptor.version}</version>
+		</dependency>
+		<dependency>  
 	      <groupId>commons-configuration</groupId>  
 	      <artifactId>commons-configuration</artifactId>  
-	      <version>1.10</version>  
+	      <version>${comm.config}</version>  
 	</dependency>  
   </dependencies >
   <build>
