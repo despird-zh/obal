@@ -1,8 +1,12 @@
 package com.obal.test.aop;
 
-public class TestMain {
+import com.obal.test.BlankTester;
+
+public class TestMain extends BlankTester{
 
 	public static void main(String[] ars){
+		
+		initLog4j();
 		
 		CacheTestAccessor cta = new CacheTestAccessor();
 		

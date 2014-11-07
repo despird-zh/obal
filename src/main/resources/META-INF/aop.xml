@@ -11,7 +11,11 @@
                 <pointcut name="cacheAfterDel" expression="execution(* com.obal.test.aop..*.doDel*(..))"/>
                 
               </concrete-aspect>
-
+              <concrete-aspect name="com.obal.audit.aop.AuditAspectImpl"
+                               extends="com.obal.audit.aop.AuditAspect">
+                <pointcut name="operation" expression="execution(* com.obal.test.aop..*.do*(..))"/>
+ 				                
+              </concrete-aspect>
             </aspects>
 
             <weaver options="-verbose -showWeaveInfo">
