@@ -35,9 +35,5 @@ public @interface CacheableDel {
 	 **/
 	String entity() default "";
 	
-	/**
-	 * the parameter name of attribute object or string name of attribute 
-	 **/
-	String attr() default "";
 	
 }
