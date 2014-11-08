@@ -6,15 +6,15 @@
               <!-- define a concrete aspect inline -->
               <concrete-aspect name="com.obal.cache.aop.CacheAspectImpl"
                                extends="com.obal.cache.aop.CacheAspect">
-                <pointcut name="cacheAfterPut" expression="execution(* com.obal.test.aop..*.doPut*(..))"/>
- 				<pointcut name="cacheAroundGet" expression="execution(String com.obal.test.aop..*.doGet*(..))"/>
-                <pointcut name="cacheAfterDel" expression="execution(* com.obal.test.aop..*.doDel*(..))"/>
+                <pointcut name="cacheAfterPut" expression="@annotation(CacheablePut)"/>
+ 				<pointcut name="cacheAroundGet" expression="execution(* com.obal.test.aop..*.do*(..)) &amp;&amp; @annotation(CacheableGet)"/>
+                <pointcut name="cacheAfterDel" expression="@annotation(CacheableDel)"/>
                 
               </concrete-aspect>
               <concrete-aspect name="com.obal.audit.aop.AuditAspectImpl"
                                extends="com.obal.audit.aop.AuditAspect">
                 
-                <pointcut name="operation" expression="execution(* com.obal.test.aop..*.do*(..)) &amp;&amp; @annotation(Auditable)"/>
+                <pointcut name="operation" expression="execution(* com.obal.test.aop..*.dox*(..)) &amp;&amp; @annotation(Auditable)"/>
  				                
               </concrete-aspect>
             </aspects>

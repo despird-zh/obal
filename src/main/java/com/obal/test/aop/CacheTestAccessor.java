@@ -18,13 +18,12 @@ public class CacheTestAccessor {
 	public String doPutDemo2(String a1,String a2){
 		
 		System.out.println("--------calling doPutDemo2");
-		return "===doget result===";
+		return "===doPutDemo2 result===";
 	}
 	
 	@CacheableGet(entrykey="key",entity="entityname")
 	public String doGetDemo1(String key,String entityname){
-		
-		
+				
 		System.out.println("--------calling doGetDemo1");
 		return "===doGetDemo1Value===";
 	}

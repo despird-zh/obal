@@ -24,7 +24,7 @@ public abstract class CacheAspect {
     @Around("cacheAroundGet()")
     public String aroundGet(ProceedingJoinPoint jp) throws Throwable{
     	System.out.println("--around start get");
-    	String result = (String)jp.proceed();
+    	String result =  (String)jp.proceed();
     	System.out.println("--around end get");
     	result = "sdf33eee";
     	return result;
