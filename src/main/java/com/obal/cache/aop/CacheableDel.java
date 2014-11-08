@@ -23,8 +23,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface CacheableDel {
-	
-	
+		
 	/**
 	 * the parameter name of EntryKey object or String value of key
 	 **/
@@ -35,9 +34,5 @@ public @interface CacheableDel {
 	 **/
 	String entity() default "";
 	
-	/**
-	 * the parameter name of attribute object or string name of attribute 
-	 **/
-	String attr() default "";
 	
 }

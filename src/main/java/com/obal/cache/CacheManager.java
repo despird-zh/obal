@@ -83,7 +83,7 @@ public class CacheManager{
 		ringBuffer.publish(sequence);  
 	}
 	
-	public void doCachePutAttr(EntryKey entryKey, String attrName, Object value){
+	public void cachePutAttr(EntryKey entryKey, String attrName, Object value){
 		
 		// Publishers claim events in sequence
 		long sequence = ringBuffer.next();
