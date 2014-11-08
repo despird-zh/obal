@@ -5,8 +5,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.obal.core.util.CoreConstants;
-
 /**
  * Cacheable indicate whether the method parameter or return value need cache operation
  * <p>
