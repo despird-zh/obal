@@ -32,54 +32,71 @@ import com.obal.core.EntryKey;
  **/
 public class CacheEvent{
 	
-	public static final String EVT_PUT = "_PUT";
-	public static final String EVT_DEL = "_DEL";
+	public static final String EVT_PUT = "_PUT_ENTRY";
+	public static final String EVT_PUT_ATTR = "_PUT_ATTR";
+	public static final String EVT_DEL = "_DEL_ENTRY";
 	private String type = EVT_PUT;
-    private EntryKey entry;
-    
-    private String attrName;
-    
-    private Object value;
-    
-    /**
-     * Get the entry information 
-     **/
-    public EntryKey getEntry() {
-    	
-    	return this.entry;
-    }
 
-    /**
-     * Set the entry information 
-     **/
-    public void setEntry(EntryKey entry) {
+	private Object value;
+	
+	public <K> K value(){
+		
+		return (K)this.value;
+	}
+    
+	public void setPutAttrData(String key,String entity,String attr,Object value){
+		
+		PutAttrData s = new PutAttrData();
+		s.key = key;
+		s.entity = entity;
+		s.attr = attr;
+		s.value = value;
+		
+		this.value = s;
+		
+	}
+	
+	public void setPutEntryData(EntryKey entryInfo){
+		
+		PutEntryData ped = new PutEntryData();
+		ped.entryInfo = entryInfo;
+		
+		this.value= ped;
+	}
+	
+	public void setDelData(String entity, String ...keys){
+		
+		DelEntryData ded = new DelEntryData();
+		ded.entity = entity;
+		ded.keys = keys;
+	}
+	
+    public static class PutAttrData{
     	
-    	this.entry = entry;
-    }
-
-    public void setAttrValue(String attrName, Object value){
-    	this.attrName = attrName;
-    	this.value = value;
+    	public String key = null;
+    	public String entity = null;
+    	public String attr = null;
+    	public Object value = null;
     }
     
-    public String attrName(){
+    public static class DelEntryData{
     	
-    	return this.attrName;
+    	public String entity = null;
+    	public String[] keys = null;
     }
     
-    public Object value(){
+    public static class PutEntryData{
     	
-    	return value;
+    	public EntryKey entryInfo = null;
     }
     
     public String type(String type){
     	
-    	if(type != null)
+    	if(null != type)
     		this.type = type;
     	
     	return this.type;
     }
-
     /**
      * The CacheEvent factroy disruptor use it to allocate elements in RingBuffer. 
      **/

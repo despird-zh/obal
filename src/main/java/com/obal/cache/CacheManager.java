@@ -76,8 +76,8 @@ public class CacheManager{
 		// Publishers claim events in sequence
 		long sequence = ringBuffer.next();
 		CacheEvent event = ringBuffer.get(sequence);
-
-		event.setEntry(entry); // this could be more complex with multiple fields
+		event.type(CacheEvent.EVT_PUT);
+		event.setPutEntryData(entry); // this could be more complex with multiple fields
 
 		// make the event available to EventProcessors
 		ringBuffer.publish(sequence);  
@@ -88,8 +88,8 @@ public class CacheManager{
 		// Publishers claim events in sequence
 		long sequence = ringBuffer.next();
 		CacheEvent event = ringBuffer.get(sequence);
-		event.setEntry(entryKey);
-		event.setAttrValue(attrName, value);
+		event.type(CacheEvent.EVT_PUT_ATTR);
+		event.setPutAttrData(entryKey.getKey(), entryKey.getEntityName(), attrName, value);
 		// make the event available to EventProcessors
 		ringBuffer.publish(sequence);  
 	}
@@ -111,7 +111,13 @@ public class CacheManager{
 	}
 	
 	public void cacheDel(String entityName, String ...keys){
-		
+		// Publishers claim events in sequence
+		long sequence = ringBuffer.next();
+		CacheEvent event = ringBuffer.get(sequence);
+		event.type(CacheEvent.EVT_DEL);
+		event.setDelData(entityName, keys);
+		// make the event available to EventProcessors
+		ringBuffer.publish(sequence);  
 		cacheBridge.doCacheDel(entityName, keys);
 	}
 	/**

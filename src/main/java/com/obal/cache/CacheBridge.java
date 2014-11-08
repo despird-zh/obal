@@ -44,7 +44,7 @@ public interface CacheBridge<K> {
 	 **/
 	public void doCachePut(K entry);
 	
-	public void doCachePutAttr(EntryKey entryKey, String attrName, Object value);
+	public void doCachePutAttr(String key, String entity,  String attrName, Object value);
 	
 	/**
 	 * Get the entry data from cache 
