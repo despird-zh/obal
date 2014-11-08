@@ -20,8 +20,8 @@ import com.obal.core.util.CoreConstants;
  * @See EntryKey
  **/
 @Target(ElementType.METHOD)
-public @interface Cacheable {
-	
+public @interface CacheableGet {
+
 	/**
 	 * decide where to store the cache
 	 * ie. it's the accessor builder name: redis or hbase 
