@@ -110,6 +110,10 @@ public class CacheManager{
 		return (M)cacheBridge.doCacheGetAttr(entityName, key, attrName);
 	}
 	
+	public void cacheDel(String entityName, String ...keys){
+		
+		cacheBridge.doCacheDel(entityName, keys);
+	}
 	/**
 	 * initial process 
 	 **/

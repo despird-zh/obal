@@ -25,7 +25,10 @@ public abstract class CacheAspect {
 	
 	@Pointcut
     abstract void cacheAfterPut();
-	    
+	
+	/**
+	 * cache object after put operation. 
+	 **/
     @After("cacheAfterPut()")
     public void afterPut(JoinPoint jp) throws Throwable{
 
@@ -149,7 +152,6 @@ public abstract class CacheAspect {
     	
     	CodeSignature codesign = (CodeSignature) jp.getStaticPart().getSignature();
     	String[] names = codesign.getParameterNames();
-//    	Class<?>[] types = codesign.getParameterTypes();
     	Object[] values = jp.getArgs();
     	
     	Object m = jp.getTarget();
@@ -241,6 +243,9 @@ public abstract class CacheAspect {
 	@Pointcut
     abstract void cacheAfterDel();
 	
+	/**
+	 * delete cache after delete operation 
+	 **/
     @After("cacheAfterDel()")
     public void afterDel(JoinPoint jp) {
     	System.out.println("--after del");

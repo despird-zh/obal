@@ -55,4 +55,6 @@ public interface CacheBridge<K> {
 	public K doCacheGet(String entityName, String key); 
 	
 	public <M> M doCacheGetAttr(String entityName, String key, String attrName); 
+	
+	public void doCacheDel(String entityName, String ... keys);
 }
