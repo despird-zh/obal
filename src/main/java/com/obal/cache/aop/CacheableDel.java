@@ -43,4 +43,8 @@ public @interface CacheableDel {
 	 **/
 	String attr() default "";
 	
+	/**
+	 * the name of object to be applied cache operation
+	 **/
+	String cache() default "";
 }
