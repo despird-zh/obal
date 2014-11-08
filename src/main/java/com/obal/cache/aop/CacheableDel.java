@@ -22,11 +22,6 @@ import com.obal.core.util.CoreConstants;
 @Target(ElementType.METHOD)
 public @interface CacheableDel {
 
-	/**
-	 * decide where to store the cache
-	 * ie. it's the accessor builder name: redis or hbase 
-	 **/
-	String store() default CoreConstants.BUILDER_REDIS;
 	
 	/**
 	 * the parameter name of EntryKey object or String value of key
