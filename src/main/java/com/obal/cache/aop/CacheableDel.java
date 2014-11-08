@@ -11,8 +11,8 @@ import com.obal.core.util.CoreConstants;
  * Cache operation usually occurs on two kinds of situation: entry or attribute.
  * as per store decide where to r/w cache.
  * </p>
- * <p>Entry value cache: need to specify necessary( entrykey+entity+value / entrykey+value )</p>
- * <p>Attribute value cache: need to specify necessary( entrykey+attr+value )</p>
+ * <p>Entry value cache: need to specify necessary( entrykey+entity / entrykey )</p>
+ * <p>Attribute value cache: need to specify necessary( entrykey+attr )</p>
  * 
  * @author despird
  * @version 0.1 2014-2-1
