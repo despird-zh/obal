@@ -23,12 +23,6 @@ import com.obal.core.util.CoreConstants;
 public @interface CacheablePut {
 
 	/**
-	 * decide where to store the cache
-	 * ie. it's the accessor builder name: redis or hbase 
-	 **/
-	String store() default CoreConstants.BUILDER_REDIS;
-	
-	/**
 	 * the parameter name of EntryKey object or String value of key
 	 **/
 	String entrykey() default "";
@@ -46,5 +40,5 @@ public @interface CacheablePut {
 	/**
 	 * the name of object to be applied cache operation
 	 **/
-	String cache() default "";
+	String value() default "";
 }

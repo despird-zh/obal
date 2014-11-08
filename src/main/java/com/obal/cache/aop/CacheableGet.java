@@ -1,6 +1,8 @@
 package com.obal.cache.aop;
 
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import com.obal.core.util.CoreConstants;
@@ -19,15 +21,10 @@ import com.obal.core.util.CoreConstants;
  * 
  * @See EntryKey
  **/
+@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface CacheableGet {
 
-	/**
-	 * decide where to store the cache
-	 * ie. it's the accessor builder name: redis or hbase 
-	 **/
-	String store() default CoreConstants.BUILDER_REDIS;
-	
 	/**
 	 * the parameter name of EntryKey object or String value of key
 	 **/

@@ -33,7 +33,11 @@ import com.obal.core.EntryKey;
 public class CacheEvent{
 	
     private EntryKey entry;
-
+    
+    private String attrName;
+    
+    private Object value;
+    
     /**
      * Get the entry information 
      **/
@@ -50,6 +54,20 @@ public class CacheEvent{
     	this.entry = entry;
     }
 
+    public void setAttrValue(String attrName, Object value){
+    	this.attrName = attrName;
+    	this.value = value;
+    }
+    
+    public String attrName(){
+    	
+    	return this.attrName;
+    }
+    
+    public Object value(){
+    	
+    	return value;
+    }
     /**
      * The CacheEvent factroy disruptor use it to allocate elements in RingBuffer. 
      **/

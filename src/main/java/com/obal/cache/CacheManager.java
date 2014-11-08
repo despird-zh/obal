@@ -26,6 +26,7 @@ import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.SleepingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
+import com.obal.core.EntryKey;
 
 /**
  * CacheManager provide entrance to get/put entry in-out backend cache.
@@ -42,7 +43,7 @@ public class CacheManager{
 	Disruptor<CacheEvent> disruptor = null;
 	RingBuffer<CacheEvent> ringBuffer = null;
 	ExecutorService executor = null;
-	CacheBridge<CacheEvent> cacheBridge = null;
+	CacheBridge<? extends EntryKey> cacheBridge = null;
 	
 	/** singleton instance */ 
 	private static CacheManager instance;
@@ -70,27 +71,43 @@ public class CacheManager{
 	 *  @param entry the entry object
 	 *  
 	 **/
-	public <K> void cachePut(K entry){
+	public <K extends EntryKey> void cachePut(K entry){
 		
 		// Publishers claim events in sequence
 		long sequence = ringBuffer.next();
 		CacheEvent event = ringBuffer.get(sequence);
 
-		event.setEntry(null); // this could be more complex with multiple fields
+		event.setEntry(entry); // this could be more complex with multiple fields
 
 		// make the event available to EventProcessors
 		ringBuffer.publish(sequence);  
 	}
 	
+	public void doCachePutAttr(EntryKey entryKey, String attrName, Object value){
+		
+		// Publishers claim events in sequence
+		long sequence = ringBuffer.next();
+		CacheEvent event = ringBuffer.get(sequence);
+		event.setEntry(entryKey);
+		event.setAttrValue(attrName, value);
+		// make the event available to EventProcessors
+		ringBuffer.publish(sequence);  
+	}
 	/**
 	 * fetch entry from cache 
 	 * @param entityName the entity name
 	 * @param key the key of entry data 
 	 **/
 	@SuppressWarnings("unchecked")
-	public <K> K catchGet(String entityName, String key){
+	public <K extends EntryKey> K cacheGet(String entityName, String key){
 		
 		return (K)cacheBridge.doCacheGet(entityName, key);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <M> M cacheGetAttr(String entityName, String key, String attrName){
+		
+		return (M)cacheBridge.doCacheGetAttr(entityName, key, attrName);
 	}
 	
 	/**
