@@ -20,7 +20,7 @@ import com.obal.core.util.CoreConstants;
  * @See EntryKey
  **/
 @Target(ElementType.METHOD)
-public @interface CacheableGet {
+public @interface CacheablePut {
 
 	/**
 	 * decide where to store the cache
@@ -43,4 +43,8 @@ public @interface CacheableGet {
 	 **/
 	String attr() default "";
 	
+	/**
+	 * the name of object to be applied cache operation
+	 **/
+	String cache() default "";
 }

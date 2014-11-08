@@ -20,7 +20,7 @@ import com.obal.core.util.CoreConstants;
  * @See EntryKey
  **/
 @Target(ElementType.METHOD)
-public @interface CacheableGet {
+public @interface CacheableDel {
 
 	/**
 	 * decide where to store the cache
