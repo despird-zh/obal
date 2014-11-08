@@ -25,7 +25,10 @@ public abstract class CacheAspect {
 	
 	@Pointcut
     abstract void cacheAfterPut();
-	    
+	
+	/**
+	 * cache object after put operation. 
+	 **/
     @After("cacheAfterPut()")
     public void afterPut(JoinPoint jp) throws Throwable{
 
@@ -149,7 +152,6 @@ public abstract class CacheAspect {
     	
     	CodeSignature codesign = (CodeSignature) jp.getStaticPart().getSignature();
     	String[] names = codesign.getParameterNames();
-//    	Class<?>[] types = codesign.getParameterTypes();
     	Object[] values = jp.getArgs();
     	
     	Object m = jp.getTarget();
@@ -241,8 +243,62 @@ public abstract class CacheAspect {
 	@Pointcut
     abstract void cacheAfterDel();
 	
+	/**
+	 * delete cache after delete operation 
+	 **/
     @After("cacheAfterDel()")
-    public void afterDel(JoinPoint jp) {
-    	System.out.println("--after del");
+    public void afterDel(JoinPoint jp) throws Throwable {
+    	String key = null;
+    	String entity = null;
+
+    	CodeSignature codesign = (CodeSignature) jp.getStaticPart().getSignature();
+    	String[] names = codesign.getParameterNames();
+    	Object[] values = jp.getArgs();
+    	
+    	Object m = jp.getTarget();
+    	Method jpmethod = m.getClass().getDeclaredMethod(codesign.getName(), codesign.getParameterTypes());
+    	CacheableDel cg = jpmethod.getAnnotation(CacheableDel.class);
+    	if(null == cg){
+    		LOGGER.warn("Method{}-{} not have CacheableDel annotation, ignore..", jp.getClass().getName(),codesign.getName());
+    		return;
+    	}
+    	
+    	key = cg.entrykey();
+    	entity = cg.entity();
+    	// parse the key value if it is EntryKey extract key and entity string.
+    	int index = ArrayUtils.indexOf(names, key);
+    	Object val = null;
+    	String[] keys = null;
+    	if(index > -1){
+	    	val = values[index];
+	    	if(val instanceof String){
+	    		key = (String)val;
+	    	}else if(val instanceof EntryKey){
+	    		key = ((EntryKey)val).getKey();    		
+	    		entity = StringUtils.isBlank(entity)?((EntryKey)val).getEntityName():entity;
+	    	}else if(val instanceof String[]){
+	    		keys = (String[])val;    		
+	    		
+	    	}else{
+	    		
+	    		LOGGER.warn("The key is assigned a unidentiable parameter:{}",key);
+	    		return;
+	    	}
+    	}else{
+    		
+    		LOGGER.warn("The key:{} not exist in parameters.",key);
+    		return;
+    	}
+    	
+    	if(StringUtils.isNotBlank(entity) && keys != null){
+    		
+    		CacheManager.getInstance().cacheDel(entity, keys);
+    	}else if(StringUtils.isNotBlank(entity) && key != null){
+    		
+    		CacheManager.getInstance().cacheDel(entity, key);
+    	}else{
+    		
+    		LOGGER.warn("The keys:{} not exist in parameters.",keys);
+    	}
     }
 }

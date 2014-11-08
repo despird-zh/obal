@@ -167,4 +167,29 @@ public class CacheRedisHandler<K extends EntryKey> implements CacheBridge<K>{
 		
 		return cacheAttr;
 	}
+
+	@Override
+	public void doCacheDel(String entityName, String... keys) {
+		Principal principal = null;		
+		IEntityAccessor<K> eaccessor = null;
+		try {
+			eaccessor = 
+				AccessorFactory.getInstance().buildEntityAccessor(CoreConstants.BUILDER_REDIS, 
+						principal, 
+						entityName);	
+				
+			eaccessor.doDelEntry(keys);
+			
+		} catch (AccessorException e) {
+			
+			e.printStackTrace();
+		} catch (EntityException e) {
+			
+			e.printStackTrace();
+		}finally{
+			
+			eaccessor.release();
+		}
+
+	}
 }
