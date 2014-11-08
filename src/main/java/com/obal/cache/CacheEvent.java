@@ -32,6 +32,9 @@ import com.obal.core.EntryKey;
  **/
 public class CacheEvent{
 	
+	public static final String EVT_PUT = "_PUT";
+	public static final String EVT_DEL = "_DEL";
+	private String type = EVT_PUT;
     private EntryKey entry;
     
     private String attrName;
@@ -68,6 +71,15 @@ public class CacheEvent{
     	
     	return value;
     }
+    
+    public String type(String type){
+    	
+    	if(type != null)
+    		this.type = type;
+    	
+    	return this.type;
+    }
+
     /**
      * The CacheEvent factroy disruptor use it to allocate elements in RingBuffer. 
      **/
