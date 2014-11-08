@@ -110,24 +110,37 @@ public class CacheRedisHandler<K extends EntryKey> implements CacheBridge<K>{
 			@Override
 			public void onEvent(CacheEvent event, long sequence,
 					boolean endOfBatch) throws Exception {
-				
-				doCachePut((K)event.getEntry());
+				if(CacheEvent.EVT_PUT.equals(event.type(null))){
+					
+					CacheEvent.PutEntryData data = event.value();
+					doCachePut((K)data.entryInfo);
+				}
+				else if(CacheEvent.EVT_PUT_ATTR.equals(event.type(null))){
+					
+					CacheEvent.PutAttrData data = event.value();
+					doCachePutAttr(data.key,data.entity,data.attr,data.value);
+				}
+				else if(CacheEvent.EVT_DEL.equals(event.type(null))){
+					
+					CacheEvent.DelEntryData data = event.value();
+					doCacheDel(data.entity,data.keys);
+				}
 			}			
 		};
 	}
 
 	@Override
-	public void doCachePutAttr(EntryKey entryKey, String attrName, Object value) {
+	public void doCachePutAttr(String key, String entity, String attrName, Object value) {
 		Principal principal = null;		
 		IEntityAccessor<K> eaccessor = null;
 		try {
 			eaccessor = 
 				AccessorFactory.getInstance().buildEntityAccessor(CoreConstants.BUILDER_REDIS, 
 						principal, 
-						entryKey.getEntityName());	
+						entity);	
 				
 
-			eaccessor.doPutEntryAttr(entryKey.getKey(), attrName, value);
+			eaccessor.doPutEntryAttr(key, attrName, value);
 			
 		} catch (AccessorException e) {
 			
