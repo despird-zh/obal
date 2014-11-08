@@ -125,6 +125,10 @@ public abstract class CacheAspect {
     		
     		CacheManager.getInstance().cachePutAttr(new EntryKey(entity, key), attr,putValue);
 
+    	}else{
+    		
+    		LOGGER.warn("The annotation parameters not engouth:{}-{}-{}.", new String[]{key,entity,attr});
+    		
     	}
 
     }
