@@ -25,6 +25,7 @@ import com.obal.core.AccessorFactory;
 import com.obal.core.EntryKey;
 import com.obal.core.IEntityAccessor;
 import com.obal.core.security.Principal;
+import com.obal.core.util.AccessorUtils;
 import com.obal.core.util.CoreConstants;
 import com.obal.exception.AccessorException;
 import com.obal.exception.EntityException;
@@ -96,7 +97,7 @@ public class CacheRedisHandler<K extends EntryKey> implements CacheBridge<K>{
 			e.printStackTrace();
 		}finally{
 			
-			eaccessor.release();
+			AccessorUtils.releaseAccessor(eaccessor);
 		}
 		
 		return cacheData;
