@@ -37,6 +37,22 @@ import com.obal.cache.CacheManager;
 import com.obal.core.EntryKey;
 import com.obal.meta.EntityAttr;
 
+/**
+ * CacheAspect provides the methods to interact with back-end cache.
+ * <p>
+ * Put operation includes entry put and entry attribute put. the entry or attribute to 
+ * be put into cache post normal put operation.
+ * </p>
+ * <p>
+ * Get operation includes entry get and entry attribute get. the entry or attribute to 
+ * be retrieved from cache before normal get operation. If there is no data in cache, then 
+ * retrieve data from Hbase.
+ * </p>
+ * <p>
+ * Delete operation support more than one keys. After deleting data from repository, try to 
+ * delete data from cache.
+ * </p>
+ **/
 @Aspect
 public abstract class CacheAspect {
 
@@ -46,7 +62,8 @@ public abstract class CacheAspect {
     abstract void cacheAfterPut();
 	
 	/**
-	 * cache object after put operation. 
+	 * Cache object after normal put operation. 
+	 * 
 	 **/
     @After("cacheAfterPut()")
     public void afterPut(JoinPoint jp) throws Throwable{
