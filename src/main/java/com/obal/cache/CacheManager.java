@@ -35,7 +35,7 @@ import com.obal.core.EntryKey;
  * cache data <b>Get</b> operation runs in thread safe mode. entry be fetched directly.
  * </p>
  * 
- *  @author desprid
+ *  @author despird
  *  @version 0.1 2014-2-1
  *  @since 0.1
  *  
