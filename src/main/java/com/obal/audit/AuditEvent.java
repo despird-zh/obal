@@ -24,6 +24,9 @@ import com.lmax.disruptor.EventFactory;
 
 import com.obal.core.EntryInfo;
 
+/**
+ * demo 
+ **/
 public class AuditEvent extends EntryInfo{
 
 	private static final long serialVersionUID = 1L;
@@ -174,4 +177,3 @@ public class AuditEvent extends EntryInfo{
 		}
 	};
 }
-
