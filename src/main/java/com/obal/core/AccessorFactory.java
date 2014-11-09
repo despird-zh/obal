@@ -60,7 +60,7 @@ public class AccessorFactory {
 
 			builderMap.put(hbaseBuilder.getBuilderName(), hbaseBuilder);
 			
-			appendMapping(CoreConstants.BULDER_HBASE,"com/obal/core/meta/AccessorMap.hbase.properties");
+			appendMapping(CoreConstants.BULDER_HBASE,"com/obal/meta/AccessorMap.hbase.properties");
 		
 		}catch(EntityException ee){
 			
@@ -101,10 +101,28 @@ public class AccessorFactory {
 	
 	/**
 	 * Get the default builder name 
+	 * 
+	 * @return String the default builder name
 	 **/
 	public String getDefaultBuilder(){
 		
 		return this.defaultBuilder;
+	}
+	
+	/**
+	 * Add the AccessorBuilder to accessor factory.
+	 * 
+	 * @param accessorBuilder the accessor builder instance
+	 * 
+	 **/
+	public void addAccessorBuilder(AccessorBuilder accessBuilder){
+		
+		if(null == accessBuilder){
+			
+			LOGGER.warn("The access builder is null.");
+		}
+		
+		builderMap.put(accessBuilder.getBuilderName(), accessBuilder);
 	}
 	
 	/**
