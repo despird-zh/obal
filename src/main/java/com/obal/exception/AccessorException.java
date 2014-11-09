@@ -41,7 +41,8 @@ public class AccessorException  extends BaseException{
     public AccessorException(Throwable cause) {
         super(cause);
     }
-    	
+    
+    @Override
 	protected String findMessage(String errorcode,String ... param){
 		
 		String messagePattern = accessor_exceps.getProperty(errorcode, errorcode);

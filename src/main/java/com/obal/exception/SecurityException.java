@@ -42,7 +42,7 @@ public class SecurityException extends BaseException{
         super(cause);
     }
     
-	
+	@Override
 	protected String findMessage(String errorcode,String ... param){
 		
 		String messagePattern = secu_exceps.getProperty(errorcode, errorcode);

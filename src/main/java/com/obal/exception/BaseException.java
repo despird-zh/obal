@@ -64,7 +64,8 @@ public class BaseException extends Exception {
 	public void printStackTrace(PrintStream s)
 	{	
 		s.print("Exception:");
-		s.println(super.getMessage() + ":" + this.message);
+		//s.println(super.getMessage() + ":" + this.message);
+		s.println( this.message);
 	    super.printStackTrace(s);
 	    
 	}
@@ -72,7 +73,8 @@ public class BaseException extends Exception {
 	public void printStackTrace(PrintWriter s)
 	{
 		s.print("Exception:");
-		s.println(this.getMessage() + ":" + this.message);
+		//s.println(super.getMessage() + ":" + this.message);
+		s.println( this.message);
 		super.printStackTrace(s);
 
 	 }

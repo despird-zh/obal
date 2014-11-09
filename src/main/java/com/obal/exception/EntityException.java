@@ -42,7 +42,8 @@ public class EntityException extends BaseException{
     public EntityException(Throwable cause) {
         super(cause);
     }
-    	
+    
+    @Override
 	protected String findMessage(String errorcode,String ... param){
 		
 		String messagePattern = entry_exceps.getProperty(errorcode, errorcode);

@@ -42,7 +42,7 @@ public class MetaException extends BaseException{
         super(cause);
     }
     
-	
+	@Override
 	protected String findMessage(String errorcode,String ... param){
 		
 		String messagePattern = meta_exceps.getProperty(errorcode, errorcode);
