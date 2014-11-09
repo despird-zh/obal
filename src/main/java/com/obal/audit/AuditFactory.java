@@ -34,7 +34,7 @@ public class AuditFactory {
         this.handler = new AuditHandler();
         // Specify the size of the ring buffer, must be power of 2.
         int bufferSize = 1024;
-        AuditBuilder auditbuilder = new AuditBuilder();
+        EventFactory<AuditEvent> auditbuilder = AuditEvent.EVENT_FACTORY;
         // Construct the Disruptor
         disruptor = new Disruptor<AuditEvent>(auditbuilder, bufferSize, executor);
 
@@ -53,16 +53,7 @@ public class AuditFactory {
 		getInstance();
 		return instance.newAuditLogger();
 	}
-	
-	public static class AuditBuilder implements EventFactory<AuditEvent> {
 		
-		@Override
-		public AuditEvent newInstance() {
-
-			return new AuditEvent("k-001010");
-		}
-	}
-	
 	public static void stop(){
 		
 		getInstance();
