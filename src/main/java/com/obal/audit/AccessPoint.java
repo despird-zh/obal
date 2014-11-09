@@ -81,16 +81,7 @@ public class AccessPoint {
 		if (getClass() != obj.getClass())
 			return false;
 		final AccessPoint other = (AccessPoint) obj;
-		if (ipAddress == null) {
-			if (other.ipAddress != null)
-				return false;
-		} else if (!ipAddress.equals(other.ipAddress))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
+				
 		return new EqualsBuilder()
 		.append(this.name, other.name)
 		.append(this.ipAddress, other.ipAddress).isEquals();

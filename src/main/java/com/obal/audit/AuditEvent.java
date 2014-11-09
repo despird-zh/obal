@@ -17,6 +17,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
+import com.lmax.disruptor.EventFactory;
+import com.obal.cache.CacheEvent;
 import com.obal.core.EntryInfo;
 
 public class AuditEvent extends EntryInfo{
@@ -98,13 +103,14 @@ public class AuditEvent extends EntryInfo{
 
 	@Override
 	public int hashCode() {
-		final int PRIME = 31;
-		int result = 1;
-		result = PRIME * result + ((getKey() == null) ? 0 : getKey().hashCode());
-		result = PRIME * result
-				+ ((timestamp == null) ? 0 : timestamp.hashCode());
-		result = PRIME * result + ((subject == null) ? 0 : subject.hashCode());
-		return result;
+		
+		HashCodeBuilder hashcb = new HashCodeBuilder(17, 37);
+		
+		return hashcb.append(timestamp)
+		.append(subject)
+		.append(verb)
+		.append(accessPoint).hashCode();
+		
 	}
 
 	@Override
@@ -117,45 +123,15 @@ public class AuditEvent extends EntryInfo{
 			return false;
 		final AuditEvent other = (AuditEvent) obj;
 
-		// timestamp cannot be null
-		if (!timestamp.equals(other.timestamp)) {
-			return false;
-		}
-		if (getKey() == null) {
-			if (other.getKey() != null)
-				return false;
-		} else if (!getKey().equals(other.getKey())) {
-			return false;
-		}
-
-		if (subject == null) {
-			if (other.subject != null)
-				return false;
-		} else if (!subject.equals(other.subject)) {
-			return false;
-		}
-
-		if (verb == null) {
-			if (other.verb != null)
-				return false;
-		} else if (!verb.equals(other.verb)) {
-			return false;
-		}
-		if (object == null) {
-			if (other.object != null)
-				return false;
-		} else if (!object.equals(other.object)) {
-			return false;
-		}
-
-		if (predicateMap == null) {
-			if (other.predicateMap != null)
-				return false;
-		} else if (!predicateMap.equals(other.predicateMap)) {
-			return false;
-		}
-
-		return true;
+		EqualsBuilder eb = new EqualsBuilder();
+		eb.append(this.timestamp, other.timestamp)
+		.append(this.subject, other.subject)
+		.append(this.verb, other.verb)
+		.append(this.accessPoint, other.accessPoint)
+		.append(this.predicateMap, other.predicateMap);
+		
+		return eb.isEquals();
+		
 	}
 
 	@Override
@@ -188,5 +164,13 @@ public class AuditEvent extends EntryInfo{
 		this.setAccessPoint(fromOne.getAccessPoint());
 		this.setPredicateMap(fromOne.getPredicateMap());
 	}
-	
+
+	public final static EventFactory<AuditEvent> EVENT_FACTORY = new EventFactory<AuditEvent> (){
+		
+		@Override
+		public AuditEvent newInstance() {
+
+			return new AuditEvent("k-001010");
+		}
+	};
 }

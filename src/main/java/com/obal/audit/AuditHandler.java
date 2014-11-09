@@ -5,10 +5,10 @@ import com.lmax.disruptor.EventHandler;
 public class AuditHandler implements EventHandler<AuditEvent>{
 
 	@Override
-	public void onEvent(AuditEvent arg0, long arg1, boolean arg2)
+	public void onEvent(AuditEvent event, long sequence,	boolean endOfBatch)
 			throws Exception {
 		
-		System.out.println("Event: " + arg0);
+		System.out.println("Event: " + event);
 	}
 
 }

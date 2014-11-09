@@ -17,9 +17,9 @@ import com.obal.util.AspectUtils;
 public abstract class AuditAspect {
 
 	@Pointcut
-	public abstract void operation();
+	public abstract void beforeOperation();
 
-	@Before("operation()")
+	@Before("beforeOperation()")
 	public void beforeOperation(JoinPoint jp) {
 		
 		Object[] paramValues = jp.getArgs();
@@ -34,8 +34,11 @@ public abstract class AuditAspect {
 		logLine.append(") - started");
 		AspectUtils.getLogger(jp).info(logLine.toString());
 	}
+
+	@Pointcut
+	public abstract void afterOperation();
 	
-	@AfterReturning(pointcut="operation()",returning="rtv")
+	@AfterReturning(pointcut="afterOperation()",returning="rtv")
 	public void afterOperation(Object rtv,JoinPoint jp) {
 
 		Object target = jp.getTarget();
