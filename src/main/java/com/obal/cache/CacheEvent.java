@@ -39,11 +39,20 @@ public class CacheEvent{
 
 	private Object value;
 	
+	/**
+	 * Get the value of different events.
+	 *  
+	 **/
+	@SuppressWarnings("unchecked")
 	public <K> K value(){
 		
 		return (K)this.value;
 	}
     
+	/**
+	 * Set the setting of entry attribute put operation.
+	 *  
+	 **/
 	public void setPutAttrData(String key,String entity,String attr,Object value){
 		
 		PutAttrData s = new PutAttrData();
@@ -55,7 +64,11 @@ public class CacheEvent{
 		this.value = s;
 		
 	}
-	
+
+	/**
+	 * Set the setting of entry attribute put operation.
+	 *  
+	 **/
 	public void setPutEntryData(EntryKey entryInfo){
 		
 		PutEntryData ped = new PutEntryData();
@@ -63,7 +76,11 @@ public class CacheEvent{
 		
 		this.value= ped;
 	}
-	
+
+	/**
+	 * Set the setting of entry delete operation.
+	 *  
+	 **/
 	public void setDelData(String entity, String ...keys){
 		
 		DelEntryData ded = new DelEntryData();
@@ -97,6 +114,8 @@ public class CacheEvent{
     	
     	return this.type;
     }
+    
+    
     /**
      * The CacheEvent factroy disruptor use it to allocate elements in RingBuffer. 
      **/
