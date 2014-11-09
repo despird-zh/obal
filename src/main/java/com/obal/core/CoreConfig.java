@@ -41,7 +41,7 @@ public class CoreConfig extends PropertiesConfiguration{
 
 	private CoreConfig() throws ConfigurationException{
 		
-		super("core-config.properties");
+		super("obal-config.properties");
 	}
 	
 	/**
