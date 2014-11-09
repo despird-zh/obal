@@ -20,7 +20,6 @@
 package com.obal.cache;
 
 import com.lmax.disruptor.EventHandler;
-import com.obal.core.EntryKey;
 
 /**
  * Cache bridge handle the in-out exchange of data cache. In cache manager we use disruptor to handle 
@@ -44,6 +43,15 @@ public interface CacheBridge<K> {
 	 **/
 	public void doCachePut(K entry);
 	
+	/**
+	 * Put the entry attribute data into cache
+	 * 
+	 * @param key the entry key
+	 * @param entity the entity name
+	 * @param attrName the attribute name
+	 * @param value the attribute value
+	 * 
+	 **/
 	public void doCachePutAttr(String key, String entity,  String attrName, Object value);
 	
 	/**
@@ -53,8 +61,21 @@ public interface CacheBridge<K> {
 	 * @param key the key of entry
 	 **/
 	public K doCacheGet(String entityName, String key); 
-	
+
+	/**
+	 * Get the entry data from cache 
+	 * 
+	 * @param entityName the entity name
+	 * @param key the key of entry 
+	 * @param attrName the attribute name
+	 **/
 	public <M> M doCacheGetAttr(String entityName, String key, String attrName); 
 	
+	/**
+	 * Delete the entry from cache
+	 * 
+	 * @param entityName the entity name
+	 * @param keys the array of key
+	 **/
 	public void doCacheDel(String entityName, String ... keys);
 }
