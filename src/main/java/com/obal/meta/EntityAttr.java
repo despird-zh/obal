@@ -166,7 +166,7 @@ public class EntityAttr {
 	 **/
 	public boolean isNumberic(){
 		
-		return type == AttrType.DOUBLE || type == AttrType.INT;
+		return type == AttrType.DOUBLE || type == AttrType.INTEGER;
 	}
 	
 	/**

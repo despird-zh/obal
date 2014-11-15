@@ -55,7 +55,7 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
 		Object rtv = null;
 
 		switch(attr.type){
-			case INT:
+			case INTEGER:
 				rtv = Bytes.toInt(value);
 				break;
 			case BOOL:
@@ -104,7 +104,7 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
 				byte[] key = Bytes.tail(cqualifier, cqualifier.length - qualifier.length);
 				byte[] bytes = e.getValue();
 				switch(attr.type){
-					case INT:
+					case INTEGER:
 						map.put(new String(key), Bytes.toInt(bytes));
 						break;
 					case BOOL:
@@ -156,7 +156,7 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
 			if(Bytes.startsWith(e, qualifier)){
 				byte[] bytes = cells.get(e);
 				switch(attr.type){
-					case INT:
+					case INTEGER:
 						list.add(Bytes.toInt(bytes));
 						break;
 					case BOOL:
@@ -209,7 +209,7 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
 			if(Bytes.startsWith(e, qualifier)){
 				byte[] bytes = cells.get(e);
 				switch(attr.type){
-					case INT:
+					case INTEGER:
 						set.add(Bytes.toInt(bytes));
 						break;
 					case BOOL:
@@ -256,7 +256,7 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
 		byte[] bval = null;
     	if(value == null) return;    	
     	switch(attr.type){
-			case INT:
+			case INTEGER:
 				bval = Bytes.toBytes((Integer)value);
 				break;
 			case BOOL:
@@ -293,7 +293,7 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
     	if(mapVal == null) return;    	
     	for(Map.Entry<String,Object> pe:mapVal.entrySet()){
 	    	switch(attr.type){
-				case INT:
+				case INTEGER:
 					bval = Bytes.toBytes((Integer)pe.getValue());
 					break;
 				case BOOL:
@@ -334,7 +334,7 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
     	for(int i=0;i<listVal.size();i++){
     		
 	    	switch(attr.type){
-				case INT:
+				case INTEGER:
 					bval = Bytes.toBytes((Integer)listVal.get(i));
 					break;
 				case BOOL:
@@ -379,7 +379,7 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
     		
     		Object val = iterator.next();
 	    	switch(attr.type){
-				case INT:
+				case INTEGER:
 					bval = Bytes.toBytes((Integer)val);
 					break;
 				case BOOL:

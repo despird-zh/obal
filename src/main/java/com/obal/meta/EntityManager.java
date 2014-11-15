@@ -79,6 +79,18 @@ public class EntityManager {
 	}
 	
 	/**
+	 * Remove the entity meta information from manager.
+	 * ps. remove from manager not means drop table in hbase.
+	 * 
+	 * @param entityName the entity name
+	 * 
+	 **/
+	public void removeEntityMeta(String entityName){
+		
+		metaMap.remove(entityName);
+	}
+	
+	/**
 	 * Put EntityMeta object
 	 * 
 	 * @param entrymeta the EntityMeta object 

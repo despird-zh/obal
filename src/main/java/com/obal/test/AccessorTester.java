@@ -19,9 +19,11 @@ public class AccessorTester extends BlankTester{
 
 	public static void main(String[] args){
 		initLog4j();
+		AdminTester tester = new AdminTester();
 		
+		tester.testInitializer();
 		AccessorTester self = new AccessorTester();
-		self.createTestSchema();
+		//self.createTestSchema();
 		
 	}
 	
@@ -40,7 +42,7 @@ public class AccessorTester extends BlankTester{
 			
 			EntityAttr attr = null;
 			
-			attr = new EntityAttr("i_int",AttrType.INT,"c0","int-val");
+			attr = new EntityAttr("i_int",AttrType.INTEGER,"c0","int-val");
 			meta.addAttr(attr);
 			attr = new EntityAttr("i_double",AttrType.DOUBLE,"c1","double-val");
 			meta.addAttr(attr);
@@ -53,7 +55,7 @@ public class AccessorTester extends BlankTester{
 			attr = new EntityAttr("i_list_str",AttrMode.LIST,AttrType.STRING,"c3","list-str");
 			meta.addAttr(attr);
 			
-			attr = new EntityAttr("i_list_int",AttrMode.LIST,AttrType.INT,"c3","list-int");
+			attr = new EntityAttr("i_list_int",AttrMode.LIST,AttrType.INTEGER,"c3","list-int");
 			meta.addAttr(attr);
 
 			attr = new EntityAttr("i_list_dt",AttrMode.LIST,AttrType.DATE,"c3","list-dt");
@@ -62,7 +64,7 @@ public class AccessorTester extends BlankTester{
 			attr = new EntityAttr("i_map_str",AttrMode.LIST,AttrType.STRING,"c4","map-str");
 			meta.addAttr(attr);
 			
-			attr = new EntityAttr("i_map_int",AttrMode.LIST,AttrType.INT,"c4","map-int");
+			attr = new EntityAttr("i_map_int",AttrMode.LIST,AttrType.INTEGER,"c4","map-int");
 			meta.addAttr(attr);
 
 			attr = new EntityAttr("i_map_dt",AttrMode.LIST,AttrType.DATE,"c4","map-dt");
@@ -70,7 +72,7 @@ public class AccessorTester extends BlankTester{
 			
 			aa.createSchema("obal.test",meta.getAllAttrs());
 			
-			imeta = AccessorUtils.getEntryAccessor(princ, EntityConstants.ENTITY_META_INFO);
+			imeta = AccessorUtils.getGeneralAccessor(princ, EntityConstants.ENTITY_META_GENERAL);
 
 			imeta.putEntityMeta(meta);
 						

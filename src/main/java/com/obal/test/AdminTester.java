@@ -16,7 +16,7 @@ public class AdminTester extends BlankTester{
 	public void testInitializer(){
 		
 		EntitySetup ei = new EntitySetup();
-		ei.initial();
+		ei.setup();
 		
 	}
 

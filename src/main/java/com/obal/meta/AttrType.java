@@ -26,7 +26,7 @@ package com.obal.meta;
  **/
 public enum AttrType {
 	
-	INT("INTEGER"),
+	INTEGER("INTEGER"),
 	DOUBLE("DOUBLE"),
 	LONG("LONG"),
 	STRING("STRING"),
