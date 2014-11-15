@@ -1,4 +1,4 @@
-package com.obal.test;
+package com.obal.test.accessor;
 
 import com.obal.admin.EntityAdmin;
 import com.obal.admin.IAdminAccessor;
@@ -14,14 +14,12 @@ import com.obal.meta.EntityManager;
 import com.obal.meta.EntityMeta;
 import com.obal.meta.GeneralEntity;
 import com.obal.meta.accessor.IMetaAttrAccessor;
+import com.obal.test.BlankTester;
 
 public class AccessorTester extends BlankTester{
 
 	public static void main(String[] args){
 		initLog4j();
-		AdminTester tester = new AdminTester();
-		
-		tester.testInitializer();
 		AccessorTester self = new AccessorTester();
 		//self.createTestSchema();
 		
@@ -87,4 +85,6 @@ public class AccessorTester extends BlankTester{
 			AccessorUtils.releaseAccessor(imeta,aa);
 		}
 	}
+	
+	
 }
