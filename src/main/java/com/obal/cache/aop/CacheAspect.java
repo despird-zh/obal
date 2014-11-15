@@ -269,6 +269,7 @@ public abstract class CacheAspect {
     		if(returnVal == null){
     			
     			returnVal = jp.proceed();
+    			CacheManager.getInstance().cachePut((EntryKey)returnVal);
     		}
     	}
 
