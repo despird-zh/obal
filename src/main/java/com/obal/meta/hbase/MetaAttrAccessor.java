@@ -61,7 +61,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 			String attrName = (String)minfo.get("i_attr_name");
 			String column = (String)minfo.get("i_column");
 			String qualifier = (String)minfo.get("i_qualifier");
-			
+			System.out.println("---qualifier:"+qualifier);
 			AttrType type = AttrType.valueOf((String)minfo.get("i_type"));
 			AttrMode mode = AttrMode.valueOf((String)minfo.get("i_mode"));
 			

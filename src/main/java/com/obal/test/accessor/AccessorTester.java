@@ -32,11 +32,34 @@ public class AccessorTester extends BlankTester{
 		eadmin.loadEntityMeta();
 		AccessorTester self = new AccessorTester();
 		//self.createTestSchema();
-		self.testNewEntry();
+		EntryKey key = self.testNewEntry();
+		self.testDelete(key);
+		
 	}
 	
-	private void testNewEntry(){
-		
+	private void testDelete(EntryKey key){
+		System.out.println("----start delete new entry");
+		TestAccessor ta = null;
+		Principal princ = new Principal("useracc","demouser","pwd");
+		try{
+			ta = AccessorUtils.getEntryAccessor(princ, "obal.test");
+			ta.doDelEntry(key.getKey());
+			
+		}catch (EntityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		} catch (AccessorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			System.out.println("----end delete new entry");
+			AccessorUtils.releaseAccessor(ta);
+		}
+	}
+	
+	private EntryKey testNewEntry(){
+		System.out.println("----start create new entry");
 		TestAccessor ta = null;
 		Principal princ = new Principal("useracc","demouser","pwd");
 		try {
@@ -88,7 +111,7 @@ public class AccessorTester extends BlankTester{
 			dtmap.put("dk3", new Date());
 			re.put("i_map_dt", dtmap);
 			
-			ta.doPutEntry(re);
+			return ta.doPutEntry(re);
 			
 		} catch (EntityException e) {
 			// TODO Auto-generated catch block
@@ -98,9 +121,11 @@ public class AccessorTester extends BlankTester{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
-			
+			System.out.println("----end create new entry");
 			AccessorUtils.releaseAccessor(ta);
 		}
+		
+		return null;
 	}
 	
 	private void createTestSchema(){

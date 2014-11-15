@@ -118,31 +118,15 @@ public class EntityAttr {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
 	/**
 	 * Get the Qualifier name 
-	 * <p>If the attribute is Map or list mode, the qualifier will be append with EntryMeta.QUALIFIER_PREFIX_SEPARATOR</p>
+	 * 
 	 * 
 	 **/
 	public String getQualifier(){
 		
-		switch(mode){
-		
-			case MAP:				
-				return this.qualifier + CoreConstants.QUALIFIER_PREFIX_SEPARATOR;
-				
-			case LIST:				
-				return this.qualifier + CoreConstants.QUALIFIER_PREFIX_SEPARATOR;
-				
-			case SET:				
-				return this.qualifier + CoreConstants.QUALIFIER_PREFIX_SEPARATOR;
-				
-			case PRIMITIVE:				
-				return this.qualifier;
-				
-			default:
-				return this.qualifier;
-		}
-		
+		return this.qualifier;
 	}
 	
 	/**

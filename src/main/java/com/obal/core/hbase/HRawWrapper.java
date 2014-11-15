@@ -153,7 +153,7 @@ public class HRawWrapper extends HEntryWrapper<RawEntry>{
 
         	Object value = entryInfo.get(attr.getAttrName());
         	if(LOGGER.isDebugEnabled()){
-        		LOGGER.debug("--=>attr:{} - value:{}",attr.getAttrName(),value);
+        		LOGGER.debug("-=>parsing attr:{} - value:{}",attr.getAttrName(),value);
         	}
         	if(null == value) continue;
         	

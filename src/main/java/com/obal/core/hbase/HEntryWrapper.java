@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
 
 import com.obal.core.EntryInfo;
 import com.obal.core.EntryKey;
+import com.obal.core.util.CoreConstants;
 import com.obal.meta.EntityAttr;
 
 public abstract class HEntryWrapper<GB extends EntryKey> {
@@ -94,7 +95,7 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
 	 **/
 	public Map<String,Object> getMapValue(EntityAttr attr, NavigableMap<byte[], byte[]> cells){
 
-		byte[] qualifier = attr.getQualifier().getBytes();
+		byte[] qualifier = (attr.getQualifier() + CoreConstants.QUALIFIER_PREFIX_SEPARATOR).getBytes();
 		Map<String, Object> map = new HashMap<String, Object>();
 
 		for(Map.Entry<byte[], byte[]> e:cells.entrySet()){
@@ -148,7 +149,7 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
 	 **/
 	public List<Object> getListValue(EntityAttr attr, NavigableMap<byte[], byte[]> cells){
 
-		byte[] qualifier = attr.getQualifier().getBytes();
+		byte[] qualifier = (attr.getQualifier() + CoreConstants.QUALIFIER_PREFIX_SEPARATOR).getBytes();
 		List<Object> list = new ArrayList<Object>();
 
 		for(byte[] e:cells.descendingKeySet()){
@@ -201,7 +202,7 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
 	 **/
 	public Set<Object> getSetValue(EntityAttr attr, NavigableMap<byte[], byte[]> cells){
 
-		byte[] qualifier = attr.getQualifier().getBytes();
+		byte[] qualifier = (attr.getQualifier() + CoreConstants.QUALIFIER_PREFIX_SEPARATOR).getBytes();
 		Set<Object> set = new HashSet<Object>();
 
 		for(byte[] e:cells.descendingKeySet()){
@@ -315,7 +316,7 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
 					
 					break;					
 			}
-	    	String newQualifier = attr.getQualifier() + pe.getKey();
+	    	String newQualifier = attr.getQualifier() + CoreConstants.QUALIFIER_PREFIX_SEPARATOR + pe.getKey();
 	    	put.add(attr.getColumn().getBytes(), newQualifier.getBytes(), bval);
     	}
     	
@@ -356,7 +357,7 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
 					
 					break;					
 			}
-	    	String newQualifier = attr.getQualifier() + i;
+	    	String newQualifier = attr.getQualifier() + CoreConstants.QUALIFIER_PREFIX_SEPARATOR + i;
 	    	put.add(attr.getColumn().getBytes(), newQualifier.getBytes(), bval);
     	}
     	
@@ -402,7 +403,7 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
 					break;					
 			}
 	    	
-	    	String newQualifier = attr.getQualifier() + i;
+	    	String newQualifier = attr.getQualifier() + CoreConstants.QUALIFIER_PREFIX_SEPARATOR + i;
 	    	put.add(attr.getColumn().getBytes(), newQualifier.getBytes(), bval);
 	    	i++;
     	}
