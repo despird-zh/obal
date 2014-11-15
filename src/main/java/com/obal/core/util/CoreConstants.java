@@ -5,7 +5,7 @@ public class CoreConstants {
 	/**
 	 * Separator to connect the qualifier prefix and name ->"-"
 	 **/
-	public static final String QUALIFIER_PREFIX_SEPARATOR = "-";
+	public static final String QUALIFIER_PREFIX_SEPARATOR = ".";
 	
 	/**
 	 * Separator used to combine multiple keys ->":"

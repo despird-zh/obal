@@ -59,7 +59,7 @@ public class AccessorFactory {
 			AccessorBuilder hbaseBuilder = new HAccessorBuilder(CoreConstants.BULDER_HBASE,"com/obal/core/AccessorMap.hbase.properties");
 
 			builderMap.put(hbaseBuilder.getBuilderName(), hbaseBuilder);
-			
+			defaultBuilder = CoreConstants.BULDER_HBASE;
 			appendMapping(CoreConstants.BULDER_HBASE,"com/obal/meta/AccessorMap.hbase.properties");
 		
 		}catch(EntityException ee){
