@@ -37,6 +37,13 @@ import com.obal.meta.BaseEntity;
 public interface IEntityAccessor <GB extends EntryKey> extends IBaseAccessor{
 	
 	/**
+	 * Generate new key for entity 
+	 * @throws AccessorException 
+	 * 
+	 **/
+	public abstract EntryKey newKey() throws AccessorException;
+	
+	/**
 	 * Get the entry schema  
 	 * @return entry schema
 	 **/

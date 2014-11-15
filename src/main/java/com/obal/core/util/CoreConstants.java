@@ -3,7 +3,7 @@ package com.obal.core.util;
 public class CoreConstants {
 	
 	/**
-	 * Separator to connect the qualifier prefix and name ->"-"
+	 * Separator to connect the qualifier prefix and name ->"."
 	 **/
 	public static final String QUALIFIER_PREFIX_SEPARATOR = ".";
 	

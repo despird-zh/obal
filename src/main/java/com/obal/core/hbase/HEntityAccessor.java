@@ -49,6 +49,7 @@ import com.obal.core.EntryInfo;
 import com.obal.core.EntryKey;
 import com.obal.core.accessor.EntityAccessor;
 import com.obal.exception.AccessorException;
+import com.obal.exception.MetaException;
 import com.obal.meta.BaseEntity;
 import com.obal.meta.EntityAttr;
 
@@ -81,6 +82,22 @@ public abstract class HEntityAccessor<GB extends EntryKey> extends EntityAccesso
 	}
 
 
+	@Override
+	public EntryKey newKey() throws AccessorException{
+		
+		EntryKey key = null;
+		try {
+			if(null == super.getEntitySchema())
+				throw new AccessorException("The entity schema not set yet");
+			
+			key = super.getEntitySchema().newKey();
+		} catch (MetaException e) {
+			
+			throw new AccessorException("Error when generating entry key",e);
+		}
+		
+		return key;
+	}
 	/**
 	 * get entry wrapper
 	 * @return wrapper object 

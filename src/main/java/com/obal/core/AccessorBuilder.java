@@ -169,8 +169,8 @@ public abstract class AccessorBuilder {
 		try {
 			
 			schema = EntityManager.getInstance().getEntitySchema(entityName, principal);
-			
-			constructor = (Constructor<K>)clazz.getConstructor(BaseEntity.class);
+						
+			constructor = (Constructor<K>)clazz.getConstructor(BaseEntity.class);			
 			result = constructor.newInstance(schema);
 			
 		} catch (MetaException e) {

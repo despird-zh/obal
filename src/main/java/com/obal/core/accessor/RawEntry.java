@@ -60,8 +60,8 @@ public class RawEntry extends EntryInfo{
 	/**
 	 * store key-value pair
 	 * 
-	 * @param key
-	 * @param value
+	 * @param key the entry attribute name
+	 * @param value the entry attribute value
 	 *  
 	 **/
 	public void put(String key,Object value){

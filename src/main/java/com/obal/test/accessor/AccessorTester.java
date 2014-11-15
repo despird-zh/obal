@@ -1,7 +1,15 @@
 package com.obal.test.accessor;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.obal.admin.EntityAdmin;
 import com.obal.admin.IAdminAccessor;
+import com.obal.core.EntryKey;
+import com.obal.core.accessor.RawEntry;
 import com.obal.core.security.Principal;
 import com.obal.core.util.AccessorUtils;
 import com.obal.exception.AccessorException;
@@ -20,9 +28,79 @@ public class AccessorTester extends BlankTester{
 
 	public static void main(String[] args){
 		initLog4j();
+		EntityAdmin eadmin = EntityAdmin.getInstance();
+		eadmin.loadEntityMeta();
 		AccessorTester self = new AccessorTester();
 		//self.createTestSchema();
+		self.testNewEntry();
+	}
+	
+	private void testNewEntry(){
 		
+		TestAccessor ta = null;
+		Principal princ = new Principal("useracc","demouser","pwd");
+		try {
+			ta = AccessorUtils.getEntryAccessor(princ, "obal.test");
+			EntryKey key = ta.newKey();
+			RawEntry re = new RawEntry(key);
+			re.put("i_int", 1211);
+			re.put("i_double", 13.111);
+			re.put("i_long", 123456788888L);
+			re.put("i_date", new Date());
+			re.put("i_string", "demo string SSSSXXXX AAAALAAAA");
+			
+			List<String> strlist = new ArrayList<String>();
+			strlist.add("item0");
+			strlist.add("item1");
+			strlist.add("item2");
+			strlist.add("item3");
+			re.put("i_list_str", strlist);
+			
+			List<Integer> intlist = new ArrayList<Integer>();
+			intlist.add(1010);
+			intlist.add(1011);
+			intlist.add(1012);
+			intlist.add(1014);
+			re.put("i_list_int", intlist);
+
+			List<Date> dtlist = new ArrayList<Date>();
+			dtlist.add(new Date());
+			dtlist.add(new Date());
+			dtlist.add(new Date());
+			dtlist.add(new Date());
+			re.put("i_list_dt", dtlist);
+			
+			Map<String, String> strmap = new HashMap<String, String>();
+			strmap.put("sk1", "str val 1");
+			strmap.put("sk2", "str val 2");
+			strmap.put("sk3", "str val 3");
+			re.put("i_map_str", strmap);
+			
+			Map<String, Integer> intmap = new HashMap<String, Integer>();
+			intmap.put("ik1", 121);
+			intmap.put("ik2", 122);
+			intmap.put("ik3", 123);
+			re.put("i_map_int", intmap);
+			
+			Map<String, Date> dtmap = new HashMap<String, Date>();
+			dtmap.put("dk1", new Date());
+			dtmap.put("dk2", new Date());
+			dtmap.put("dk3", new Date());
+			re.put("i_map_dt", dtmap);
+			
+			ta.doPutEntry(re);
+			
+		} catch (EntityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		} catch (AccessorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			
+			AccessorUtils.releaseAccessor(ta);
+		}
 	}
 	
 	private void createTestSchema(){
@@ -59,13 +137,13 @@ public class AccessorTester extends BlankTester{
 			attr = new EntityAttr("i_list_dt",AttrMode.LIST,AttrType.DATE,"c3","list-dt");
 			meta.addAttr(attr);
 			
-			attr = new EntityAttr("i_map_str",AttrMode.LIST,AttrType.STRING,"c4","map-str");
+			attr = new EntityAttr("i_map_str",AttrMode.MAP,AttrType.STRING,"c4","map-str");
 			meta.addAttr(attr);
 			
-			attr = new EntityAttr("i_map_int",AttrMode.LIST,AttrType.INTEGER,"c4","map-int");
+			attr = new EntityAttr("i_map_int",AttrMode.MAP,AttrType.INTEGER,"c4","map-int");
 			meta.addAttr(attr);
 
-			attr = new EntityAttr("i_map_dt",AttrMode.LIST,AttrType.DATE,"c4","map-dt");
+			attr = new EntityAttr("i_map_dt",AttrMode.MAP,AttrType.DATE,"c4","map-dt");
 			meta.addAttr(attr);
 			
 			aa.createSchema("obal.test",meta.getAllAttrs());

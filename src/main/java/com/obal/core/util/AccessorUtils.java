@@ -37,13 +37,13 @@ public class AccessorUtils {
 	/**
 	 * Get Entry Accessor
 	 * @param principal the user principal
-	 * @param entryType
+	 * @param entityName
 	 * 
 	 * @return K the instance of accessor 
 	 **/
-	public static <K> K getEntryAccessor(Principal principal,String entryType)throws EntityException{
+	public static <K> K getEntryAccessor(Principal principal,String entityName)throws EntityException{
 		
-		return AccessorFactory.getInstance().buildEntityAccessor(principal, entryType);
+		return AccessorFactory.getInstance().buildEntityAccessor(principal, entityName);
 	}	
 
 	/**
