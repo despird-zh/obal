@@ -133,6 +133,9 @@ public class EntityAttr {
 			case LIST:				
 				return this.qualifier + CoreConstants.QUALIFIER_PREFIX_SEPARATOR;
 				
+			case SET:				
+				return this.qualifier + CoreConstants.QUALIFIER_PREFIX_SEPARATOR;
+				
 			case PRIMITIVE:				
 				return this.qualifier;
 				

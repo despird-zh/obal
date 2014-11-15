@@ -36,7 +36,11 @@ import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
+import org.apache.hadoop.hbase.filter.BinaryPrefixComparator;
+import org.apache.hadoop.hbase.filter.ByteArrayComparable;
+import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp;
 import org.apache.hadoop.hbase.filter.Filter;
+import org.apache.hadoop.hbase.filter.QualifierFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -149,6 +153,8 @@ public abstract class HEntityAccessor<GB extends EntryKey> extends EntityAccesso
         	byte[] qualifier = attr.getQualifier().getBytes();
         	table = getConnection().getTable(entitySchema.getSchema());
         	Get get = new Get(entryKey.getBytes());
+        	QualifierFilter qfilter = new QualifierFilter(CompareOp.GREATER,new BinaryPrefixComparator(qualifier));
+        	get.setFilter(qfilter);
         	Result entry = null;
         	NavigableMap<byte[], byte[]> cells = null;
         	HEntryWrapper<GB> wrapper = (HEntryWrapper<GB>)getEntryWrapper();
