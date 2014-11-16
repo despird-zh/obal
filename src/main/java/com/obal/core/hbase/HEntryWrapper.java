@@ -33,6 +33,9 @@ import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.ObjectReader;
+import org.codehaus.jackson.map.ObjectWriter;
+import org.codehaus.jackson.type.TypeReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -228,8 +231,8 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
 		try{
 			switch(attr.type){
 				case INTEGER:
-					set = new HashSet<Integer>();
-					set = objectMapper.readValue(jsonStr, set.getClass());
+					ObjectReader oReader=objectMapper.reader(new TypeReference<HashSet<Integer>>(){});					
+					set = oReader.readValue(jsonStr);
 					
 					break;
 				case BOOL:
