@@ -178,32 +178,32 @@ public abstract class HEntityAccessor<GB extends EntryKey> extends EntityAccesso
         	QualifierFilter qfilter = new QualifierFilter(CompareOp.GREATER,new BinaryPrefixComparator(qualifier));
         	get.setFilter(qfilter);
         	Result entry = null;
-        	NavigableMap<byte[], byte[]> cells = null;
+        	byte[] cell = null;
         	HEntryWrapper<GB> wrapper = (HEntryWrapper<GB>)getEntryWrapper();
         	switch(attr.mode){
         	case PRIMITIVE:
 				get.addColumn(column, qualifier);
 	        	entry = table.get(get);
-	        	byte[] cell = entry.getValue(column, qualifier);
+	        	cell = entry.getValue(column, qualifier);
 				rtv = wrapper.getPrimitiveValue(attr, cell);		
         		break;
         	case MAP:
 				get.addFamily(column);
 	        	entry = table.get(get);
-	        	cells = entry.getFamilyMap(column);
-				rtv = wrapper.getMapValue(attr, cells);
+	        	cell = entry.getValue(column, qualifier);
+				rtv = wrapper.getMapValue(attr, cell);
 				break;
         	case LIST:
 				get.addFamily(column);
 	        	entry = table.get(get);
-	        	cells = entry.getFamilyMap(column);
-				rtv = wrapper.getListValue(attr, cells);
+	        	cell = entry.getValue(column, qualifier);
+				rtv = wrapper.getListValue(attr, cell);
 				break;
         	case SET:
         		get.addFamily(column);
 	        	entry = table.get(get);
-	        	cells = entry.getFamilyMap(column);
-				rtv = wrapper.getSetValue(attr, cells);
+	        	cell = entry.getValue(column, qualifier);
+				rtv = wrapper.getSetValue(attr, cell);
 				break;
 			default:
 				break;

@@ -63,28 +63,30 @@ public class HRawWrapper extends HEntryWrapper<RawEntry>{
 			}
 			byte[] column = attr.getColumn().getBytes();
 			byte[] qualifier = attr.getQualifier().getBytes();
-			NavigableMap<byte[], byte[]> cells = null;
+			byte[] cell = entry.getValue(column, qualifier);
 			switch(attr.mode){
 			
 				case PRIMITIVE :
-					byte[] cell = entry.getValue(column, qualifier);
+					
 					Object value = super.getPrimitiveValue(attr, cell);
 					gei.put(attr.getAttrName(), value);	
 					break;
+					
 				case MAP :
-					cells = entry.getFamilyMap(column);
-					Map<String, Object> map = super.getMapValue(attr, cells);				
+					
+					Map<String, Object> map = super.getMapValue(attr, cell);				
 					gei.put(attr.getAttrName(), map);
 					break;
+					
 				case LIST :
-					cells = entry.getFamilyMap(column);
-					List<Object> list = super.getListValue(attr, cells);					
+					
+					List<Object> list = super.getListValue(attr, cell);					
 					gei.put(attr.getAttrName(), list);
 					break;
 					
 				case SET :
-					cells = entry.getFamilyMap(column);
-					Set<Object> set = super.getSetValue(attr, cells);					
+					
+					Set<Object> set = super.getSetValue(attr, cell);					
 					gei.put(attr.getAttrName(), set);
 					break;
 					
@@ -111,31 +113,33 @@ public class HRawWrapper extends HEntryWrapper<RawEntry>{
 		for(EntityAttr attr: attrs){
 			byte[] column = attr.getColumn().getBytes();
 			byte[] qualifier = attr.getQualifier().getBytes();
-			NavigableMap<byte[], byte[]> cells = null;
+			byte[] cell = entry.getValue(column, qualifier);
 			switch(attr.mode){
 			
 				case PRIMITIVE :
-					byte[] cell = entry.getValue(column, qualifier);
+				
 					Object value = super.getPrimitiveValue(attr, cell);
 					gei.put(attr.getAttrName(), value);	
 					break;
+					
 				case MAP :
-					cells = entry.getFamilyMap(column);
-					Map<String, Object> map = super.getMapValue(attr, cells);				
+					
+					Map<String, Object> map = super.getMapValue(attr, cell);				
 					gei.put(attr.getAttrName(), map);
 					break;
-				case LIST :
-					cells = entry.getFamilyMap(column);
-					List<Object> list = super.getListValue(attr, cells);
 					
+				case LIST :
+					
+					List<Object> list = super.getListValue(attr, cell);					
 					gei.put(attr.getAttrName(), list);
 					break;
-				case SET :
-					cells = entry.getFamilyMap(column);
-					Set<Object> set = super.getSetValue(attr, cells);
 					
+				case SET :
+					
+					Set<Object> set = super.getSetValue(attr, cell);					
 					gei.put(attr.getAttrName(), set);
 					break;
+					
 				default:
 					break;
 				
