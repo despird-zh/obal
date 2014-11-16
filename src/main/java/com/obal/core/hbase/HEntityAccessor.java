@@ -28,6 +28,8 @@ import java.util.NavigableMap;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.hadoop.hbase.Cell;
+import org.apache.hadoop.hbase.KeyValue;
 import org.apache.hadoop.hbase.client.Delete;
 import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.client.HConnection;
@@ -358,6 +360,48 @@ public abstract class HEntityAccessor<GB extends EntryKey> extends EntityAccesso
 				e.printStackTrace();
 			}        	
         }        
+	}
+	
+	public void clearNonPrimitiveAttr(String entryKey, String attrName, Object value) throws AccessorException {
+
+		HTableInterface table = null;
+		EntryKey rtv = null;
+		BaseEntity entitySchema = (BaseEntity)getEntitySchema();
+		EntityAttr attr = entitySchema.getEntityMeta().getAttr(attrName);
+        try {  
+        	byte[] qualifier = attr.getQualifier().getBytes();
+        	table = getConnection().getTable(entitySchema.getSchema());
+            
+        	Get get = new Get(entryKey.getBytes());
+        	get.addFamily(attr.getColumn().getBytes());
+        	QualifierFilter qfilter = new QualifierFilter(CompareOp.GREATER_OR_EQUAL,new BinaryPrefixComparator(qualifier));
+        	get.setFilter(qfilter);
+        	
+        	Result result = table.get(get);
+            
+            
+                System.out.println("获得到rowkey:" + new String(result.getRow()));  
+                for (KeyValue keyValue : result.raw()) {  
+                    System.out.println("col:" + new String(keyValue.getFamily())  
+                    		+ " =qual:" + new String(keyValue.getQualifier())  
+                            + " =val:" + new String(keyValue.getValue()));  
+                }  
+            Cell[] cells = result.rawCells();
+            long ts = cells[0].getTimestamp();
+            Delete delete = new Delete(entryKey.getBytes());
+            delete.deleteColumn(attr.getColumn().getBytes(), "list-str.3".getBytes(), ts);
+            
+            table.delete(delete);
+        } catch (IOException e) {  
+        	 throw new AccessorException("Error put entry row,key:{},attr:{},value{}",e,entryKey,attrName,value.toString());
+        }finally{
+        	
+        	try {
+				table.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}        	
+        }
 	}
 	
 	@Override
