@@ -38,6 +38,7 @@ import org.slf4j.LoggerFactory;
 import com.obal.core.EntryInfo;
 import com.obal.core.EntryKey;
 import com.obal.core.util.CoreConstants;
+import com.obal.exception.WrapperException;
 import com.obal.meta.EntityAttr;
 
 public abstract class HEntryWrapper<GB extends EntryKey> {
@@ -51,7 +52,7 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
 	 * 
 	 * @return Object the value object
 	 **/
-	public Object getPrimitiveValue(EntityAttr attr, byte[] value){
+	public Object getPrimitiveValue(EntityAttr attr, byte[] value)throws WrapperException{
 		
 		Object rtv = null;
 
@@ -93,7 +94,7 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
 	 * 
 	 * @return Object the map object
 	 **/
-	public Map<String,Object> getMapValue(EntityAttr attr, NavigableMap<byte[], byte[]> cells){
+	public Map<String,Object> getMapValue(EntityAttr attr, NavigableMap<byte[], byte[]> cells)throws WrapperException{
 
 		byte[] qualifier = (attr.getQualifier() + CoreConstants.QUALIFIER_PREFIX_SEPARATOR).getBytes();
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -147,7 +148,7 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
 	 * 
 	 * @return Object the list object
 	 **/
-	public List<Object> getListValue(EntityAttr attr, NavigableMap<byte[], byte[]> cells){
+	public List<Object> getListValue(EntityAttr attr, NavigableMap<byte[], byte[]> cells)throws WrapperException{
 
 		byte[] qualifier = (attr.getQualifier() + CoreConstants.QUALIFIER_PREFIX_SEPARATOR).getBytes();
 		List<Object> list = new ArrayList<Object>();
@@ -200,7 +201,7 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
 	 * 
 	 * @return Object the list object
 	 **/
-	public Set<Object> getSetValue(EntityAttr attr, NavigableMap<byte[], byte[]> cells){
+	public Set<Object> getSetValue(EntityAttr attr, NavigableMap<byte[], byte[]> cells)throws WrapperException{
 
 		byte[] qualifier = (attr.getQualifier() + CoreConstants.QUALIFIER_PREFIX_SEPARATOR).getBytes();
 		Set<Object> set = new HashSet<Object>();
@@ -289,7 +290,7 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
 	 * @param attr the target attribute object
 	 * @param value the value to be put 
 	 **/
-	public void putMapValue(Put put, EntityAttr attr, Map<String,Object> mapVal){
+	public void putMapValue(Put put, EntityAttr attr, Map<String,Object> mapVal)throws WrapperException{
 		byte[] bval = null;
     	if(mapVal == null) return;    	
     	for(Map.Entry<String,Object> pe:mapVal.entrySet()){
@@ -329,7 +330,7 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
 	 * @param attr the target attribute object
 	 * @param value the value to be put 
 	 **/
-	public void putListValue(Put put, EntityAttr attr, List<Object> listVal){
+	public void putListValue(Put put, EntityAttr attr, List<Object> listVal)throws WrapperException{
 		byte[] bval = null;
     	if(listVal == null) return;    	
     	for(int i=0;i<listVal.size();i++){
@@ -371,7 +372,7 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
 	 * @param attr the target attribute object
 	 * @param value the value to be put 
 	 **/
-	public void putSetValue(Put put, EntityAttr attr, Set<Object> setVal){
+	public void putSetValue(Put put, EntityAttr attr, Set<Object> setVal)throws WrapperException{
 		byte[] bval = null;
     	if(setVal == null) return;  
     	Iterator<Object> iterator = setVal.iterator();
@@ -417,7 +418,7 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
 	 * @param rawEntry the entry information
 	 * @return GB the bean object. 
 	 **/
-	public abstract GB wrap(List<EntityAttr> attrs, Result rawEntry);
+	public abstract GB wrap(List<EntityAttr> attrs, Result rawEntry) throws WrapperException;
 	
 	/**
 	 * Parse bean object into raw Object
@@ -426,7 +427,7 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
 	 * @param entryInfo the entry information bean
 	 * @return Object the raw object. 
 	 **/	
-	public abstract Put parse(List<EntityAttr> attrs, GB entryInfo);
+	public abstract Put parse(List<EntityAttr> attrs, GB entryInfo)throws WrapperException;
 
 	
 	/**
@@ -436,5 +437,5 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
 	 * 
 	 * @return GB the bean object. 
 	 **/
-	public abstract GB wrap(String entityName, Result rawEntry);
+	public abstract GB wrap(String entityName, Result rawEntry)throws WrapperException;
 }

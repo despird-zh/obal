@@ -52,6 +52,7 @@ import com.obal.core.EntryKey;
 import com.obal.core.accessor.EntityAccessor;
 import com.obal.exception.AccessorException;
 import com.obal.exception.MetaException;
+import com.obal.exception.WrapperException;
 import com.obal.meta.BaseEntity;
 import com.obal.meta.EntityAttr;
 
@@ -134,6 +135,8 @@ public abstract class HEntityAccessor<GB extends EntryKey> extends EntityAccesso
 		} catch (IOException e) {
 			
 			throw new AccessorException("Scan exception .",e);
+		} catch (WrapperException e) {
+			throw new AccessorException("Scan exception .",e);
 		}finally{
 			
 			if(table != null)
@@ -208,7 +211,9 @@ public abstract class HEntityAccessor<GB extends EntryKey> extends EntityAccesso
         } catch (IOException e) {  
         	
             throw new AccessorException("Error get entry row,key:{} attr:{}",e,entryKey,attr.getAttrName());
-        }finally{
+        } catch (WrapperException e) {
+        	 throw new AccessorException("Error get entry row,key:{} attr:{}",e,entryKey,attr.getAttrName());
+		}finally{
         	
         	try {
 				table.close();
@@ -237,7 +242,9 @@ public abstract class HEntityAccessor<GB extends EntryKey> extends EntityAccesso
         } catch (IOException e) {  
         	
             throw new AccessorException("Error get entry row,key:{}",e,rowkey);
-        }finally{
+        } catch (WrapperException e) {
+        	 throw new AccessorException("Error get entry row,key:{}",e,rowkey);
+		}finally{
         	
         	try {
 				table.close();
@@ -296,7 +303,9 @@ public abstract class HEntityAccessor<GB extends EntryKey> extends EntityAccesso
         	
         } catch (IOException e) {  
         	 throw new AccessorException("Error put entry row,key:{},attr:{},value{}",e,entryKey,attrName,value.toString());
-        }finally{
+        } catch (WrapperException e) {
+        	throw new AccessorException("Error put entry row,key:{},attr:{},value{}",e,entryKey,attrName,value.toString());
+		}finally{
         	
         	try {
 				table.close();
@@ -323,7 +332,9 @@ public abstract class HEntityAccessor<GB extends EntryKey> extends EntityAccesso
         	
         } catch (IOException e) {  
         	 throw new AccessorException("Error put entry row,key:{}",e,entryInfo.getKey());
-        }finally{
+        } catch (WrapperException e) {
+        	throw new AccessorException("Error put entry row,key:{}",e,entryInfo.getKey());
+		}finally{
         	
         	try {
 				table.close();
