@@ -31,7 +31,6 @@ import org.slf4j.LoggerFactory;
 
 import com.obal.core.accessor.EntityAccessor;
 import com.obal.core.accessor.GeneralAccessor;
-import com.obal.core.hbase.HAccessorBuilder;
 import com.obal.core.security.Principal;
 import com.obal.core.security.PrincipalAware;
 import com.obal.core.util.CoreConstants;
