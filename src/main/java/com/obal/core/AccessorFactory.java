@@ -255,32 +255,6 @@ public class AccessorFactory {
 	}
 
 	/**
-	 * Build General service
-	 * 
-	 * It's not suggested to use class to build service.
-	 * 
-	 * @param principal
-	 *            the principal
-	 * @param clazz
-	 *            the name of entry interface class, eg. the map key of service
-	 *            class
-	 **/
-	@Deprecated
-	public <K> K buildGeneralAccessor(Principal principal, Class<K> clazz)
-			throws EntityException {
-		AccessorBuilder defaultBuilder = builderMap.get(this.defaultBuilder);
-		if (null == defaultBuilder) {
-
-			throw new EntityException(
-					"The Default AccessorBuilder instance:{} not existed.",
-					this.defaultBuilder);
-		}
-		K accessor = defaultBuilder.newGeneralAccessor(clazz);
-		defaultBuilder.assembly(principal, (GeneralAccessor) accessor);
-		return accessor;
-	}
-
-	/**
 	 * Build embed EntryAccessor instance
 	 * 
 	 * @param mockupAccessor
@@ -378,33 +352,6 @@ public class AccessorFactory {
 		return accessor;
 	}
 
-	/**
-	 * Build General service
-	 * 
-	 * It's not suggested to use class build service.
-	 * 
-	 * @param builderName
-	 *            the builder name
-	 * @param principal
-	 *            the principal
-	 * @param clazz
-	 *            the name of entry interface class, eg. the map key of service
-	 *            class
-	 **/
-	@Deprecated
-	public <K> K buildGeneralAccessor(String builderName, Principal principal,
-			Class<K> clazz) throws EntityException {
-
-		AccessorBuilder accessorbuilder = builderMap.get(builderName);
-		if (null == accessorbuilder) {
-
-			throw new EntityException(
-					"The AccessorBuilder instance:{} not existed.", builderName);
-		}
-		K accessor = accessorbuilder.newGeneralAccessor(clazz);
-		accessorbuilder.assembly(principal, (GeneralAccessor) accessor);
-		return accessor;
-	}
 
 	/**
 	 * Build embed EntryAccessor instance

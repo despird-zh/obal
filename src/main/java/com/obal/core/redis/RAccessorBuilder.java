@@ -75,7 +75,7 @@ public class RAccessorBuilder extends AccessorBuilder{
 	    config.setTestOnReturn(true);
 	    try{    
  
-	    	jedisPool = new JedisPool(config, "127.0.0.1", 6379 , 12000);  
+	    	jedisPool = new JedisPool(config, "192.168.1.133", 6379 , 12000);  
         } catch(Exception e) {  
         	
         	LOGGER.error("Error when create JedisPool object",e); 

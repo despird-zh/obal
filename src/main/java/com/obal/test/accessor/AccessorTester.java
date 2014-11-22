@@ -47,7 +47,7 @@ public class AccessorTester extends BlankTester{
 		RawEntry rentry = null;
 		Principal princ = new Principal("useracc","demouser","pwd");
 		try{
-			ta = AccessorUtils.getEntryAccessor(princ, "obal.test");
+			ta = AccessorUtils.getEntityAccessor(princ, "obal.test");
 			rentry = ta.doGetEntry(key.getKey());
 			
 		}catch (EntityException e) {
@@ -70,7 +70,7 @@ public class AccessorTester extends BlankTester{
 		TestAccessor ta = null;
 		Principal princ = new Principal("useracc","demouser","pwd");
 		try{
-			ta = AccessorUtils.getEntryAccessor(princ, "obal.test");
+			ta = AccessorUtils.getEntityAccessor(princ, "obal.test");
 			ta.doDelEntry(key.getKey());
 			
 		}catch (EntityException e) {
@@ -91,7 +91,7 @@ public class AccessorTester extends BlankTester{
 		TestAccessor ta = null;
 		Principal princ = new Principal("useracc","demouser","pwd");
 		try{
-			ta = AccessorUtils.getEntryAccessor(princ, "obal.test");
+			ta = AccessorUtils.getEntityAccessor(princ, "obal.test");
 			
 			ta.doPutEntryAttr(key.getKey(), "i_int", 2211);
 			ta.doPutEntryAttr(key.getKey(), "i_double", 23.2222);
@@ -156,7 +156,7 @@ public class AccessorTester extends BlankTester{
 		TestAccessor ta = null;
 		Principal princ = new Principal("useracc","demouser","pwd");
 		try {
-			ta = AccessorUtils.getEntryAccessor(princ, "obal.test");
+			ta = AccessorUtils.getEntityAccessor(princ, "obal.test");
 			EntryKey key = ta.newKey();
 			RawEntry re = new RawEntry(key);
 			re.put("i_int", 1211);

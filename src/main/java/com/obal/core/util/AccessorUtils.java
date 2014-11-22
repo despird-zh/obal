@@ -36,16 +36,44 @@ public class AccessorUtils {
 
 	/**
 	 * Get Entry Accessor
+	 * 
+	 * @param builderName the builder name
+	 * @param principal the user principal
+	 * @param entityName the entity name
+	 * 
+	 * @return K the instance of accessor 
+	 **/
+	public static <K> K getEntityAccessor(String builderName, Principal principal,String entityName)throws EntityException{
+		
+		return AccessorFactory.getInstance().buildEntityAccessor(builderName,principal, entityName);
+	}	
+	
+	/**
+	 * Get Entry Accessor
 	 * @param principal the user principal
 	 * @param entityName
 	 * 
 	 * @return K the instance of accessor 
 	 **/
-	public static <K> K getEntryAccessor(Principal principal,String entityName)throws EntityException{
+	public static <K> K getEntityAccessor(Principal principal,String entityName)throws EntityException{
 		
 		return AccessorFactory.getInstance().buildEntityAccessor(principal, entityName);
 	}	
 
+	/**
+	 * Get General Accessor
+	 * 
+	 * @param builderName the builder name
+	 * @param principal the user principal
+	 * @param accessorName
+	 * 
+	 * @return K the instance of accessor 
+	 **/
+	public static <K> K getGeneralAccessor(String builderName, Principal principal,String accessorName)throws EntityException{
+		
+		return AccessorFactory.getInstance().buildGeneralAccessor(builderName, principal, accessorName);
+	}
+	
 	/**
 	 * Get General Accessor
 	 * @param principal the user principal
@@ -58,18 +86,6 @@ public class AccessorUtils {
 		return AccessorFactory.getInstance().buildGeneralAccessor(principal, accessorName);
 	}
 
-	/**
-	 * Get Gereral Accessor
-	 * @param principal the user principal
-	 * @param class
-	 * 
-	 * @return K the instance of accessor 
-	 **/
-	@Deprecated
-	public static <K> K getGeneralAccessor(Principal principal,Class<K> clazz)throws EntityException{
-		
-		return AccessorFactory.getInstance().buildGeneralAccessor(principal, clazz);
-	}
 
 	/**
 	 * Get embed General Accessor
