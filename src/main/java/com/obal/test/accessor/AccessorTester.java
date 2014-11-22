@@ -3,8 +3,10 @@ package com.obal.test.accessor;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.obal.admin.EntityAdmin;
 import com.obal.admin.IAdminAccessor;
@@ -31,13 +33,13 @@ public class AccessorTester extends BlankTester{
 		EntityAdmin eadmin = EntityAdmin.getInstance();
 		eadmin.loadEntityMeta();
 		AccessorTester self = new AccessorTester();
-		//self.createTestSchema();
+		self.createTestSchema();
 		EntryKey key = self.testNewEntry();
 		//EntryKey key = new EntryKey("obal.test","1416631407433");
 		
 		self.testUpdateAttr(key);
 		self.testGet(key);
-		self.testDelete(key);
+		//self.testDelete(key);
 		
 	}
 	
@@ -118,6 +120,27 @@ public class AccessorTester extends BlankTester{
 			dtlist.add(new Date());
 			dtlist.add(new Date());
 			ta.doPutEntryAttr(key.getKey(), "i_list_dt", dtlist);
+
+			Set<String> strset = new HashSet<String>();
+			strset.add("items0");
+			strset.add("items1");
+			strset.add("items2");
+			strset.add("items3");
+			ta.doPutEntryAttr(key.getKey(),"i_set_str", strset);
+			
+			Set<Integer> intset = new HashSet<Integer>();
+			intset.add(3010);
+			intset.add(3011);
+			intset.add(3012);
+			intset.add(3014);
+			ta.doPutEntryAttr(key.getKey(),"i_set_int", intset);
+
+			Set<Date> dtset = new HashSet<Date>();
+			dtset.add(new Date());
+			dtset.add(new Date());
+			dtset.add(new Date());
+			dtset.add(new Date());
+			ta.doPutEntryAttr(key.getKey(),"i_set_dt", dtset);
 			
 			Map<String, String> strmap = new HashMap<String, String>();
 			strmap.put("sk1", "str val 21");
@@ -185,6 +208,27 @@ public class AccessorTester extends BlankTester{
 			dtlist.add(new Date());
 			dtlist.add(new Date());
 			re.put("i_list_dt", dtlist);
+
+			Set<String> strset = new HashSet<String>();
+			strset.add("item0");
+			strset.add("item1");
+			strset.add("item2");
+			strset.add("item3");
+			re.put("i_set_str", strset);
+			
+			Set<Integer> intset = new HashSet<Integer>();
+			intset.add(1010);
+			intset.add(1011);
+			intset.add(1012);
+			intset.add(1014);
+			re.put("i_set_int", intset);
+
+			Set<Date> dtset = new HashSet<Date>();
+			dtset.add(new Date());
+			dtset.add(new Date());
+			dtset.add(new Date());
+			dtset.add(new Date());
+			re.put("i_set_dt", dtset);
 			
 			Map<String, String> strmap = new HashMap<String, String>();
 			strmap.put("sk1", "str val 1");
@@ -255,6 +299,15 @@ public class AccessorTester extends BlankTester{
 			attr = new EntityAttr("i_list_dt",AttrMode.LIST,AttrType.DATE,"c3","list-dt");
 			meta.addAttr(attr);
 			
+			attr = new EntityAttr("i_set_str",AttrMode.SET,AttrType.STRING,"c3","set-str");
+			meta.addAttr(attr);
+			
+			attr = new EntityAttr("i_set_int",AttrMode.SET,AttrType.INTEGER,"c3","set-int");
+			meta.addAttr(attr);
+
+			attr = new EntityAttr("i_set_dt",AttrMode.SET,AttrType.DATE,"c3","set-dt");
+			meta.addAttr(attr);
+			
 			attr = new EntityAttr("i_map_str",AttrMode.MAP,AttrType.STRING,"c4","map-str");
 			meta.addAttr(attr);
 			
@@ -263,6 +316,7 @@ public class AccessorTester extends BlankTester{
 
 			attr = new EntityAttr("i_map_dt",AttrMode.MAP,AttrType.DATE,"c4","map-dt");
 			meta.addAttr(attr);
+			
 			
 			aa.createSchema("obal.test",meta.getAllAttrs());
 			
