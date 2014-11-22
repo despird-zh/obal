@@ -30,7 +30,7 @@ public class CoreConstants {
 	public static final String ACE_TYPE_GROUP = "_group";
 	
 	/** the builder name : hbase */
-	public static final String BULDER_HBASE = "hbase";
+	public static final String BUILDER_HBASE = "hbase";
 	
 	/** the builder name : redis */
 	public static final String BUILDER_REDIS = "redis";

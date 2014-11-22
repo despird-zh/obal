@@ -34,6 +34,7 @@ import com.obal.core.AccessorBuilder;
 import com.obal.core.IBaseAccessor;
 import com.obal.core.security.Principal;
 import com.obal.core.security.PrincipalAware;
+import com.obal.core.util.CoreConstants;
 import com.obal.exception.EntityException;
 /**
  * Hbase-wise implementation of AccessorBuilder.
@@ -51,6 +52,14 @@ public class HAccessorBuilder extends AccessorBuilder{
 	static Logger LOGGER = LoggerFactory.getLogger(HAccessorBuilder.class);
 	
 	private Configuration config = null;
+	
+	/**
+	 * Default Constructor 
+	 **/
+	public HAccessorBuilder() throws EntityException{
+		
+		this(CoreConstants.BUILDER_HBASE,"com/obal/core/AccessorMap.hbase.properties");
+	}
 	
 	/**
 	 * constructor 

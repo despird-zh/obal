@@ -30,6 +30,7 @@ import com.obal.core.AccessorBuilder;
 import com.obal.core.IBaseAccessor;
 import com.obal.core.security.Principal;
 import com.obal.core.security.PrincipalAware;
+import com.obal.core.util.CoreConstants;
 import com.obal.exception.EntityException;
 /**
  * Jedis-wise implementation of AccessorBuilder.
@@ -49,6 +50,15 @@ public class RAccessorBuilder extends AccessorBuilder{
 	private JedisPoolConfig  config = null;
 	
 	private JedisPool jedisPool = null;
+	
+	/**
+	 * Default Constructor 
+	 **/
+	public RAccessorBuilder() throws EntityException{
+		
+		this(CoreConstants.BUILDER_REDIS,"com/obal/core/AccessorMap.redis.properties");
+	}
+	
 	
 	/**
 	 * constructor 

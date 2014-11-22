@@ -47,6 +47,12 @@ public abstract class AccessorBuilder {
 	private String builderName = null;
 	
 	/**
+	 * Default Constructor 
+	 **/
+	protected AccessorBuilder() throws EntityException{}
+
+	
+	/**
 	 * Constructor
 	 * @param builderName builder name eg. hbase, redis
 	 * @param accessormap the accessor mapping 
