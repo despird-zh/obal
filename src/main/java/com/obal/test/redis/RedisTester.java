@@ -21,9 +21,7 @@ import com.obal.meta.EntityConstants;
 import com.obal.meta.EntityMeta;
 import com.obal.meta.GeneralEntity;
 import com.obal.meta.accessor.IMetaAttrAccessor;
-import com.obal.test.AdminTester;
 import com.obal.test.BlankTester;
-import com.obal.test.accessor.AccessorTester;
 import com.obal.test.accessor.TestAccessor;
 
 public class RedisTester extends BlankTester{
