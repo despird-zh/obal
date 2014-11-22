@@ -32,12 +32,37 @@ public class AccessorTester extends BlankTester{
 		eadmin.loadEntityMeta();
 		AccessorTester self = new AccessorTester();
 		//self.createTestSchema();
-		//EntryKey key = self.testNewEntry();
-		EntryKey key = new EntryKey("obal.test","1416054407054");
+		EntryKey key = self.testNewEntry();
+		//EntryKey key = new EntryKey("obal.test","1416631407433");
 		
 		self.testUpdateAttr(key);
-		//self.testDelete(key);
+		self.testGet(key);
+		self.testDelete(key);
 		
+	}
+	
+	private RawEntry testGet(EntryKey key){
+		
+		TestAccessor ta = null;
+		RawEntry rentry = null;
+		Principal princ = new Principal("useracc","demouser","pwd");
+		try{
+			ta = AccessorUtils.getEntryAccessor(princ, "obal.test");
+			rentry = ta.doGetEntry(key.getKey());
+			
+		}catch (EntityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		} catch (AccessorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			System.out.println("----end get entry");
+			AccessorUtils.releaseAccessor(ta);
+		}
+		
+		return rentry;
 	}
 	
 	private void testDelete(EntryKey key){
@@ -68,50 +93,49 @@ public class AccessorTester extends BlankTester{
 		try{
 			ta = AccessorUtils.getEntryAccessor(princ, "obal.test");
 			
-//			ta.doPutEntryAttr(key.getKey(), "i_int", 2211);
-//			ta.doPutEntryAttr(key.getKey(), "i_double", 23.2222);
-//			ta.doPutEntryAttr(key.getKey(), "i_long", 23888888L);
-//			ta.doPutEntryAttr(key.getKey(), "i_date", new Date(System.currentTimeMillis()));
-//			ta.doPutEntryAttr(key.getKey(), "i_string", "SSSTUPDATE");
+			ta.doPutEntryAttr(key.getKey(), "i_int", 2211);
+			ta.doPutEntryAttr(key.getKey(), "i_double", 23.2222);
+			ta.doPutEntryAttr(key.getKey(), "i_long", 23888888L);
+			ta.doPutEntryAttr(key.getKey(), "i_date", new Date(System.currentTimeMillis()));
+			ta.doPutEntryAttr(key.getKey(), "i_string", "SSSTUPDATE");
 
 			List<String> strlist = new ArrayList<String>();
 			strlist.add("item20");
 			strlist.add("item21");
 			strlist.add("item22");
-			ta.clearNonPrimitiveAttr(key.getKey(), "i_list_str", strlist);
-			//ta.doPutEntryAttr(key.getKey(), "i_list_str", strlist);
+			ta.doPutEntryAttr(key.getKey(), "i_list_str", strlist);
 			
-//			List<Integer> intlist = new ArrayList<Integer>();
-//			intlist.add(2010);
-//			intlist.add(2011);
-//			intlist.add(2012);
-//			intlist.add(2014);
-//			ta.doPutEntryAttr(key.getKey(), "i_list_int", intlist);
-//
-//			List<Date> dtlist = new ArrayList<Date>();
-//			dtlist.add(new Date());
-//			dtlist.add(new Date());
-//			dtlist.add(new Date());
-//			dtlist.add(new Date());
-//			ta.doPutEntryAttr(key.getKey(), "i_list_dt", dtlist);
-//			
-//			Map<String, String> strmap = new HashMap<String, String>();
-//			strmap.put("sk1", "str val 21");
-//			strmap.put("sk2", "str val 22");
-//			strmap.put("sk3", "str val 23");
-//			ta.doPutEntryAttr(key.getKey(), "i_map_str", strmap);
-//			
-//			Map<String, Integer> intmap = new HashMap<String, Integer>();
-//			intmap.put("ik1", 221);
-//			intmap.put("ik2", 222);
-//			intmap.put("ik3", 223);
-//			ta.doPutEntryAttr(key.getKey(), "i_map_int", intmap);
-//			
-//			Map<String, Date> dtmap = new HashMap<String, Date>();
-//			dtmap.put("dk1", new Date());
-//			dtmap.put("dk2", new Date());
-//			dtmap.put("dk3", new Date());
-//			ta.doPutEntryAttr(key.getKey(), "i_map_dt", dtmap);
+			List<Integer> intlist = new ArrayList<Integer>();
+			intlist.add(2010);
+			intlist.add(2011);
+			intlist.add(2012);
+			intlist.add(2014);
+			ta.doPutEntryAttr(key.getKey(), "i_list_int", intlist);
+
+			List<Date> dtlist = new ArrayList<Date>();
+			dtlist.add(new Date());
+			dtlist.add(new Date());
+			dtlist.add(new Date());
+			dtlist.add(new Date());
+			ta.doPutEntryAttr(key.getKey(), "i_list_dt", dtlist);
+			
+			Map<String, String> strmap = new HashMap<String, String>();
+			strmap.put("sk1", "str val 21");
+			strmap.put("sk2", "str val 22");
+			strmap.put("sk3", "str val 23");
+			ta.doPutEntryAttr(key.getKey(), "i_map_str", strmap);
+			
+			Map<String, Integer> intmap = new HashMap<String, Integer>();
+			intmap.put("ik1", 221);
+			intmap.put("ik2", 222);
+			intmap.put("ik3", 223);
+			ta.doPutEntryAttr(key.getKey(), "i_map_int", intmap);
+			
+			Map<String, Date> dtmap = new HashMap<String, Date>();
+			dtmap.put("dk1", new Date());
+			dtmap.put("dk2", new Date());
+			dtmap.put("dk3", new Date());
+			ta.doPutEntryAttr(key.getKey(), "i_map_dt", dtmap);
 			
 		}catch (EntityException e) {
 			// TODO Auto-generated catch block
@@ -127,6 +151,7 @@ public class AccessorTester extends BlankTester{
 	}
 	
 	private EntryKey testNewEntry(){
+		
 		System.out.println("----start create new entry");
 		TestAccessor ta = null;
 		Principal princ = new Principal("useracc","demouser","pwd");

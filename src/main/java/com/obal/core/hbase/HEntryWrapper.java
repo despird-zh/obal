@@ -160,35 +160,36 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
 	@SuppressWarnings("unchecked")
 	public List<Object> getListValue(EntityAttr attr, byte[] value)throws WrapperException{
 		List<?> list = null;
+
 		String jsonStr = Bytes.toString(value);
 		try{
 			ObjectReader oReader = null;
 			switch(attr.type){
 				case INTEGER:
 					oReader=objectMapper.reader(new TypeReference<ArrayList<Integer>>(){});					
-					list = oReader.readValue(jsonStr);					
+					list = (jsonStr == null)? new ArrayList<Integer>() : (List<?>)oReader.readValue(jsonStr);					
 					break;
 					
 				case BOOL:
 					oReader=objectMapper.reader(new TypeReference<ArrayList<Boolean>>(){});					
-					list = oReader.readValue(jsonStr);	
+					list = (jsonStr == null)? new ArrayList<Boolean>() : (List<?>)oReader.readValue(jsonStr);	
 					
 					break;
 				case DOUBLE:
 					oReader=objectMapper.reader(new TypeReference<ArrayList<Double>>(){});					
-					list = oReader.readValue(jsonStr);	
+					list = (jsonStr == null)? new ArrayList<Double>() : (List<?>)oReader.readValue(jsonStr);	
 					break;
 				case LONG:
 					oReader=objectMapper.reader(new TypeReference<ArrayList<Long>>(){});					
-					list = oReader.readValue(jsonStr);	
+					list = (jsonStr == null)? new ArrayList<Long>() : (List<?>)oReader.readValue(jsonStr);	
 					break;
 				case STRING:
 					oReader=objectMapper.reader(new TypeReference<ArrayList<String>>(){});					
-					list = oReader.readValue(jsonStr);	
+					list = (jsonStr == null)? new ArrayList<String>() : (List<?>)oReader.readValue(jsonStr);	
 					break;
 				case DATE:
 					oReader=objectMapper.reader(new TypeReference<ArrayList<Date>>(){});					
-					list = oReader.readValue(jsonStr);	
+					list = (jsonStr == null)? new ArrayList<Date>() : (List<?>)oReader.readValue(jsonStr);	
 					
 					break;
 				default:
@@ -230,29 +231,29 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
 			switch(attr.type){
 				case INTEGER:
 					oReader=objectMapper.reader(new TypeReference<HashSet<Integer>>(){});					
-					set = oReader.readValue(jsonStr);
+					set = (jsonStr == null)? new HashSet<Integer>() : (Set<?>) oReader.readValue(jsonStr);
 					
 					break;
 				case BOOL:
 					oReader=objectMapper.reader(new TypeReference<HashSet<Boolean>>(){});					
-					set = oReader.readValue(jsonStr);
+					set = (jsonStr == null)? new HashSet<Boolean>() : (Set<?>) oReader.readValue(jsonStr);
 					
 					break;
 				case DOUBLE:
 					oReader=objectMapper.reader(new TypeReference<HashSet<Double>>(){});					
-					set = oReader.readValue(jsonStr);
+					set = (jsonStr == null)? new HashSet<Double>() : (Set<?>) oReader.readValue(jsonStr);
 					break;
 				case LONG:
 					oReader=objectMapper.reader(new TypeReference<HashSet<Long>>(){});					
-					set = oReader.readValue(jsonStr);
+					set = (jsonStr == null)? new HashSet<Long>() : (Set<?>) oReader.readValue(jsonStr);
 					break;
 				case STRING:
 					oReader=objectMapper.reader(new TypeReference<HashSet<String>>(){});					
-					set = oReader.readValue(jsonStr);
+					set = (jsonStr == null)? new HashSet<String>() : (Set<?>) oReader.readValue(jsonStr);
 					break;
 				case DATE:
 					oReader=objectMapper.reader(new TypeReference<HashSet<Date>>(){});					
-					set = oReader.readValue(jsonStr);
+					set = (jsonStr == null)? new HashSet<Date>() : (Set<?>) oReader.readValue(jsonStr);
 					
 					break;
 				default:
