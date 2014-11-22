@@ -26,7 +26,7 @@ import redis.clients.jedis.Jedis;
  *  @author despird
  *  @version 0.1 2014-3-1
  **/
-public interface RJedisAware {
+public interface RedisAware {
 
 	/**
 	 * set HConnection 

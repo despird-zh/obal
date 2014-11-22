@@ -75,12 +75,12 @@ public class RAccessorBuilder extends AccessorBuilder{
 	@Override
 	public void assembly(Principal principal,IBaseAccessor accessor) {
 		Jedis jedis = null;		
-		if(accessor instanceof RJedisAware){
+		if(accessor instanceof RedisAware){
 			
 			try {
 				
 				jedis = jedisPool.getResource();
-				((RJedisAware) accessor).setJedis(jedis);
+				((RedisAware) accessor).setJedis(jedis);
 				
 			} catch (Exception e) {
 				
@@ -101,14 +101,14 @@ public class RAccessorBuilder extends AccessorBuilder{
 		Principal principal = null;
 		for(IBaseAccessor accessor:accessors){
 			
-			if((mockupAccessor instanceof RJedisAware) 
-					&& (accessor instanceof RJedisAware)){
+			if((mockupAccessor instanceof RedisAware) 
+					&& (accessor instanceof RedisAware)){
 				
-				jedis = ((RJedisAware) mockupAccessor).getJedis();
-				((RJedisAware) accessor).setJedis(jedis);		
+				jedis = ((RedisAware) mockupAccessor).getJedis();
+				((RedisAware) accessor).setJedis(jedis);		
 			}
 			
-			if((mockupAccessor instanceof RJedisAware) 
+			if((mockupAccessor instanceof RedisAware) 
 					&& (accessor instanceof PrincipalAware)){
 				principal = ((PrincipalAware) accessor).getPrincipal();
 				((PrincipalAware) accessor).setPrincipal(principal);		
