@@ -23,10 +23,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.NavigableMap;
 import java.util.Set;
 
 import org.apache.hadoop.hbase.client.Put;
@@ -34,14 +32,11 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectReader;
-import org.codehaus.jackson.map.ObjectWriter;
 import org.codehaus.jackson.type.TypeReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.obal.core.EntryInfo;
 import com.obal.core.EntryKey;
-import com.obal.core.util.CoreConstants;
 import com.obal.exception.WrapperException;
 import com.obal.meta.EntityAttr;
 
