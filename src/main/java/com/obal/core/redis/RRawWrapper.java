@@ -49,63 +49,13 @@ public class RRawWrapper extends REntryWrapper<RawEntry> {
 
 	@Override
 	public RawEntry wrap(String entityName, String key, Jedis rawEntry) throws AccessorException{
-		String redisKey = entityName + CoreConstants.KEYS_SEPARATOR + key;
-		Jedis entry = rawEntry;
-		// not exist return null;
-		if(!entry.exists(redisKey)){
-			LOGGER.debug("The target[key:{}-{}] data not exist in Jedis.",entityName,key);
-			return null;	
-		}
-		EntityMeta meta = EntityManager.getInstance().getEntityMeta(entityName);
 		
+		EntityMeta meta = EntityManager.getInstance().getEntityMeta(entityName);
 		if(meta == null)
 			throw new AccessorException("The meta data:{} not exists in EntityManager.",entityName);
 		
 		List<EntityAttr> attrs = meta.getAllAttrs();
-		RawEntry gei = new RawEntry(entityName, key);
-		
-		for (EntityAttr attr : attrs) {
-			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Wrapping entity:{} - attribute:{}", entityName,
-						attr.getAttrName());
-			}
-			Map<byte[], byte[]> cells = null;
-			
-			switch (attr.mode) {
-
-			case PRIMITIVE:
-				byte[] cell = entry.hget(redisKey.getBytes(), attr.getAttrName().getBytes());
-				Object value = super.getPrimitiveValue(attr, cell);
-				gei.put(attr.getAttrName(), value);
-				break;
-			case MAP:
-				String mapkey = redisKey + CoreConstants.KEYS_SEPARATOR + attr.getAttrName();
-				cells = entry.hgetAll(mapkey.getBytes());
-				Map<String, Object> map = super.getMapValue(attr, cells);
-				gei.put(attr.getAttrName(), map);
-				break;
-			case LIST:
-				String listkey = redisKey + CoreConstants.KEYS_SEPARATOR + attr.getAttrName();
-				Long llen = entry.llen(listkey.getBytes());
-				List<byte[]> listcells = entry.lrange(listkey.getBytes(), 0,llen);
-				List<Object> list = super.getListValue(attr, listcells);
-				gei.put(attr.getAttrName(), list);
-				break;
-
-			case SET:
-				String setkey = redisKey + CoreConstants.KEYS_SEPARATOR + attr.getAttrName();
-				Set<byte[]> setcells = entry.smembers(setkey.getBytes());
-
-				Set<Object> set = super.getSetValue(attr, setcells);
-				gei.put(attr.getAttrName(), set);
-				break;
-
-			default:
-				break;
-
-			}
-		}
-
+		RawEntry gei = wrap(attrs, key, rawEntry);
 		return gei;
 	}
 
@@ -140,18 +90,18 @@ public class RRawWrapper extends REntryWrapper<RawEntry> {
 			switch (attr.mode) {
 
 				case PRIMITIVE:
-					byte[] cell = entry.hget(redisKey.getBytes(), attr.getAttrName().getBytes());
+					byte[] cell = entry.hget(redisKey.getBytes(), attr.getQualifier().getBytes());
 					Object value = super.getPrimitiveValue(attr, cell);
 					gei.put(attr.getAttrName(), value);
 					break;
 				case MAP:
-					String mapkey = redisKey + CoreConstants.KEYS_SEPARATOR + attr.getAttrName();
+					String mapkey = redisKey + CoreConstants.KEYS_SEPARATOR + attr.getQualifier();
 					cells = entry.hgetAll(mapkey.getBytes());
 					Map<String, Object> map = super.getMapValue(attr, cells);
 					gei.put(attr.getAttrName(), map);
 					break;
 				case LIST:
-					String listkey = redisKey + CoreConstants.KEYS_SEPARATOR + attr.getAttrName();
+					String listkey = redisKey + CoreConstants.KEYS_SEPARATOR + attr.getQualifier();
 					Long llen = entry.llen(listkey.getBytes());
 					List<byte[]> listcells = entry.lrange(listkey.getBytes(), 0,llen);
 					List<Object> list = super.getListValue(attr, listcells);
@@ -159,7 +109,7 @@ public class RRawWrapper extends REntryWrapper<RawEntry> {
 					break;
 	
 				case SET:
-					String setkey = redisKey + CoreConstants.KEYS_SEPARATOR + attr.getAttrName();
+					String setkey = redisKey + CoreConstants.KEYS_SEPARATOR + attr.getQualifier();
 					Set<byte[]> setcells = entry.smembers(setkey.getBytes());
 	
 					Set<Object> set = super.getSetValue(attr, setcells);

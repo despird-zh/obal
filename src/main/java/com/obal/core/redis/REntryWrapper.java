@@ -176,8 +176,8 @@ public abstract class REntryWrapper<GB extends EntryKey> {
 				}
 				if(LOGGER.isDebugEnabled()){
 					
-					LOGGER.debug("LIST -> attribute:{} - key:{} - value:{}", 
-							new String[]{attr.getAttrName(),new String(e),String.valueOf(list.get(list.size()-1))});
+					LOGGER.debug("LIST -> attribute:{} - index:{} - value:{}", 
+							new String[]{attr.getAttrName(),String.valueOf(list.size()-1),String.valueOf(list.get(list.size()-1))});
 				}
 			
 		}				
@@ -272,7 +272,7 @@ public abstract class REntryWrapper<GB extends EntryKey> {
 				break;					
 		}
     	
-    	jedis.hset(key.getBytes(),attr.getColumn().getBytes(), bval);
+    	jedis.hset(key.getBytes(),attr.getQualifier().getBytes(), bval);
     	
 	}
 	
@@ -333,8 +333,10 @@ public abstract class REntryWrapper<GB extends EntryKey> {
 	public void putListValue(Jedis jedis, String key, EntityAttr attr, List<Object> listVal){
 		byte[] bval = null;
 		String newkey = key + CoreConstants.KEYS_SEPARATOR + attr.getQualifier();
-    	if(listVal == null) return;    	
-    	for(int i=0;i<listVal.size();i++){
+    	if(listVal == null) return;   
+    	long llen = jedis.llen(newkey.getBytes());
+    	int i=0;
+    	for(;i<listVal.size();i++){
     		
 	    	switch(attr.type){
 				case INTEGER:
@@ -360,9 +362,17 @@ public abstract class REntryWrapper<GB extends EntryKey> {
 					break;					
 			}
 	    	
-	    	jedis.lset(newkey.getBytes(), i, bval);
+	    	if(i<llen)
+	    		jedis.lset(newkey.getBytes(),i, bval);
+	    	else
+	    		jedis.rpush(newkey.getBytes(), bval);
     	}
     	
+    	while(i < llen){
+    		
+    		jedis.ltrim(newkey.getBytes(), 0, i - 1);
+    	}
+    		
 	}
 	
 

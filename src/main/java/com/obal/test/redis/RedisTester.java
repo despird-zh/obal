@@ -22,7 +22,6 @@ import com.obal.meta.EntityMeta;
 import com.obal.meta.GeneralEntity;
 import com.obal.meta.accessor.IMetaAttrAccessor;
 import com.obal.test.BlankTester;
-import com.obal.test.accessor.TestAccessor;
 
 public class RedisTester extends BlankTester{
 
@@ -33,11 +32,11 @@ public class RedisTester extends BlankTester{
 		EntityAdmin eadmin = EntityAdmin.getInstance();
 		eadmin.loadEntityMeta();
 		//self.createTestSchema();
-		EntryKey key = self.testNewEntry();
-		//EntryKey key = new EntryKey("obal.test","1416631407433");
+		//EntryKey key = self.testNewEntry();
+		EntryKey key = new EntryKey("obal.test","1416666524487");
 		
-		//self.testUpdateAttr(key);
-		//self.testGet(key);
+		self.testUpdateAttr(key);
+		self.testGet(key);
 		//self.testDelete(key);
 	
 
@@ -51,7 +50,7 @@ public class RedisTester extends BlankTester{
 		Principal princ = new Principal("useracc","demouser","pwd");
 		try{
 			ta = AccessorUtils.getEntityAccessor("redis",princ, "obal.test");
-			rentry = ta.doGetEntry(key.getKey());
+			rentry = (RawEntry)ta.doGetEntry(key.getKey());
 			
 		}catch (EntityException e) {
 			// TODO Auto-generated catch block
