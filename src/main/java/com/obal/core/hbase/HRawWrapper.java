@@ -21,7 +21,6 @@ package com.obal.core.hbase;
 
 import java.util.List;
 import java.util.Map;
-import java.util.NavigableMap;
 import java.util.Set;
 
 import org.apache.hadoop.hbase.client.Put;
@@ -150,6 +149,7 @@ public class HRawWrapper extends HEntryWrapper<RawEntry>{
 		return gei;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Put parse(List<EntityAttr> attrs,RawEntry entryInfo) throws WrapperException{
 		Put put = new Put(entryInfo.getKeyBytes());
