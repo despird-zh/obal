@@ -25,7 +25,15 @@ import com.obal.meta.BaseEntity;
 
 /**
  * Abstract EntryAccessor with EntrySchema information, it provides operation on
- * certain Entity
+ * Entity
+ * <p>The obvious difference from the GeneralAccessor is entityAccessor don't provide
+ * principal related method. In fact the principal is held by entitySchema object.
+ * because it's possible use principal to calculate the schema name, if want to get principal
+ * , it's better use entitySchema object to retrieve it.</p>
+ * 
+ * @author despird
+ * @version 0.1 2014-9-1
+ * 
  **/
 public abstract class EntityAccessor<GB extends EntryKey> implements IEntityAccessor <GB>{
 
