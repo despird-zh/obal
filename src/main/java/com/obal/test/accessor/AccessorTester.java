@@ -33,11 +33,11 @@ public class AccessorTester extends BlankTester{
 		EntityAdmin eadmin = EntityAdmin.getInstance();
 		eadmin.loadEntityMeta();
 		AccessorTester self = new AccessorTester();
-		self.createTestSchema();
-		EntryKey key = self.testNewEntry();
-		//EntryKey key = new EntryKey("obal.test","1416631407433");
+		//self.createTestSchema();
+		//EntryKey key = self.testNewEntry();
+		EntryKey key = new EntryKey("obal.test","1417227231768");
 		
-		self.testUpdateAttr(key);
+		//self.testUpdateAttr(key);
 		self.testGet(key);
 		//self.testDelete(key);
 		
@@ -122,10 +122,10 @@ public class AccessorTester extends BlankTester{
 			ta.doPutEntryAttr(key.getKey(), "i_list_dt", dtlist);
 
 			Set<String> strset = new HashSet<String>();
-			strset.add("items0");
-			strset.add("items1");
-			strset.add("items2");
-			strset.add("items3");
+			strset.add("itemst0");
+			strset.add("itemst1");
+			strset.add("itemst2");
+			strset.add("itemst3");
 			ta.doPutEntryAttr(key.getKey(),"i_set_str", strset);
 			
 			Set<Integer> intset = new HashSet<Integer>();
@@ -136,10 +136,10 @@ public class AccessorTester extends BlankTester{
 			ta.doPutEntryAttr(key.getKey(),"i_set_int", intset);
 
 			Set<Date> dtset = new HashSet<Date>();
-			dtset.add(new Date());
-			dtset.add(new Date());
-			dtset.add(new Date());
-			dtset.add(new Date());
+			dtset.add(new Date(System.currentTimeMillis()-1300000));
+			dtset.add(new Date(System.currentTimeMillis()-7300000));
+			dtset.add(new Date(System.currentTimeMillis()-9300000));
+			dtset.add(new Date(System.currentTimeMillis()-10300000));
 			ta.doPutEntryAttr(key.getKey(),"i_set_dt", dtset);
 			
 			Map<String, String> strmap = new HashMap<String, String>();

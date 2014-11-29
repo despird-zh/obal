@@ -120,7 +120,7 @@ public class AdminAccessor extends HGeneralAccessor implements IAdminAccessor,HA
 		try{
 			
 			if(!hadmin.tableExists(schemaName)){
-				LOGGER.error("Schema[{}] already existed, ignore further operation.",schemaName);
+				LOGGER.error("Schema[{}] not exist, ignore further operation.",schemaName);
 				return;
 			}
 			

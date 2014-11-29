@@ -284,7 +284,7 @@ public abstract class HEntityAccessor<GB extends EntryKey> extends EntityAccesso
 	        		wrapper.putListValue(put, attr, (List<Object>)value);	
 	        		break;
 	            case SET:
-	            	if(!(value instanceof List<?>))
+	            	if(!(value instanceof Set<?>))
 	        			throw new AccessorException("the attr:{} value is not List object",attrName);        		
 	        		wrapper.putSetValue(put, attr, (Set<Object>)value);	
 	        		break;
