@@ -55,7 +55,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 		AttrAccessor attraccessor = null;
 		EntityAttr attr = null;
 		try{
-			attraccessor = AccessorFactory.getInstance().buildEmbedEntityAccessor(this, EntityConstants.ENTITY_META_ATTR);
+			attraccessor = AccessorFactory.getInstance().buildEntityAccessor(this, EntityConstants.ENTITY_META_ATTR);
 
 			RawEntry minfo = attraccessor.doGetEntry(attrKey);
 			String attrName = (String)minfo.get("i_attr_name");
@@ -95,7 +95,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 		List<RawEntry> attrs = null;
 		List<EntityAttr> rtv = null;
 		try{
-			attraccessor = AccessorFactory.getInstance().buildEmbedEntityAccessor(this, EntityConstants.ENTITY_META_ATTR);
+			attraccessor = AccessorFactory.getInstance().buildEntityAccessor(this, EntityConstants.ENTITY_META_ATTR);
 		
 			attrs = attraccessor.doScanEntry(new EntryFilter<Filter>(filter1));
 			
@@ -134,7 +134,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 		AttrAccessor attraccessor = null;
 		
 		try {
-			attraccessor = AccessorFactory.getInstance().buildEmbedEntityAccessor(this, EntityConstants.ENTITY_META_ATTR);
+			attraccessor = AccessorFactory.getInstance().buildEntityAccessor(this, EntityConstants.ENTITY_META_ATTR);
 			EntryKey key = attraccessor.getEntitySchema().newKey();
 			RawEntry minfo = new RawEntry(key);
 
@@ -178,7 +178,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 		MetaAccessor metaAccr = null;
 		EntityMeta meta = null;
 		try{
-			metaAccr = AccessorFactory.getInstance().buildEmbedEntityAccessor(this, EntityConstants.ENTITY_META_INFO);
+			metaAccr = AccessorFactory.getInstance().buildEntityAccessor(this, EntityConstants.ENTITY_META_INFO);
 		
 			RawEntry minfo = metaAccr.doGetEntry(entityName);
 			meta = new EntityMeta(entityName);
@@ -205,7 +205,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 		List<EntityMeta> rtv = null;
 		try{
 			
-			metaAccr = AccessorFactory.getInstance().buildEmbedEntityAccessor(this, EntityConstants.ENTITY_META_INFO);
+			metaAccr = AccessorFactory.getInstance().buildEntityAccessor(this, EntityConstants.ENTITY_META_INFO);
 			rlist = metaAccr.doScanEntry(null);
 			rtv = new ArrayList<EntityMeta>();
 		
@@ -242,7 +242,7 @@ public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAcces
 		
 		MetaAccessor metaAccr = null;
 		try {
-			metaAccr = AccessorFactory.getInstance().buildEmbedEntityAccessor(this, EntityConstants.ENTITY_META_INFO);
+			metaAccr = AccessorFactory.getInstance().buildEntityAccessor(this, EntityConstants.ENTITY_META_INFO);
 			EntryKey key = metaAccr.getEntitySchema().newKey();
 			RawEntry minfo = new RawEntry(key);
 

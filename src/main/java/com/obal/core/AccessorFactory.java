@@ -255,14 +255,15 @@ public class AccessorFactory {
 	}
 
 	/**
-	 * Build embed EntryAccessor instance
+	 * Build embed EntryAccessor instance, it is usually called in GeneralAccessor object.
+	 * The principal will be retrieved from mockupAccessor.
 	 * 
 	 * @param mockupAccessor
 	 *            the mock-up accessor instance
 	 * @param entryName
 	 *            the name of entry
 	 **/
-	public <K> K buildEmbedEntityAccessor(IBaseAccessor mockupAccessor,
+	public <K> K buildEntityAccessor(IBaseAccessor mockupAccessor,
 			String entryName) throws EntityException {
 
 		AccessorBuilder defaultBuilder = builderMap.get(this.defaultBuilder);
@@ -282,14 +283,15 @@ public class AccessorFactory {
 	}
 
 	/**
-	 * Build embed GeneralAccessor instance
+	 * Build embed GeneralAccessor instance, it is usually called in GeneralAccessor object.
+	 * The principal will be retrieved from mockupAccessor.
 	 * 
 	 * @param mockupAccessor
 	 *            the mock-up accessor instance
 	 * @param entryName
 	 *            the name of entry
 	 **/
-	public <K> K buildEmbedGeneralAccessor(IBaseAccessor mockupAccessor,
+	public <K> K buildGeneralAccessor(IBaseAccessor mockupAccessor,
 			String accessorName) throws EntityException {
 
 		AccessorBuilder defaultBuilder = builderMap.get(this.defaultBuilder);
@@ -354,7 +356,8 @@ public class AccessorFactory {
 
 
 	/**
-	 * Build embed EntryAccessor instance
+	 * Build embed EntryAccessor instance, it is usually called in GeneralAccessor object.
+	 * The principal will be retrieved from mockupAccessor.
 	 * 
 	 * @param builderName
 	 *            the builder name
@@ -363,7 +366,7 @@ public class AccessorFactory {
 	 * @param entryName
 	 *            the name of entry
 	 **/
-	public <K> K buildEmbedEntityAccessor(String builderName,
+	public <K> K buildEntityAccessor(String builderName,
 			IBaseAccessor mockupAccessor, String entryName)
 			throws EntityException {
 
@@ -383,7 +386,8 @@ public class AccessorFactory {
 	}
 
 	/**
-	 * Build embed GeneralAccessor instance
+	 * Build embed GeneralAccessor instance, it is usually called in GeneralAccessor object.
+	 * The principal will be retrieved from mockupAccessor.
 	 * 
 	 * @param builderName
 	 *            the builder name
@@ -392,7 +396,7 @@ public class AccessorFactory {
 	 * @param entryName
 	 *            the name of entry
 	 **/
-	public <K> K buildEmbedGeneralAccessor(String builderName,
+	public <K> K buildGeneralAccessor(String builderName,
 			IBaseAccessor mockupAccessor, String accessorName)
 			throws EntityException {
 

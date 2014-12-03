@@ -88,27 +88,29 @@ public class AccessorUtils {
 
 
 	/**
-	 * Get embed General Accessor
+	 * Get embed General Accessor by mock-up accessor
+	 * 
 	 * @param mockupAccessor the mock-up instance 
 	 * @param entryName accessorname
 	 * 
 	 * @return K the instance of accessor 
 	 **/
-	public static <K> K getEmbedGeneralAccessor(IBaseAccessor mockupAccessor, String accessorName)throws EntityException{
+	public static <K> K getGeneralAccessor(IBaseAccessor mockupAccessor, String accessorName)throws EntityException{
 		
-		return AccessorFactory.getInstance().buildEmbedGeneralAccessor(mockupAccessor, accessorName);
+		return AccessorFactory.getInstance().buildGeneralAccessor(mockupAccessor, accessorName);
 	}
 	
 	/**
-	 * Get embed Entry Accessor
+	 * Get embed EntityAccessor by assigned mock-up accessor.
+	 * 
 	 * @param mockupAccessor the mock-up instance 
 	 * @param entryName
 	 * 
 	 * @return K the instance of accessor 
 	 **/
-	public static <K> K getEmbedEntityAccessor(IBaseAccessor mockupAccessor, String entryName)throws EntityException{
+	public static <K> K getEntityAccessor(IBaseAccessor mockupAccessor, String entryName)throws EntityException{
 		
-		return AccessorFactory.getInstance().buildEmbedEntityAccessor(mockupAccessor, entryName);
+		return AccessorFactory.getInstance().buildEntityAccessor(mockupAccessor, entryName);
 	}
 	
 	/**
