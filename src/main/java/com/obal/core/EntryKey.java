@@ -27,6 +27,12 @@ public class EntryKey {
 	private String key = null;
 	private String entityName = null;
 	
+	/**
+	 * constructor
+	 * 
+	 * @param entityName the name of entity
+	 * @param key then entry key
+	 **/
 	public EntryKey(String entityName,String key){
 		this.entityName = entityName;
 		this.key = key;

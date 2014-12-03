@@ -20,6 +20,8 @@
 
 package com.obal.meta;
 
+import java.util.List;
+
 import com.obal.core.EntryKey;
 import com.obal.core.security.Principal;
 import com.obal.core.security.PrincipalAware;
@@ -53,10 +55,33 @@ public abstract class BaseEntity implements PrincipalAware{
 	}
 	
 	/**
+	 * Get list of all schemas for entity. the schema list is retrieved from EntityMeta
+	 * 
+	 **/
+	public List<String> getSchemas()throws MetaException{
+		
+		if(null == this.meta) {
+			throw new MetaException("Cann't get schema list because of null meta.");
+		}else{
+			
+			return this.meta.getSchemas();
+		}
+	}
+	
+	/**
+	 * Get the schema name  
+	 **/
+	public String getSchema(String entryKey){
+		
+		EntryKey key = new EntryKey(this.meta.getEntityName(), entryKey);
+		return getSchema(key);
+	}
+	
+	/**
 	 * Get the schema name, it indict the physical location to store entry data, eg. the table name
 	 * @return String the schema name
 	 **/
-	public abstract String getSchema();
+	public abstract String getSchema(EntryKey entryKey);
 	
 	/**
 	 * Generate new key with parameters
@@ -74,9 +99,9 @@ public abstract class BaseEntity implements PrincipalAware{
 	 * Get the schema name in byte[]
 	 * @see getSchema 
 	 **/
-	public byte[] getSchemaBytes(){
+	public byte[] getSchemaBytes(EntryKey entryKey){
 		
-		return getSchema() == null? null: getSchema().getBytes();
+		return getSchema(entryKey) == null? null: getSchema(entryKey).getBytes();
 	}
 	
 	/**

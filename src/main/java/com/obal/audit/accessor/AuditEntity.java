@@ -31,7 +31,7 @@ public class AuditEntity extends BaseEntity{
 	}
 
 	@Override
-	public String getSchema() {
+	public String getSchema(EntryKey key) {
 		
 		return "autit.info";
 	}

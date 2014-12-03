@@ -29,7 +29,7 @@ public class GeneralEntity extends BaseEntity{
 	}
 
 	@Override
-	public String getSchema() {
+	public String getSchema(EntryKey key) {
 		
 		return getEntityMeta().getEntityName();
 	}
