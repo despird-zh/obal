@@ -54,6 +54,9 @@ import com.obal.meta.EntityAttr;
 /**
  * Base class of entry accessor, it holds HConnection object 
  * 
+ * @author despird-zh
+ * @version 0.1 2014-5-2
+ * 
  **/
 public abstract class HEntityAccessor<GB extends EntryKey> extends EntityAccessor<GB> implements HConnAware {
 	
