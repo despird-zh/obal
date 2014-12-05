@@ -7,19 +7,61 @@ import com.obal.exception.RingEventException;
 
 public abstract class EventHooker {
 
+	private boolean blocked = false; 
+	
 	private EventType type;
 	
+	/**
+	 * Constructor:specify the eventype supported 
+	 **/
 	public EventHooker(EventType type){
 		
 		this.type = type;
 	}
 	
-	public boolean match(EventPayload event){
+	/**
+	 * Check if the hooker match the event type 
+	 * 
+	 * @param payload the payload of ringevent
+	 * @param checkBlock true:check hooker is blocked or not; false:don't check block state
+	 **/
+	public boolean match(EventPayload payload, boolean checkBlock){
 		
-		return this.type == event.getType();
+		if(checkBlock)
+			
+			return this.type == payload.getType() && !this.blocked ;
+		else{
+			
+			return this.type == payload.getType() ;
+		}
 	}
 	
-	public abstract void processPayload(EventPayload event) throws RingEventException;
+	/**
+	 * Set the block switch flag
+	 * 
+	 * @param blocked true:Hooker won't process payload; false:Hooker process payload. 
+	 **/
+	public void setBlock(boolean blocked){
+		
+		this.blocked = blocked;
+	}
+	
+	/**
+	 * Get the supported EventType 
+	 **/
+	public EventType getType(){
+		
+		return type;
+	}
+	
+	/**
+	 * Process the payload of event.
+	 * 
+	 * @param  payload the payload of ring event
+	 * @exception RingEventException
+	 * 
+	 **/
+	public abstract void processPayload(EventPayload payload) throws RingEventException;
 	
 	@Override
 	public boolean equals(Object other) {
