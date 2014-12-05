@@ -5,14 +5,17 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.dsl.Disruptor;
-import com.obal.audit.AuditEvent;
-import com.obal.audit.AuditHandler;
+import com.obal.exception.RingEventException;
 
 public class EventDispatcher {
 
+	static Logger LOGGER = LoggerFactory.getLogger(EventDispatcher.class);
 	Executor executor = null;
 	Disruptor<RingEvent> disruptor = null;
 	RingEventHandler handler = new RingEventHandler();
@@ -35,16 +38,27 @@ public class EventDispatcher {
 	
 	private void onRingEvent(RingEvent ringevent, long sequence, boolean endOfBatch){
 		
-		for(EventHooker<?> eventHooker : hookers){
+		for(EventHooker eventHooker : hookers){
 			
-			if(eventHooker.match(ringevent.getType(), ringevent.getPayload())){
+			EventPayload payload = ringevent.getPayload();
+			
+			if(eventHooker.match(ringevent.getPayload())){
 				
-				eventHooker.onEvent(ringevent.getPayload());
+				try {
+					
+					eventHooker.processPayload(ringevent.getPayload());
+					
+				} catch (RingEventException e) {
+
+					LOGGER.error("Error when processing event[{}] payload",e,payload.getType());
+				}
+				
+				continue;
 			}
 		}
 	}
 	
-	public void regEventHooker(EventHooker<?> eventHooker){
+	public void regEventHooker(EventHooker eventHooker){
 		
 		hookers.add(eventHooker);
 	}

@@ -3,7 +3,9 @@ package com.obal.disruptor;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-public abstract class EventHooker<T> {
+import com.obal.exception.RingEventException;
+
+public abstract class EventHooker {
 
 	private EventType type;
 	
@@ -12,12 +14,12 @@ public abstract class EventHooker<T> {
 		this.type = type;
 	}
 	
-	public boolean match(EventType type, Object event){
+	public boolean match(EventPayload event){
 		
-		return this.type.equals(type);
+		return this.type == event.getType();
 	}
 	
-	public abstract void onEvent(T event) throws Exception;
+	public abstract void processPayload(EventPayload event) throws RingEventException;
 	
 	@Override
 	public boolean equals(Object other) {
@@ -30,7 +32,7 @@ public abstract class EventHooker<T> {
 			return false;
 		}
 		// step 3
-		EventHooker<?> that = (EventHooker<?>) other;
+		EventHooker that = (EventHooker) other;
 		// step 4
 		return new EqualsBuilder()
 			.append(this.type, that.type).isEquals();

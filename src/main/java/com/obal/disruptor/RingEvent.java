@@ -2,25 +2,26 @@ package com.obal.disruptor;
 
 import com.lmax.disruptor.EventFactory;
 
-public class RingEvent<T> {
+public class RingEvent {
 	
-	private EventType type;
-	
-	private T payload;
+	private EventPayload payload;
 
-	public EventType getType() {
-		return type;
-	}
-
-	public void setType(EventType type) {
-		this.type = type;
-	}
-
-	public T getPayload() {
+	public EventPayload getPayload() {
 		return payload;
 	}
-
-	public void setPayload(T payload) {
+	
+	public EventType getEventType(){
+		
+		if(this.payload == null)
+			
+			return EventType.UNKNOWN;
+		else{
+			
+			return this.payload.getType();
+		}
+	}
+	
+	public void setPayload(EventPayload payload) {
 		this.payload = payload;
 	}	
 
