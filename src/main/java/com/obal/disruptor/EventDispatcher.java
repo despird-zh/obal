@@ -12,7 +12,6 @@ import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
-import com.obal.audit.AuditEvent;
 import com.obal.exception.RingEventException;
 
 /**
