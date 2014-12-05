@@ -2,9 +2,9 @@ package com.obal.disruptor;
 
 public class RingEventUtils {
 
-	public static void publishPayload(EventPayload payload){
+	public static void sendPayload(EventPayload payload){
 		
-		EventDispatcher.getInstance().publishPayload(payload);
+		EventDispatcher.getInstance().sendPayload(payload);
 	}
 	
 	public static void regEventHooker(EventHooker eventHooker){
@@ -20,5 +20,10 @@ public class RingEventUtils {
 	public static void blockEventHooker(EventType type, boolean blocked){
 		
 		EventDispatcher.getInstance().blockEventHooker(type, blocked);
+	}
+	
+	public static EventPayload newCachePayload(){
+		
+		return new EventPayload(EventType.CACHE);
 	}
 }

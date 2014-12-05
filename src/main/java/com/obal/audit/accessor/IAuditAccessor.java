@@ -19,9 +19,9 @@
  */
 package com.obal.audit.accessor;
 
-import com.obal.audit.AuditEvent;
+import com.obal.audit.AuditInfo;
 import com.obal.core.IEntityAccessor;
 
-public interface IAuditAccessor extends IEntityAccessor<AuditEvent>{
+public interface IAuditAccessor extends IEntityAccessor<AuditInfo>{
 	
 }

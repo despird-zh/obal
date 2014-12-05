@@ -44,14 +44,5 @@ public class EventPayload {
 		
 		this.data = data;
 	}
-	
-	public static EventPayload newAuditPayload(){
-		
-		return new EventPayload(EventType.AUDIT);
-	}
-	
-	public static EventPayload newCachePayload(){
-		
-		return new EventPayload(EventType.CACHE);
-	}
+
 }

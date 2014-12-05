@@ -24,7 +24,7 @@ import com.lmax.disruptor.EventFactory;
 
 import com.obal.core.EntryInfo;
 
-public class AuditEvent extends EntryInfo{
+public class AuditInfo extends EntryInfo{
 
 	private static final long serialVersionUID = 1L;
 
@@ -39,12 +39,12 @@ public class AuditEvent extends EntryInfo{
 
 	AccessPoint accessPoint;
 	
-	public AuditEvent(String entryType, String key) {
+	public AuditInfo(String entryType, String key) {
 		super(entryType, key);
 		timestamp = new Date(System.currentTimeMillis());
 	}
 
-	public AuditEvent( String key) {
+	public AuditInfo( String key) {
 		super(ENTRY_TYPE_AUDIT, key);
 		timestamp = new Date(System.currentTimeMillis());
 	}
@@ -121,7 +121,7 @@ public class AuditEvent extends EntryInfo{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		final AuditEvent other = (AuditEvent) obj;
+		final AuditInfo other = (AuditInfo) obj;
 
 		EqualsBuilder eb = new EqualsBuilder();
 		eb.append(this.timestamp, other.timestamp)
@@ -153,7 +153,7 @@ public class AuditEvent extends EntryInfo{
 	 * @param fromOne the event object.
 	 * 
 	 **/
-	public void copy(AuditEvent fromOne){
+	public void copy(AuditInfo fromOne){
 		
 		this.setKey(fromOne.getKey());
 		this.setTimestamp(fromOne.getTimestamp());
@@ -165,12 +165,12 @@ public class AuditEvent extends EntryInfo{
 		this.setPredicateMap(fromOne.getPredicateMap());
 	}
 
-	public final static EventFactory<AuditEvent> EVENT_FACTORY = new EventFactory<AuditEvent> (){
+	public final static EventFactory<AuditInfo> EVENT_FACTORY = new EventFactory<AuditInfo> (){
 		
 		@Override
-		public AuditEvent newInstance() {
+		public AuditInfo newInstance() {
 
-			return new AuditEvent("k-001010");
+			return new AuditInfo("k-001010");
 		}
 	};
 }

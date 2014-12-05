@@ -19,15 +19,22 @@
  */
 package com.obal.audit;
 
-import com.lmax.disruptor.EventHandler;
+import com.obal.disruptor.EventHooker;
+import com.obal.disruptor.EventPayload;
+import com.obal.disruptor.EventType;
+import com.obal.exception.RingEventException;
 
-public class AuditHandler implements EventHandler<AuditEvent>{
+public class AuditHooker extends EventHooker{
+
+	public AuditHooker() {
+		super(EventType.AUDIT);
+	}
 
 	@Override
-	public void onEvent(AuditEvent event, long sequence,	boolean endOfBatch)
-			throws Exception {
+	public void processPayload(EventPayload payload) throws RingEventException {
+		// TODO Auto-generated method stub
 		
-		System.out.println("Event: " + event);
 	}
+
 
 }

@@ -99,7 +99,7 @@ public class EventDispatcher {
 	 **/
 	private void onRingEvent(RingEvent ringevent, long sequence, boolean endOfBatch) {
 
-		EventPayload payload = ringevent.getPayload();
+		EventPayload payload = ringevent.takePayload();
 		EventHooker eventHooker = hookers.get(payload.getType());
 
 		if (eventHooker != null && eventHooker.match(ringevent.getPayload(),true)) {
@@ -123,7 +123,7 @@ public class EventDispatcher {
 	/**
 	 * publish event payload
 	 **/
-	public void publishPayload(EventPayload payload){
+	public void sendPayload(EventPayload payload){
 		
 		RingBuffer<RingEvent> ringBuffer = disruptor.getRingBuffer();
 		long sequence = ringBuffer.next();  // Grab the next sequence

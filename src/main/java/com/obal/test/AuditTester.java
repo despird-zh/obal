@@ -1,21 +1,22 @@
 package com.obal.test;
 
-import com.obal.audit.AuditEvent;
-import com.obal.audit.AuditFactory;
-import com.obal.audit.AuditLogger;
+import com.obal.audit.AuditInfo;
+import com.obal.core.util.AuditUtils;
+import com.obal.disruptor.EventDispatcher;
 
 public class AuditTester {
 
 	public static void main(String[] args){
-		AuditFactory.start();
-		AuditLogger logger = AuditFactory.getAuditLogger();
+		EventDispatcher ed = EventDispatcher.getInstance();
+		ed.start();
+		AuditUtils.regAuditHooker();
 		
 		for(int i = 1; i<100; i++){
 			
-			AuditEvent evt = new AuditEvent("key-"+i);
-			logger.doAudit(evt);
+			AuditInfo evt = new AuditInfo("key-"+i);
+			AuditUtils.doAudit(evt);
 		}
 		
-		AuditFactory.stop();
+		
 	}
 }
