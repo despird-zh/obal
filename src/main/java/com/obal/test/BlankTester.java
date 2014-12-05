@@ -3,6 +3,7 @@ package com.obal.test;
 import java.util.Properties;
 
 import org.apache.log4j.PropertyConfigurator;
+import org.apache.log4j.xml.DOMConfigurator;
 
 public class BlankTester {
 
