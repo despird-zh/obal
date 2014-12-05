@@ -10,7 +10,9 @@ import org.slf4j.LoggerFactory;
 
 import com.lmax.disruptor.EventFactory;
 import com.lmax.disruptor.EventHandler;
+import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
+import com.obal.audit.AuditEvent;
 import com.obal.exception.RingEventException;
 
 /**
@@ -119,6 +121,24 @@ public class EventDispatcher {
 
 	}
 
+	/**
+	 * publish event payload
+	 **/
+	public void publishPayload(EventPayload payload){
+		
+		RingBuffer<RingEvent> ringBuffer = disruptor.getRingBuffer();
+		long sequence = ringBuffer.next();  // Grab the next sequence
+	    try
+	    {
+	    	RingEvent event = ringBuffer.get(sequence); // Get the entry in the Disruptor
+	        event.setPayload(payload);  
+	    }
+	    finally
+	    {
+	        ringBuffer.publish(sequence);// for the sequence
+	    }
+	}
+	
 	/**
 	 * Register a eventhooker
 	 * 
