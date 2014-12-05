@@ -13,15 +13,50 @@ import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.obal.exception.RingEventException;
 
+/**
+ * EventDisptcher is a singleton pattern object. It holds the necessary objects needed by Disruptor.
+ * 
+ *  @author despird
+ *  @version 0.1 2014-6-2
+ **/
 public class EventDispatcher {
 
 	static Logger LOGGER = LoggerFactory.getLogger(EventDispatcher.class);
+	
+	/** the executor pool */
 	Executor executor = null;
+	
+	/** the disruptor instance */
 	Disruptor<RingEvent> disruptor = null;
+	
+	/** the event handler */
 	RingEventHandler handler = new RingEventHandler();
+	
+	/** the event hooker list */
 	List<EventHooker> hookers = new ArrayList<EventHooker>();
 	
-	public static EventDispatcher instance;
+	/** single instance */
+	private static EventDispatcher instance;
+	
+	/**
+	 * default event disptacher 
+	 **/
+	private EventDispatcher(){
+		
+	}
+	
+	/**
+	 * Get the single instance of event dispatcher
+	 * 
+	 * @return the single instance
+	 **/
+	public static EventDispatcher getInstance(){
+		
+		if(null == instance)
+			instance = new EventDispatcher();
+		
+		return instance;
+	}
 	
 	private void initialize(){
 		// Executor that will be used to construct new threads for consumers
@@ -53,7 +88,7 @@ public class EventDispatcher {
 					LOGGER.error("Error when processing event[{}] payload",e,payload.getType());
 				}
 				
-				continue;
+				break;
 			}
 		}
 	}
