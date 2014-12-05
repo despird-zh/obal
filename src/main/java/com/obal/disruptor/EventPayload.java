@@ -7,9 +7,11 @@ package com.obal.disruptor;
  * @version 0.1 2014-3-2
  *
  **/
-public abstract class EventPayload {
+public class EventPayload {
 	
 	private EventType type;
+	
+	private Object data;
 	
 	/**
 	 * Constructor  
@@ -17,6 +19,7 @@ public abstract class EventPayload {
 	public EventPayload(EventType type) {
 		
 		this.type = type;
+
 	}
 	
 	/**
@@ -26,5 +29,29 @@ public abstract class EventPayload {
 		return type;
 	}
 
-
+	/**
+	 * Get the data of payload 
+	 **/
+	public Object getData(){
+		
+		return this.data;
+	}
+	
+	/**
+	 * Set data of payload 
+	 **/
+	public void setData(Object data){
+		
+		this.data = data;
+	}
+	
+	public static EventPayload newAuditPayload(){
+		
+		return new EventPayload(EventType.AUDIT);
+	}
+	
+	public static EventPayload newCachePayload(){
+		
+		return new EventPayload(EventType.CACHE);
+	}
 }

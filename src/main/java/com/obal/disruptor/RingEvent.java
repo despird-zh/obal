@@ -21,6 +21,16 @@ public class RingEvent {
 	}
 	
 	/**
+	 * Fetch the payload and clean RingEvent payload. 
+	 **/
+	public EventPayload takePayload(){
+		
+		EventPayload rtv = this.payload;
+		this.payload = null;
+		
+		return rtv;
+	}
+	/**
 	 * the event type 
 	 **/
 	public EventType getEventType(){
