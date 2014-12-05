@@ -41,7 +41,7 @@ public abstract class EventHooker {
 	 * 
 	 * @param blocked true:Hooker won't process payload; false:Hooker process payload. 
 	 **/
-	public void setBlock(boolean blocked){
+	public void setBlocked(boolean blocked){
 		
 		this.blocked = blocked;
 	}

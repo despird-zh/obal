@@ -1,8 +1,6 @@
 package com.obal.disruptor;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -21,6 +19,7 @@ import com.obal.exception.RingEventException;
  * 
  * @author despird
  * @version 0.1 2014-6-2
+ * 
  **/
 public class EventDispatcher {
 
@@ -45,7 +44,7 @@ public class EventDispatcher {
 	 * default event disptacher
 	 **/
 	private EventDispatcher() {
-
+		setup();
 	}
 
 	/**
@@ -61,16 +60,25 @@ public class EventDispatcher {
 		return instance;
 	}
 
+	/**
+	 * Start the disruptor
+	 **/
 	public void start() {
 		
 		disruptor.start();
 	}
 
+	/**
+	 * Shutdown the disruptor 
+	 **/
 	public void shutdown(){
 		
 		disruptor.shutdown();
 	}
 	
+	/**
+	 * Set up the disruptor
+	 **/
 	@SuppressWarnings("unchecked")
 	private void setup() {
 		// Executor that will be used to construct new threads for consumers
@@ -85,6 +93,9 @@ public class EventDispatcher {
 		disruptor.handleEventsWith(handler);
 	}
 
+	/**
+	 * dispatch event payload to respective hooker
+	 **/
 	private void onRingEvent(RingEvent ringevent, long sequence, boolean endOfBatch) {
 
 		EventPayload payload = ringevent.getPayload();
@@ -108,16 +119,32 @@ public class EventDispatcher {
 
 	}
 
+	/**
+	 * Register a eventhooker
+	 * 
+	 * @param eventHooker the hooker of event 
+	 **/
 	public void regEventHooker(EventHooker eventHooker) {
 
 		hookers.put(eventHooker.getType(),eventHooker);
 	}
 	
-	public void disableEventHooker(EventType type){
+	/**
+	 * Block the event hooker
+	 * 
+	 * @param type the ringevent type
+	 * @param blocked the flag of block or not 
+	 **/
+	public void blockEventHooker(EventType type,boolean blocked){
 		
-		
+		EventHooker eventHooker = hookers.get(type);
+		if(null != eventHooker)
+			eventHooker.setBlocked(blocked);
 	}
 	
+	/**
+	 * Class RingEventHandler to process event payload 
+	 **/
 	public static class RingEventHandler implements EventHandler<RingEvent> {
 
 		@Override
