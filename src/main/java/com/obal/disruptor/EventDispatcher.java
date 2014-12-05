@@ -2,7 +2,7 @@ package com.obal.disruptor;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.slf4j.Logger;
@@ -27,7 +27,7 @@ public class EventDispatcher {
 	static Logger LOGGER = LoggerFactory.getLogger(EventDispatcher.class);
 
 	/** the executor pool */
-	Executor executor = null;
+	ExecutorService executor = null;
 
 	/** the disruptor instance */
 	Disruptor<RingEvent> disruptor = null;
@@ -75,6 +75,7 @@ public class EventDispatcher {
 	public void shutdown(){
 		
 		disruptor.shutdown();
+		executor.shutdown();
 	}
 	
 	/**
@@ -98,7 +99,8 @@ public class EventDispatcher {
 	 * dispatch event payload to respective hooker
 	 **/
 	private void onRingEvent(RingEvent ringevent, long sequence, boolean endOfBatch) {
-
+		
+		// After take payload, it is removed from ring event instance.
 		EventPayload payload = ringevent.takePayload();
 		EventHooker eventHooker = hookers.get(payload.getType());
 
