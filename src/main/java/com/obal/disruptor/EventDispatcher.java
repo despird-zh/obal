@@ -102,11 +102,11 @@ public class EventDispatcher {
 		EventPayload payload = ringevent.takePayload();
 		EventHooker eventHooker = hookers.get(payload.getType());
 
-		if (eventHooker != null && eventHooker.match(ringevent.getPayload(),true)) {
+		if (eventHooker != null && eventHooker.match(payload,true)) {
 
 			try {
 
-				eventHooker.processPayload(ringevent.getPayload());
+				eventHooker.processPayload(payload);
 
 			} catch (RingEventException e) {
 

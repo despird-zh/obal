@@ -32,8 +32,9 @@ public class AuditHooker extends EventHooker{
 
 	@Override
 	public void processPayload(EventPayload payload) throws RingEventException {
-		// TODO Auto-generated method stub
+		AuditInfo ai = (AuditInfo)payload.getData();
 		
+		System.out.println("---:"+ai.getKey());
 	}
 
 
