@@ -1,8 +1,11 @@
 package com.obal.disruptor;
 
+/**
+ * The event type enum 
+ **/
 public enum EventType {
 	
-	AUDIT,
-	CACHE,
-	UNKNOWN	
+	AUDIT, // audit event
+	CACHE, // cache event
+	UNKNOWN	// unknow event
 }

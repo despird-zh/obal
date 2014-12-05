@@ -130,6 +130,14 @@ public class EventDispatcher {
 	}
 	
 	/**
+	 * Unregister the specified type of hooker 
+	 **/
+	public void unRegEventHooker(EventType type){
+		
+		hookers.remove(type);
+	}
+	
+	/**
 	 * Block the event hooker
 	 * 
 	 * @param type the ringevent type
