@@ -19,7 +19,6 @@
  */
 package com.obal.cache;
 
-import com.lmax.disruptor.EventFactory;
 import com.obal.core.EntryKey;
 
 /**
@@ -30,12 +29,13 @@ import com.obal.core.EntryKey;
  * @version 0.1 2014-3-1
  * @since 0.1
  **/
-public class CacheEvent{
+public class CacheInfo{
 	
-	public static final String EVT_PUT = "_PUT_ENTRY";
-	public static final String EVT_PUT_ATTR = "_PUT_ATTR";
-	public static final String EVT_DEL = "_DEL_ENTRY";
-	private String type = EVT_PUT;
+	public static final String OP_PUT = "_PUT_ENTRY";
+	public static final String OP_PUT_ATTR = "_PUT_ATTR";
+	public static final String OP_DEL = "_DEL_ENTRY";
+	
+	private String operation = OP_PUT;
 
 	private Object value;
 	
@@ -62,7 +62,7 @@ public class CacheEvent{
 		s.value = value;
 		
 		this.value = s;
-		
+		this.operation = OP_PUT_ATTR;
 	}
 
 	/**
@@ -75,6 +75,7 @@ public class CacheEvent{
 		ped.entryInfo = entryInfo;
 		
 		this.value= ped;
+		this.operation = OP_PUT;
 	}
 
 	/**
@@ -86,6 +87,7 @@ public class CacheEvent{
 		DelEntryData ded = new DelEntryData();
 		ded.entity = entity;
 		ded.keys = keys;
+		this.operation = OP_DEL;
 	}
 	
     public static class PutAttrData{
@@ -107,23 +109,12 @@ public class CacheEvent{
     	public EntryKey entryInfo = null;
     }
     
-    public String type(String type){
+    public String operation(String operation){
     	
-    	if(null != type)
-    		this.type = type;
+    	if(null != operation)
+    		this.operation = operation;
     	
-    	return this.type;
+    	return this.operation;
     }
     
-    
-    /**
-     * The CacheEvent factroy disruptor use it to allocate elements in RingBuffer. 
-     **/
-	public final static EventFactory<CacheEvent> EVENT_FACTORY =
-		 new EventFactory<CacheEvent>()
-		 {
-		     public CacheEvent newInstance() {
-		  	 	return new CacheEvent();
-		 }
-	};
 }	

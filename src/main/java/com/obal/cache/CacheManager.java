@@ -19,14 +19,17 @@
  */
 package com.obal.cache;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import com.lmax.disruptor.RingBuffer;
-import com.lmax.disruptor.SleepingWaitStrategy;
-import com.lmax.disruptor.dsl.Disruptor;
-import com.lmax.disruptor.dsl.ProducerType;
+import com.obal.core.AccessorFactory;
 import com.obal.core.EntryKey;
+import com.obal.core.IEntityAccessor;
+import com.obal.core.security.Principal;
+import com.obal.core.util.AccessorUtils;
+import com.obal.core.util.CoreConstants;
+import com.obal.disruptor.EventDispatcher;
+import com.obal.disruptor.EventPayload;
+import com.obal.disruptor.RingEventUtils;
+import com.obal.exception.AccessorException;
+import com.obal.exception.EntityException;
 
 /**
  * CacheManager provide entrance to get/put entry in-out backend cache.
@@ -42,18 +45,12 @@ import com.obal.core.EntryKey;
  **/
 public class CacheManager{
 
-	Disruptor<CacheEvent> disruptor = null;
-	RingBuffer<CacheEvent> ringBuffer = null;
-	ExecutorService executor = null;
-	CacheBridge<? extends EntryKey> cacheBridge = null;
-	
 	/** singleton instance */ 
 	private static CacheManager instance;
 	
 	/** default constructor */
 	private CacheManager(){
 
-		initial();
 	}
 	
 	/**
@@ -79,14 +76,13 @@ public class CacheManager{
 	 **/
 	public <K extends EntryKey> void cachePut(K entry){
 		
-		// Publishers claim events in sequence
-		long sequence = ringBuffer.next();
-		CacheEvent event = ringBuffer.get(sequence);
-		event.type(CacheEvent.EVT_PUT);
-		event.setPutEntryData(entry); // this could be more complex with multiple fields
-
-		// make the event available to EventProcessors
-		ringBuffer.publish(sequence);  
+		EventPayload payload = RingEventUtils.newCachePayload();
+		CacheInfo data = new CacheInfo();
+		data.setPutEntryData(entry);
+		
+		payload.setData(data);
+		EventDispatcher.getInstance().sendPayload(payload);
+ 
 	}
 	
 	/**
@@ -99,13 +95,13 @@ public class CacheManager{
 	 **/
 	public void cachePutAttr(EntryKey entryKey, String attrName, Object value){
 		
-		// Publishers claim events in sequence
-		long sequence = ringBuffer.next();
-		CacheEvent event = ringBuffer.get(sequence);
-		event.type(CacheEvent.EVT_PUT_ATTR);
-		event.setPutAttrData(entryKey.getKey(), entryKey.getEntityName(), attrName, value);
-		// make the event available to EventProcessors
-		ringBuffer.publish(sequence);  
+		EventPayload payload = RingEventUtils.newCachePayload();
+		CacheInfo data = new CacheInfo();
+		data.setPutAttrData(entryKey.getKey(), entryKey.getEntityName(), attrName, value);
+		
+		payload.setData(data);
+		EventDispatcher.getInstance().sendPayload(payload);
+ 
 	}
 	
 	/**
@@ -114,10 +110,32 @@ public class CacheManager{
 	 * @param entityName the entity name
 	 * @param key the key of entry data 
 	 **/
-	@SuppressWarnings("unchecked")
 	public <K extends EntryKey> K cacheGet(String entityName, String key){
 		
-		return (K)cacheBridge.doCacheGet(entityName, key);
+		Principal principal = null;		
+		K cacheData = null;
+		IEntityAccessor<K> eaccessor = null;
+		try {
+			eaccessor = 
+				AccessorFactory.getInstance().buildEntityAccessor(CoreConstants.BUILDER_REDIS, 
+						principal, 
+						entityName);	
+				
+			cacheData = eaccessor.doGetEntry(key);
+			
+		} catch (AccessorException e) {
+			
+			e.printStackTrace();
+		} catch (EntityException e) {
+			
+			e.printStackTrace();
+		}finally{
+			
+			AccessorUtils.releaseAccessor(eaccessor);
+		}
+		
+		return cacheData;
+		//return (K)cacheBridge.doCacheGet(entityName, key);
 	}
 
 	/**
@@ -128,10 +146,31 @@ public class CacheManager{
 	 * @param attrName the attribute name
 	 * 
 	 **/
-	@SuppressWarnings("unchecked")
 	public <M> M cacheGetAttr(String entityName, String key, String attrName){
+		Principal principal = null;		
+		M cacheAttr = null;
+		IEntityAccessor<?> eaccessor = null;
+		try {
+			eaccessor = 
+				AccessorFactory.getInstance().buildEntityAccessor(CoreConstants.BUILDER_REDIS, 
+						principal, 
+						entityName);	
+				
+			cacheAttr = eaccessor.doGetEntryAttr(key, attrName);
+			
+		} catch (AccessorException e) {
+			
+			e.printStackTrace();
+		} catch (EntityException e) {
+			
+			e.printStackTrace();
+		}finally{
+			
+			eaccessor.release();
+		}
 		
-		return (M)cacheBridge.doCacheGetAttr(entityName, key, attrName);
+		return cacheAttr;
+		//return (M)cacheBridge.doCacheGetAttr(entityName, key, attrName);
 	}
 	
 	/**
@@ -142,33 +181,15 @@ public class CacheManager{
 	 * 
 	 **/
 	public void cacheDel(String entityName, String ...keys){
-		// Publishers claim events in sequence
-		long sequence = ringBuffer.next();
-		CacheEvent event = ringBuffer.get(sequence);
-		event.type(CacheEvent.EVT_DEL);
-		event.setDelData(entityName, keys);
-		// make the event available to EventProcessors
-		ringBuffer.publish(sequence);  
-		cacheBridge.doCacheDel(entityName, keys);
+		
+		EventPayload payload = RingEventUtils.newCachePayload();
+		CacheInfo data = new CacheInfo();
+		data.setDelData(entityName, keys);
+		
+		payload.setData(data);
+		EventDispatcher.getInstance().sendPayload(payload);
+	
 	}
 	
-	/**
-	 * initial process 
-	 **/
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private void initial(){
-		
-		executor = Executors.newFixedThreadPool(3);
-		disruptor =
-		new Disruptor<CacheEvent>(CacheEvent.EVENT_FACTORY, 
-			256, 
-			executor,
-			ProducerType.SINGLE,
-			new SleepingWaitStrategy());
-		
-		cacheBridge = new CacheRedisHandler();
-		disruptor.handleEventsWith(cacheBridge.getEventHandler());		
-		ringBuffer = disruptor.start();
-	}
 	
 }
