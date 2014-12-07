@@ -28,8 +28,8 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.CodeSignature;
 
-import com.obal.test.aop.CacheTestAccessor;
-import com.obal.test.aop.DemoBean;
+import com.obal.aop.CacheTestAccessor;
+import com.obal.aop.DemoBean;
 import com.obal.util.AspectUtils;
 
 @Aspect
