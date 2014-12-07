@@ -3,6 +3,9 @@ package com.obal.core.security;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import com.obal.core.util.CoreConstants;
 
 /**
@@ -37,7 +40,8 @@ public class EntryAcl {
 	 * @param aclName the acl name
 	 * @param aceArray the ace array
 	 **/
-	public EntryAcl(String aclName, EntryAce ... aceArray){
+	@JsonCreator
+	public EntryAcl(@JsonProperty("acl") String aclName, @JsonProperty("acelist")EntryAce ... aceArray){
 		
 		this.aclName = aclName;
 		if(null == aceArray)
@@ -53,24 +57,35 @@ public class EntryAcl {
 	/**
 	 * Get the acl name
 	 **/
+	@JsonProperty("acl")
 	public String name(){
 		
 		return this.aclName;
 	}
+	
+	/**
+	 * Get all ace list
+	 **/
+	@JsonProperty("acelist")
+	public List<EntryAce> allAces(){
+		
+		return aces;
+	}
+	
 	/**
 	 * Get the user aces
 	 * @return the entry ace list 
 	 **/
 	public List<EntryAce> userAces(){
-		List<EntryAce> races = new ArrayList<EntryAce>();
+		List<EntryAce> uaces = new ArrayList<EntryAce>();
 		
 		for(EntryAce e:aces){
 			
 			if(CoreConstants.ACE_TYPE_USER.equals(e.type()))
-				races.add(e);
+				uaces.add(e);
 		}
 		
-		return races;
+		return uaces;
 	}
 	
 	/**
@@ -96,15 +111,15 @@ public class EntryAcl {
 	 **/
 	public List<EntryAce> groupAces(){
 		
-		List<EntryAce> races = new ArrayList<EntryAce>();
+		List<EntryAce> gaces = new ArrayList<EntryAce>();
 		
 		for(EntryAce e:aces){
 			
 			if(CoreConstants.ACE_TYPE_GROUP.equals(e.type()))
-				races.add(e);
+				gaces.add(e);
 		}
 		
-		return races;
+		return gaces;
 	}
 
 	@Override

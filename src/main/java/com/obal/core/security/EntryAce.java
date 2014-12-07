@@ -6,6 +6,8 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import com.obal.core.util.CoreConstants;
 
@@ -28,7 +30,7 @@ import com.obal.core.util.CoreConstants;
  * 
  **/
 public class EntryAce {
-
+	
 	/** the role name */
 	private String name;
 	
@@ -90,7 +92,8 @@ public class EntryAce {
 	 * @param privilege the access control privilege
 	 *  
 	 **/
-	public EntryAce(String aceType, String name, AclPrivilege privilege,String ... permissions){
+	@JsonCreator
+	public EntryAce(@JsonProperty("type") String aceType, @JsonProperty("name") String name, @JsonProperty("privilege") AclPrivilege privilege, @JsonProperty("permissions") String ... permissions){
 		
 		this.type = aceType;
 		this.name = name;
@@ -106,21 +109,25 @@ public class EntryAce {
 		}
 	}
 	
+	@JsonProperty("name")
 	public String name(){
 		
 		return this.name;
 	}
 	
+	@JsonProperty("type")
 	public String type(){
 		
 		return this.type;
 	}
 	
+	@JsonProperty("privilege")
 	public AclPrivilege privilege(){
 		
 		return this.privilege;
 	}
 	
+	@JsonProperty("permissions")
 	public Set<String> permissions(){
 		
 		return this.permissionSet;
