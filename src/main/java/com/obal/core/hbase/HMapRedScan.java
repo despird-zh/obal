@@ -32,6 +32,7 @@ import org.apache.hadoop.hbase.mapreduce.ResultSerialization;
 import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;  
 import org.apache.hadoop.hbase.mapreduce.TableMapper;  
 import org.apache.hadoop.hbase.mapreduce.TableReducer;
+import org.apache.hadoop.io.ObjectWritable;
 import org.apache.hadoop.io.serializer.Serializer;
 import org.apache.hadoop.mapreduce.Job;  
 import org.apache.log4j.PropertyConfigurator;
@@ -79,8 +80,8 @@ public class HMapRedScan{
                 source,   // input table                 
                 scan,  // Scan instance to control CF and attribute selection                  
                 ScanMapper.class,  // mapper class                  
-                null,  // mapper output key                 
-                null,   // mapper output value  
+                ImmutableBytesWritable.class,  // mapper output key                 
+                Result.class,   // mapper output value  
                 job);  
         TableMapReduceUtil.initTableReducerJob(                 
                 "obal.garbage",  // output table                   
@@ -93,7 +94,7 @@ public class HMapRedScan{
         
     }  
   
-    public static class ScanMapper extends TableMapper<ImmutableBytesWritable, Result> {  
+    public static class ScanMapper extends TableMapper<ImmutableBytesWritable, ObjectWritable> {  
     	
     	String principal = null;
     	
@@ -104,7 +105,8 @@ public class HMapRedScan{
         public void map(ImmutableBytesWritable row, Result value, Context context)  
                 throws IOException, InterruptedException {  
         	System.out.println("Row:"+row);
-            context.write(row, value);  
+        	ObjectWritable ow = new ObjectWritable(Result.class, value);
+            context.write(row, ow);  
         }
    
         protected void cleanup(Context context) throws IOException, InterruptedException {
@@ -112,7 +114,7 @@ public class HMapRedScan{
         }
     }
     
-    public static class ScanReducer extends TableReducer<ImmutableBytesWritable, Result, ImmutableBytesWritable> {
+    public static class ScanReducer extends TableReducer<ImmutableBytesWritable, ObjectWritable, ImmutableBytesWritable> {
     	
     	Serializer<Result> serializer;
     	String feedback = "__DONE__";
@@ -127,10 +129,10 @@ public class HMapRedScan{
         	post = new PostMethod("/demo/mapredresult/");
     	}
        
-    	public void reduce(ImmutableBytesWritable key, Iterable<Result> values, Context context)
+    	public void reduce(ImmutableBytesWritable key, Iterable<ObjectWritable> values, Context context)
                 throws IOException, InterruptedException {
        
-            for (Result val : values) {
+            for (ObjectWritable val : values) {
 //                PipedOutputStream out = new PipedOutputStream();
 //                serializer.open(out);
 //            	serializer.serialize(val);
@@ -203,4 +205,6 @@ public class HMapRedScan{
 			e.printStackTrace();
 		}
     }
+    
+    
 }  
