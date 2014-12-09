@@ -4,9 +4,9 @@
   <artifactId>obal-core</artifactId>
   <version>0.1</version>
   <properties>
-	<jdk.version>1.6.0</jdk.version>
+	<jdk.version>1.7.0</jdk.version>
 	<hbase.version>0.98.5-hadoop2</hbase.version>
-	<jdk.home>C:\Program Files (x86)\Java\jdk1.6.0_45</jdk.home>
+	<jdk.home>C:\Program Files (x86)\Java\jdk1.7.0_71</jdk.home>
 	<jedis.version>2.6.0</jedis.version>
 	<comm.config>1.10</comm.config>
 	<aspectj.version>1.8.3</aspectj.version>
@@ -70,8 +70,8 @@
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
 	        <configuration>
-	          <source>1.6</source>
-	          <target>1.6</target>
+	          <source>1.7</source>
+	          <target>1.7</target>
 	          <encoding>UTF-8</encoding>
 	        </configuration>
       </plugin>
@@ -80,7 +80,7 @@
 	      <artifactId>maven-surefire-plugin</artifactId>  
 	      <configuration>    
 	        <includes>    
-	          <include>**/*AclTest.java</include> 
+	          <include>**/*AccessorTest.java</include> 
 	        </includes>    
 	      </configuration>    
 	  </plugin>
