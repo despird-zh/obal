@@ -1,4 +1,4 @@
-package com.obal.core.hbase;
+package com.obal.accessor;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;

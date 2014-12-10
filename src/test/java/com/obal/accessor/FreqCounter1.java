@@ -1,4 +1,4 @@
-package com.obal.core.hbase;
+package com.obal.accessor;
 
 import java.io.File;
 import java.io.IOException;
