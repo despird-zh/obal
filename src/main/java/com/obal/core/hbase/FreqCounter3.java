@@ -2,18 +2,18 @@ package com.obal.core.hbase;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.nio.ByteBuffer;
 import java.util.Properties;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.methods.InputStreamRequestEntity;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
-import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
@@ -25,12 +25,9 @@ import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.DataInputBuffer;
 import org.apache.hadoop.io.DataOutputBuffer;
-import org.apache.hadoop.io.DataOutputByteBuffer;
 import org.apache.hadoop.io.IntWritable;
-import org.apache.hadoop.io.ObjectWritable;
 import org.apache.hadoop.io.serializer.Serializer;
 import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.Reducer.Context;
 import org.apache.log4j.PropertyConfigurator;
 
 /**
@@ -39,9 +36,62 @@ import org.apache.log4j.PropertyConfigurator;
  * @author sujee ==at== sujee.net
  * 
  */
-public class FreqCounter2 {
-
-    static class Mapper1 extends TableMapper<ImmutableBytesWritable, BytesWritable> {
+public class FreqCounter3 {
+	  
+	private Configuration config = null;
+		
+	private String source;
+			
+	private Scan scan;
+		
+	public FreqCounter3(String source,Scan scan){
+			
+		this.source = source;			
+		this.scan = scan;			
+	}
+		
+	public int scan() throws Exception {  
+	        
+	    Job job = Job.getInstance(config);
+	    Configuration conf = job.getConfiguration();
+	    conf.set("mrscan.limit", "20000");
+	    conf.set("mrscan.principal", "demouser");
+	    job.setJobName("ObalTestScan");
+	    job.setJarByClass(FreqCounter3.class);  
+        /**--------------------*/
+//	    Job job = new Job(conf, "Hbase_FreqCounter1");
+//        job.setJarByClass(FreqCounter2.class);
+//        Scan scan = new Scan();
+//        String columns = "c0"; // comma seperated
+//        scan.addFamily(columns.getBytes());
+//        //scan.setFilter(new FirstKeyOnlyFilter());
+//        TableMapReduceUtil.initTableMapperJob(
+//        		"obal.meta.attr", 
+//        		scan, 
+//        		Mapper1.class, 
+//        		ImmutableBytesWritable.class,
+//        		BytesWritable.class, 
+//                job);
+//        TableMapReduceUtil.initTableReducerJob("summary_user", Reducer1.class, job);
+//        System.exit(job.waitForCompletion(true) ? 0 : 1);
+        /**--------------------*/
+	    TableMapReduceUtil.initTableMapperJob(                  
+	         source,   // input table                 
+	         scan,  // Scan instance to control CF and attribute selection                  
+	         ScanMapper.class,  // mapper class                  
+	         ImmutableBytesWritable.class,  // mapper output key                 
+	         BytesWritable.class,   // mapper output value  
+	         job);  
+	    TableMapReduceUtil.initTableReducerJob(                 
+	         "obal.garbage",  // output table                   
+	         ScanReducer.class,  // reducer class  
+	         job); 
+	        
+	    return job.waitForCompletion(true) ? 0 : 1;        
+	        
+	} 
+	    
+    public static class ScanMapper extends TableMapper<ImmutableBytesWritable, BytesWritable> {
 
         private int numRecords = 0;
         private static final IntWritable one = new IntWritable(1);
@@ -64,7 +114,7 @@ public class FreqCounter2 {
                 serializer.open(out);
                 serializer.serialize(values);
                 byte[] barray = out.getData();
-                System.out.println("bytearray:"+ Bytes.toString(barray));
+                
             	BytesWritable one = new BytesWritable(barray);
                 context.write(userKey, one);
             } catch (InterruptedException e) {
@@ -82,27 +132,42 @@ public class FreqCounter2 {
         }
     }
 
-    public static class Reducer1 extends TableReducer<ImmutableBytesWritable, BytesWritable, ImmutableBytesWritable> {
+    public static class ScanReducer extends TableReducer<ImmutableBytesWritable, BytesWritable, ImmutableBytesWritable> {
 
     	HttpClient httpClient = null;
     	PostMethod post = null;
     	String feedback = "__DONE__";
-
+    	ThreadPoolExecutor threadPool = null;
+    	int count = 0;
     	protected void setup(Context context) throws IOException, InterruptedException {
     		
-        	httpClient = new HttpClient();
-        	httpClient.getHostConfiguration().setHost("192.168.1.8", 8080, "http");
+        	httpClient = new HttpClient(new MultiThreadedHttpConnectionManager());
+        	httpClient.getHostConfiguration().setHost("192.168.1.160", 8080, "http");
+        	httpClient.getParams().setSoTimeout(2000);
         	post = new PostMethod("/demo/mapredresult/");
+        	threadPool = new ThreadPoolExecutor(
+        			2, // core size
+        			5, // max size
+        			3, // ttl time
+        			TimeUnit.SECONDS, 
+        			new LinkedBlockingQueue<Runnable>(),
+        			new ThreadPoolExecutor.AbortPolicy());
     	}
     	
         public void reduce(ImmutableBytesWritable key, Iterable<BytesWritable> values, Context context)
                 throws IOException, InterruptedException {
             int sum = 0;
-            for (BytesWritable val : values) {
-            	sendToClient(val);
+            for (final BytesWritable val : values) {
+            	Runnable task = new Runnable(){
+					@Override
+					public void run() {
+						sendToClient(val);
+					}};
+            	
+				threadPool.submit(task);
                 sum += 1;
             }
-
+            
             //Put put = new Put(key.get());
             //put.add(Bytes.toBytes("details"), Bytes.toBytes("total"), Bytes.toBytes(sum));
             System.out.println(String.format("stats :   key : %d,  count : %d", Bytes.toInt(key.get()), sum));
@@ -112,42 +177,39 @@ public class FreqCounter2 {
         
         private void sendToClient(BytesWritable val){
         	
-        	try {
-        		
-        		DataInputBuffer inb = new DataInputBuffer();
-        		inb.reset(val.getBytes(),0,val.getLength());
-				RequestEntity entity=new InputStreamRequestEntity(inb);
+        	try {        		
+        		count++;
+        		System.out.println("----start sending result:"+ count);
+        		DataInputBuffer dinbuf = new DataInputBuffer();
+        		dinbuf.reset(val.getBytes(),0,val.getLength());
+				RequestEntity entity=new InputStreamRequestEntity(dinbuf);
 	            post.setRequestEntity(entity);
 	             // execute the method
 	            httpClient.executeMethod(post);
 	            feedback = post.getResponseBodyAsString();	           
-	            System.out.println("-- feedback:" + feedback);
+	            System.out.println("----end sending,feedback:" + feedback);
+	            
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
         }
+        
         protected void cleanup(Context context) throws IOException, InterruptedException {
         	httpClient = null;
         	post = null;
+        	threadPool.shutdown();
+        	threadPool = null;
         }
     }
-    
-    public static void main(String[] args) throws Exception {
-		Properties prop = new Properties();
 
-		prop.setProperty("log4j.rootCategory", "DEBUG, CONSOLE");
-		prop.setProperty("log4j.appender.CONSOLE", "org.apache.log4j.ConsoleAppender");
-		prop.setProperty("log4j.appender.CONSOLE.layout", "org.apache.log4j.PatternLayout");
-		prop.setProperty("log4j.appender.CONSOLE.layout.ConversionPattern", "%d{HH:mm:ss,SSS} [%t] %-5p %C{1} : %m%n");
-		
-		PropertyConfigurator.configure(prop);
-		
-        Configuration conf = HBaseConfiguration.create();
-        conf.set("hbase.zookeeper.property.clientPort", "2181");
-        conf.set("hbase.zookeeper.quorum", "192.168.1.133");
-        conf.set("hbase.master", "192.168.1.133:60010");
+    public void init(){
+    	
+		config = HBaseConfiguration.create();
+		config.set("hbase.zookeeper.property.clientPort", "2181");
+		config.set("hbase.zookeeper.quorum", "192.168.1.133");
+		config.set("hbase.master", "192.168.1.133:60010");
 		File file = new File(".");
 		try {
 
@@ -158,21 +220,29 @@ public class FreqCounter2 {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        Job job = new Job(conf, "Hbase_FreqCounter1");
-        job.setJarByClass(FreqCounter2.class);
-        Scan scan = new Scan();
-        String columns = "c0"; // comma seperated
-        scan.addFamily(columns.getBytes());
-        //scan.setFilter(new FirstKeyOnlyFilter());
-        TableMapReduceUtil.initTableMapperJob(
-        		"obal.meta.attr", 
-        		scan, 
-        		Mapper1.class, 
-        		ImmutableBytesWritable.class,
-        		BytesWritable.class, 
-                job);
-        TableMapReduceUtil.initTableReducerJob("summary_user", Reducer1.class, job);
-        System.exit(job.waitForCompletion(true) ? 0 : 1);
+    }
+    
+    public static void main(String[] args) throws Exception {
+    	
+		Properties prop = new Properties();
+
+		prop.setProperty("log4j.rootCategory", "DEBUG, CONSOLE");
+		prop.setProperty("log4j.appender.CONSOLE", "org.apache.log4j.ConsoleAppender");
+		prop.setProperty("log4j.appender.CONSOLE.layout", "org.apache.log4j.PatternLayout");
+		prop.setProperty("log4j.appender.CONSOLE.layout.ConversionPattern", "%d{HH:mm:ss,SSS} [%t] %-5p %C{1} : %m%n");
+		
+		PropertyConfigurator.configure(prop);
+    	String source = "obal.meta.attr";
+    	Scan scan = new Scan();
+    	scan.addFamily("c0".getBytes());
+    	FreqCounter3 hmrScan = new FreqCounter3(source, scan);
+    	hmrScan.init();
+    	try {
+			hmrScan.scan();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
 }
