@@ -69,9 +69,9 @@ public class AccessorUtils {
 	 * 
 	 * @return K the instance of accessor 
 	 **/
-	public static <K> K getGeneralAccessor(String builderName, Principal principal,String accessorName)throws EntityException{
+	public static <K> K getGenericAccessor(String builderName, Principal principal,String accessorName)throws EntityException{
 		
-		return AccessorFactory.getInstance().buildGeneralAccessor(builderName, principal, accessorName);
+		return AccessorFactory.getInstance().buildGenericAccessor(builderName, principal, accessorName);
 	}
 	
 	/**
@@ -81,9 +81,9 @@ public class AccessorUtils {
 	 * 
 	 * @return K the instance of accessor 
 	 **/
-	public static <K> K getGeneralAccessor(Principal principal,String accessorName)throws EntityException{
+	public static <K> K getGenericAccessor(Principal principal,String accessorName)throws EntityException{
 		
-		return AccessorFactory.getInstance().buildGeneralAccessor(principal, accessorName);
+		return AccessorFactory.getInstance().buildGenericAccessor(principal, accessorName);
 	}
 
 
@@ -95,9 +95,9 @@ public class AccessorUtils {
 	 * 
 	 * @return K the instance of accessor 
 	 **/
-	public static <K> K getGeneralAccessor(IBaseAccessor mockupAccessor, String accessorName)throws EntityException{
+	public static <K> K getGenericAccessor(IBaseAccessor mockupAccessor, String accessorName)throws EntityException{
 		
-		return AccessorFactory.getInstance().buildGeneralAccessor(mockupAccessor, accessorName);
+		return AccessorFactory.getInstance().buildGenericAccessor(mockupAccessor, accessorName);
 	}
 	
 	/**

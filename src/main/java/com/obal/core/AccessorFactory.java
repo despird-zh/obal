@@ -240,7 +240,7 @@ public class AccessorFactory {
 	 * @param accessorName
 	 *            the name of entry, eg. the map key of service class
 	 **/
-	public <K> K buildGeneralAccessor(Principal principal, String accessorName)
+	public <K> K buildGenericAccessor(Principal principal, String accessorName)
 			throws EntityException {
 		AccessorBuilder defaultBuilder = builderMap.get(this.defaultBuilder);
 		if (null == defaultBuilder) {
@@ -291,7 +291,7 @@ public class AccessorFactory {
 	 * @param entryName
 	 *            the name of entry
 	 **/
-	public <K> K buildGeneralAccessor(IBaseAccessor mockupAccessor,
+	public <K> K buildGenericAccessor(IBaseAccessor mockupAccessor,
 			String accessorName) throws EntityException {
 
 		AccessorBuilder defaultBuilder = builderMap.get(this.defaultBuilder);
@@ -340,7 +340,7 @@ public class AccessorFactory {
 	 * @param accessorName
 	 *            the name of entry, eg. the map key of service class
 	 **/
-	public <K> K buildGeneralAccessor(String builderName, Principal principal,
+	public <K> K buildGenericAccessor(String builderName, Principal principal,
 			String accessorName) throws EntityException {
 
 		AccessorBuilder accessorbuilder = builderMap.get(builderName);
@@ -396,7 +396,7 @@ public class AccessorFactory {
 	 * @param entryName
 	 *            the name of entry
 	 **/
-	public <K> K buildGeneralAccessor(String builderName,
+	public <K> K buildGenericAccessor(String builderName,
 			IBaseAccessor mockupAccessor, String accessorName)
 			throws EntityException {
 

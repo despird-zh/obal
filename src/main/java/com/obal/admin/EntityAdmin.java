@@ -59,7 +59,7 @@ public class EntityAdmin {
 		
 		IAdminAccessor aa = null;
 		try {
-			aa = AccessorFactory.getInstance().buildGeneralAccessor(principal, "AdminAccessor");
+			aa = AccessorFactory.getInstance().buildGenericAccessor(principal, "AdminAccessor");
 		} catch (EntityException e) {
 			
 			LOGGER.error("Error when getting Admin service",e);
@@ -80,7 +80,7 @@ public class EntityAdmin {
 		Principal princ = new Principal("acc", "demo", "pwd");
 		try {
 			EntityManager smgr = EntityManager.getInstance();
-			imeta = AccessorUtils.getGeneralAccessor(princ,
+			imeta = AccessorUtils.getGenericAccessor(princ,
 					EntityConstants.ENTITY_META_GENERAL);
 
 			List<EntityMeta> entrymetas = imeta.getEntityMetaList();
@@ -116,7 +116,7 @@ public class EntityAdmin {
 			aa.createSchema(meta.getEntityName(),
 					meta.getAllAttrs());
 
-			metaAttrAccessor = AccessorUtils.getGeneralAccessor(princ,
+			metaAttrAccessor = AccessorUtils.getGenericAccessor(princ,
 					EntityConstants.ENTITY_META_GENERAL);
 
 			metaAttrAccessor.putEntityMeta(meta);
