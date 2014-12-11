@@ -5,10 +5,8 @@ import java.util.Properties;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.log4j.PropertyConfigurator;
 
-import com.obal.admin.EntityAdmin;
 import com.obal.core.hbase.HMapRedScan;
 import com.obal.test.BlankTester;
-
 
 public class HMapRepScanTest extends BlankTester{
 
