@@ -10,7 +10,6 @@ import com.obal.test.BlankTester;
 
 public class HMapRepScanTest extends BlankTester{
 
-
 	public void test() {
     	
 		Properties prop = new Properties();
