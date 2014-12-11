@@ -2,6 +2,7 @@ package com.obal.core.hbase;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -12,6 +13,7 @@ import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.methods.InputStreamRequestEntity;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
+import org.apache.commons.io.IOUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.client.Result;
@@ -135,16 +137,14 @@ public class FreqCounter3 {
     public static class ScanReducer extends TableReducer<ImmutableBytesWritable, BytesWritable, ImmutableBytesWritable> {
 
     	HttpClient httpClient = null;
-    	PostMethod post = null;
-    	String feedback = "__DONE__";
     	ThreadPoolExecutor threadPool = null;
     	int count = 0;
     	protected void setup(Context context) throws IOException, InterruptedException {
     		
         	httpClient = new HttpClient(new MultiThreadedHttpConnectionManager());
-        	httpClient.getHostConfiguration().setHost("192.168.1.160", 8080, "http");
+        	httpClient.getHostConfiguration().setHost("192.168.1.8", 8080, "http");
         	httpClient.getParams().setSoTimeout(2000);
-        	post = new PostMethod("/demo/mapredresult/");
+        	
         	threadPool = new ThreadPoolExecutor(
         			2, // core size
         			5, // max size
@@ -158,52 +158,73 @@ public class FreqCounter3 {
                 throws IOException, InterruptedException {
             int sum = 0;
             for (final BytesWritable val : values) {
-            	Runnable task = new Runnable(){
-					@Override
-					public void run() {
-						sendToClient(val);
-					}};
-            	
+            	PostMethod post = new PostMethod("/demo/mapredresult/");
+            	ResultSendTask task = new ResultSendTask(httpClient, post, val);   	
 				threadPool.submit(task);
                 sum += 1;
             }
             
-            //Put put = new Put(key.get());
-            //put.add(Bytes.toBytes("details"), Bytes.toBytes("total"), Bytes.toBytes(sum));
             System.out.println(String.format("stats :   key : %d,  count : %d", Bytes.toInt(key.get()), sum));
-            //System.out.println(String.format("resutl:" ));
             //context.write(key, put);
         }
-        
-        private void sendToClient(BytesWritable val){
-        	
-        	try {        		
-        		count++;
-        		System.out.println("----start sending result:"+ count);
-        		DataInputBuffer dinbuf = new DataInputBuffer();
-        		dinbuf.reset(val.getBytes(),0,val.getLength());
-				RequestEntity entity=new InputStreamRequestEntity(dinbuf);
-	            post.setRequestEntity(entity);
-	             // execute the method
-	            httpClient.executeMethod(post);
-	            feedback = post.getResponseBodyAsString();	           
-	            System.out.println("----end sending,feedback:" + feedback);
-	            
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 
-        }
-        
         protected void cleanup(Context context) throws IOException, InterruptedException {
         	httpClient = null;
-        	post = null;
         	threadPool.shutdown();
         	threadPool = null;
         }
     }
 
+    public static class ResultSendTask implements Runnable{
+    	
+    	HttpClient httpclient = null;
+    	BytesWritable resultBytes = null;
+    	PostMethod post =  null;
+    	static int count = 0;
+    	int i = 0;
+    	
+    	public ResultSendTask(HttpClient httpclient,PostMethod post,BytesWritable resultBytes){
+    		i = count++;
+    		this.post = post;
+    		this.httpclient = httpclient;
+    		this.resultBytes = resultBytes;
+    	}
+    	
+		@Override
+		public void run() {
+			
+			String feedback ="NONE";
+			
+        	try {        		
+        		
+        		System.out.println("----start sending result:"+ i);
+        		DataInputBuffer dinbuf = new DataInputBuffer();
+        		dinbuf.reset(resultBytes.getBytes(),0,resultBytes.getLength());
+				RequestEntity entity=new InputStreamRequestEntity(dinbuf);
+	            post.setRequestEntity(entity);
+	             // execute the method
+	            httpclient.executeMethod(post);
+	            InputStream ins = post.getResponseBodyAsStream();	           
+	           	feedback = IOUtils.toString(ins) ;
+	            
+			} catch (IOException e) {
+		
+				e.printStackTrace();
+			} finally {
+	             // always release the connection after we're done 
+	             post.releaseConnection();
+	             System.out.println("----end sending result:" + i + " feedback:" + feedback);
+	        }
+			cleanup();
+		}
+    	
+    	private void cleanup(){
+    		
+    		this.post = null;
+    		this.httpclient = null;
+    		this.resultBytes = null;
+    	}
+    }
     public void init(){
     	
 		config = HBaseConfiguration.create();

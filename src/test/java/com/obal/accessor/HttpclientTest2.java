@@ -1,5 +1,11 @@
 package com.obal.accessor;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -7,7 +13,7 @@ import org.apache.commons.httpclient.methods.InputStreamRequestEntity;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
 
-public class HttpclientTest {
+public class HttpclientTest2 {
 	
 	 public static void main(String[] args) {
 		    
@@ -23,7 +29,14 @@ public class HttpclientTest {
 		    String[] urisToGet = {
 		        "/demo/mapredresult/",
 		    };
-		    
+		    ThreadPoolExecutor threadPool = new ThreadPoolExecutor(
+        			2, // core size
+        			5, // max size
+        			3, // ttl time
+        			TimeUnit.SECONDS, 
+        			new LinkedBlockingQueue<Runnable>(),
+        			//threadFactory,
+        			new ThreadPoolExecutor.AbortPolicy());
 		    // create a thread for each URI
 		    SendThread[] threads = new SendThread[30];
 		    for (int i = 0; i < threads.length; i++) {
@@ -31,20 +44,17 @@ public class HttpclientTest {
 		        //get.setFollowRedirects(true);
 		        PostMethod post = new PostMethod(urisToGet[0]);
 		        
-		        threads[i] = new SendThread(httpClient, post, i + 1);
+		        SendThread task = new SendThread(httpClient, post, i + 1);
+		        threadPool.submit(task);
 		    }
-		    
-		    // start the threads
-		    for (int j = 0; j < threads.length; j++) {
-		        threads[j].start();
-		    }
+
 		    
 		}
 
 		/**
 		 * A thread that performs a GET.
 		     */
-		static class SendThread extends Thread {
+		static class SendThread implements Runnable {
 		    
 		    private HttpClient httpClient;
 		    private PostMethod method;
@@ -66,9 +76,7 @@ public class HttpclientTest {
 		             System.out.println(id + " - about to post something to " + method.getURI());
 		             String repstr = "--DONE--";
 		             int i =0;
-		             while(i<5){
-			             if("--DONE--".equals(repstr)){
-			            	 
+		        
 			            	 RequestEntity entity=new InputStreamRequestEntity(this.getClass().getClassLoader().getResourceAsStream("obal-config.properties"));
 				             method.setRequestEntity(entity);
 				             // execute the method
@@ -81,9 +89,7 @@ public class HttpclientTest {
 				             
 				             System.out.println(id + " - " + bytes.length + " bytes read");
 				             System.out.println("repstr:"+repstr);
-				             i++;
-			             }
-		             }
+				           
 		         } catch (Exception e) {
 		             System.out.println(id + " - error: " + e);
 		         } finally {
