@@ -45,7 +45,7 @@ import com.obal.exception.EntityException;
  * 
  * @see AccessorBuilder
  * @see HEntityAccessor
- * @see HGeneralAccessor
+ * @see HGenericAccessor
  **/
 public class HAccessorBuilder extends AccessorBuilder{
 

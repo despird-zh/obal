@@ -31,11 +31,11 @@ import org.slf4j.LoggerFactory;
 
 import com.obal.admin.IAdminAccessor;
 import com.obal.core.hbase.HAdminAware;
-import com.obal.core.hbase.HGeneralAccessor;
+import com.obal.core.hbase.HGenericAccessor;
 import com.obal.exception.AccessorException;
 import com.obal.meta.EntityAttr;
 
-public class AdminAccessor extends HGeneralAccessor implements IAdminAccessor,HAdminAware{
+public class AdminAccessor extends HGenericAccessor implements IAdminAccessor,HAdminAware{
 
 	Logger LOGGER = LoggerFactory.getLogger(AdminAccessor.class);
 	private HBaseAdmin admin = null;

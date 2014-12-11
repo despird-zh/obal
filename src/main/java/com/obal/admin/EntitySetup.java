@@ -9,7 +9,7 @@ import com.obal.meta.AttrType;
 import com.obal.meta.EntityAttr;
 import com.obal.meta.EntityConstants;
 import com.obal.meta.EntityMeta;
-import com.obal.meta.GeneralEntity;
+import com.obal.meta.GenericEntity;
 
 public class EntitySetup {
 
@@ -56,7 +56,7 @@ public class EntitySetup {
 		EntityAdmin ea = EntityAdmin.getInstance();
 		
 		EntityMeta meta = new EntityMeta(EntityConstants.ENTITY_PRINCIPAL);
-		meta.setSchemaClass(GeneralEntity.class.getName());
+		meta.setSchemaClass(GenericEntity.class.getName());
 		meta.setDescription("user schema ");
 
 		EntityAttr attr = new EntityAttr("i_account", "c0", "account");
@@ -90,7 +90,7 @@ public class EntitySetup {
 		EntityAdmin ea = EntityAdmin.getInstance();
 		
 		EntityMeta meta = new EntityMeta(EntityConstants.ENTITY_USER_GROUP);
-		meta.setSchemaClass(GeneralEntity.class.getName());
+		meta.setSchemaClass(GenericEntity.class.getName());
 		meta.setDescription("user Group schema ");
 
 		EntityAttr attr = new EntityAttr("i_group_name", "c0", "groupname");
@@ -118,7 +118,7 @@ public class EntitySetup {
 		EntityAdmin ea = EntityAdmin.getInstance();
 		
 		EntityMeta meta = new EntityMeta(EntityConstants.ENTITY_USER_ROLE);
-		meta.setSchemaClass(GeneralEntity.class.getName());
+		meta.setSchemaClass(GenericEntity.class.getName());
 		meta.setDescription("user Group schema ");
 
 		EntityAttr attr = new EntityAttr("i_role_name", "c0", "rolename");

@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import com.obal.core.accessor.EntityAccessor;
-import com.obal.core.accessor.GeneralAccessor;
+import com.obal.core.accessor.GenericAccessor;
 import com.obal.core.security.Principal;
 import com.obal.exception.EntityException;
 import com.obal.exception.MetaException;
@@ -110,7 +110,7 @@ public abstract class AccessorBuilder {
 	 * @return Class object of accessor
 	 **/
 	@Deprecated
-	protected Class<IBaseAccessor> getAccessorClass(Class<? extends GeneralAccessor> clazz) throws EntityException{
+	protected Class<IBaseAccessor> getAccessorClass(Class<? extends GenericAccessor> clazz) throws EntityException{
 		
 		return getAccessorClass(clazz.getName());
 	}
@@ -219,7 +219,7 @@ public abstract class AccessorBuilder {
 		
 		Class<?> clazz = this.getAccessorClass(accessorName);
 		
-		if(!GeneralAccessor.class.isAssignableFrom(clazz))
+		if(!GenericAccessor.class.isAssignableFrom(clazz))
 			throw new EntityException("The {}-{} is not a EntryAccessor sub class.",accessorName, clazz.getName() );
 
 		try {

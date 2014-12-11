@@ -22,7 +22,7 @@ import com.obal.meta.AttrType;
 import com.obal.meta.EntityAttr;
 import com.obal.meta.EntityConstants;
 import com.obal.meta.EntityMeta;
-import com.obal.meta.GeneralEntity;
+import com.obal.meta.GenericEntity;
 import com.obal.meta.accessor.IMetaAttrAccessor;
 import com.obal.test.BlankTester;
 
@@ -232,7 +232,7 @@ public class RedisTester extends BlankTester{
 		try {
 			
 			EntityMeta meta = new EntityMeta("obal.test");
-			meta.setSchemaClass(GeneralEntity.class.getName());
+			meta.setSchemaClass(GenericEntity.class.getName());
 			meta.setDescription("user schema descriptionxxx");
 			
 			EntityAttr attr = null;

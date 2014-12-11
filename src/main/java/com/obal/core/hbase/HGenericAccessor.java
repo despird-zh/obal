@@ -23,12 +23,12 @@ import java.io.IOException;
 
 import org.apache.hadoop.hbase.client.HConnection;
 
-import com.obal.core.accessor.GeneralAccessor;
+import com.obal.core.accessor.GenericAccessor;
 
 /**
  * Hbase General Accessor base class, it will hold HConnection object. 
  **/
-public abstract class HGeneralAccessor extends GeneralAccessor implements HConnAware{
+public abstract class HGenericAccessor extends GenericAccessor implements HConnAware{
 
 	private HConnection conn;	
 

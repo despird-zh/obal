@@ -28,7 +28,7 @@ import com.obal.core.security.PrincipalAware;
  * constraint on certain entry. eg a method might operation on more than one
  * entry, we will write it in GeneralAccessor.
  **/
-public abstract class GeneralAccessor implements IBaseAccessor,PrincipalAware {
+public abstract class GenericAccessor implements IBaseAccessor,PrincipalAware {
 	
 	/** thread local */
 	private ThreadLocal<Principal> localPrincipal = new ThreadLocal<Principal>();

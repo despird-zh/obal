@@ -22,9 +22,9 @@ package com.obal.meta;
 import com.obal.core.EntryKey;
 import com.obal.exception.MetaException;
 
-public class GeneralEntity extends BaseEntity{
+public class GenericEntity extends BaseEntity{
 		
-	public GeneralEntity(EntityMeta meta) {
+	public GenericEntity(EntityMeta meta) {
 		super(meta);
 	}
 

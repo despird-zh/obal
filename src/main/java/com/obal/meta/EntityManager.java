@@ -170,7 +170,7 @@ public class EntityManager {
 	private void initialMetaSchema(){
 		
 		EntityMeta meta = new EntityMeta(EntityConstants.ENTITY_META_ATTR);
-		meta.setSchemaClass(GeneralEntity.class.getName());
+		meta.setSchemaClass(GenericEntity.class.getName());
 		EntityAttr attr = new EntityAttr("i_attr_name","c0","attr_name");
 		meta.addAttr(attr);
 		attr = new EntityAttr("i_format","c0","format");
@@ -201,12 +201,12 @@ public class EntityManager {
 		meta.addAttr(attr);
 		attr = new EntityAttr("i_mode","c0","mode");
 		meta.addAttr(attr);
-		GeneralEntity ae = new GeneralEntity(meta);
+		GenericEntity ae = new GenericEntity(meta);
 		metaMap.put(ae.getEntityName(), ae.getEntityMeta());
 		schemaMap.put(ae.getEntityName(), ae);
 		/** -------------------------------------------- */
 		meta = new EntityMeta(EntityConstants.ENTITY_META_INFO);
-		meta.setSchemaClass(GeneralEntity.class.getName());
+		meta.setSchemaClass(GenericEntity.class.getName());
 		attr = new EntityAttr("i_schema_class","c0","schemaclass");
 		meta.addAttr(attr);
 		attr = new EntityAttr("i_entity_name","c0","entityname");
@@ -225,7 +225,7 @@ public class EntityManager {
 		meta.addAttr(attr);
 		attr = new EntityAttr("i_schemas",AttrMode.LIST,AttrType.STRING,"c1","s");
 		meta.addAttr(attr);
-		GeneralEntity me = new GeneralEntity(meta);
+		GenericEntity me = new GenericEntity(meta);
 		metaMap.put(me.getEntityName(), me.getEntityMeta());
 		schemaMap.put(me.getEntityName(), me);
 	}

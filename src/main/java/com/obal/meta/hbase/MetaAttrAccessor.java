@@ -34,7 +34,7 @@ import com.obal.core.AccessorFactory;
 import com.obal.core.EntryFilter;
 import com.obal.core.EntryKey;
 import com.obal.core.accessor.RawEntry;
-import com.obal.core.hbase.HGeneralAccessor;
+import com.obal.core.hbase.HGenericAccessor;
 import com.obal.core.util.AccessorUtils;
 import com.obal.exception.AccessorException;
 import com.obal.exception.BaseException;
@@ -47,7 +47,7 @@ import com.obal.meta.EntityConstants;
 import com.obal.meta.EntityMeta;
 import com.obal.meta.accessor.IMetaAttrAccessor;
 
-public class MetaAttrAccessor extends HGeneralAccessor implements IMetaAttrAccessor{
+public class MetaAttrAccessor extends HGenericAccessor implements IMetaAttrAccessor{
 
 	@Override
 	public EntityAttr getEntityAttr(String attrKey) throws AccessorException {

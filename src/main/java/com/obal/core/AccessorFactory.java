@@ -30,7 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.obal.core.accessor.EntityAccessor;
-import com.obal.core.accessor.GeneralAccessor;
+import com.obal.core.accessor.GenericAccessor;
 import com.obal.core.security.Principal;
 import com.obal.core.security.PrincipalAware;
 import com.obal.core.util.CoreConstants;
@@ -250,7 +250,7 @@ public class AccessorFactory {
 					this.defaultBuilder);
 		}
 		K accessor = defaultBuilder.newGeneralAccessor(accessorName);
-		defaultBuilder.assembly(principal, (GeneralAccessor) accessor);
+		defaultBuilder.assembly(principal, (GenericAccessor) accessor);
 		return accessor;
 	}
 
@@ -350,7 +350,7 @@ public class AccessorFactory {
 					"The AccessorBuilder instance:{} not existed.", builderName);
 		}
 		K accessor = accessorbuilder.newGeneralAccessor(accessorName);
-		accessorbuilder.assembly(principal, (GeneralAccessor) accessor);
+		accessorbuilder.assembly(principal, (GenericAccessor) accessor);
 		return accessor;
 	}
 
