@@ -1,171 +1,230 @@
-/*
- * Licensed to the G.Obal under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  G.Obal licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- * 
- */
 package com.obal.core.hbase;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.methods.InputStreamRequestEntity;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
+import org.apache.commons.io.IOUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
-import org.apache.hadoop.hbase.client.Result;  
-import org.apache.hadoop.hbase.client.Scan;  
-import org.apache.hadoop.hbase.io.ImmutableBytesWritable;  
+import org.apache.hadoop.hbase.client.Result;
+import org.apache.hadoop.hbase.client.Scan;
+import org.apache.hadoop.hbase.io.ImmutableBytesWritable;
 import org.apache.hadoop.hbase.mapreduce.ResultSerialization;
-import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;  
-import org.apache.hadoop.hbase.mapreduce.TableMapper;  
+import org.apache.hadoop.hbase.mapreduce.TableMapReduceUtil;
+import org.apache.hadoop.hbase.mapreduce.TableMapper;
 import org.apache.hadoop.hbase.mapreduce.TableReducer;
-import org.apache.hadoop.io.ObjectWritable;
+import org.apache.hadoop.hbase.util.Bytes;
+import org.apache.hadoop.io.BytesWritable;
+import org.apache.hadoop.io.DataInputBuffer;
+import org.apache.hadoop.io.DataOutputBuffer;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.serializer.Serializer;
-import org.apache.hadoop.mapreduce.Job;  
+import org.apache.hadoop.mapreduce.Job;
 import org.apache.log4j.PropertyConfigurator;
 
-import java.io.File;
-import java.io.IOException;  
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.util.Properties;
-  
-/** 
- * HBase is used as data source as well as data sink. This MapReduce job will try to copy data from 
- * the source table to the target table. Note that no reduce task needed. 
- * @author despird
- * @version 0.1 2014-2-1
- * @since 0.1
+/**
+ * counts the number of userIDs
  * 
- */  
-public class HMapRedScan{  
-  
+ * @author sujee ==at== sujee.net
+ * 
+ */
+public class HMapRedScan {
+	  
 	private Configuration config = null;
-	
+		
 	private String source;
-		
+			
 	private Scan scan;
-	
+		
 	public HMapRedScan(String source,Scan scan){
-		
-		this.source = source;
-		
-		this.scan = scan;
-		
+			
+		this.source = source;			
+		this.scan = scan;			
 	}
-	
-    public int scan() throws Exception {  
+		
+	public int scan() throws Exception {  
+	        
+	    Job job = Job.getInstance(config);
+	    Configuration conf = job.getConfiguration();
+	    conf.set("mrscan.limit", "20000");
+	    conf.set("mrscan.principal", "demouser");
+	    job.setJobName("ObalTestScan");
+	    job.setJarByClass(HMapRedScan.class);  
+        /**--------------------*/
+//	    Job job = new Job(conf, "Hbase_FreqCounter1");
+//        job.setJarByClass(FreqCounter2.class);
+//        Scan scan = new Scan();
+//        String columns = "c0"; // comma seperated
+//        scan.addFamily(columns.getBytes());
+//        //scan.setFilter(new FirstKeyOnlyFilter());
+//        TableMapReduceUtil.initTableMapperJob(
+//        		"obal.meta.attr", 
+//        		scan, 
+//        		Mapper1.class, 
+//        		ImmutableBytesWritable.class,
+//        		BytesWritable.class, 
+//                job);
+//        TableMapReduceUtil.initTableReducerJob("summary_user", Reducer1.class, job);
+//        System.exit(job.waitForCompletion(true) ? 0 : 1);
+        /**--------------------*/
+	    TableMapReduceUtil.initTableMapperJob(                  
+	         source,   // input table                 
+	         scan,  // Scan instance to control CF and attribute selection                  
+	         ScanMapper.class,  // mapper class                  
+	         ImmutableBytesWritable.class,  // mapper output key                 
+	         BytesWritable.class,   // mapper output value  
+	         job);  
+	    TableMapReduceUtil.initTableReducerJob(                 
+	         "obal.garbage",  // output table                   
+	         ScanReducer.class,  // reducer class  
+	         job); 
+	        
+	    return job.waitForCompletion(true) ? 0 : 1;        
+	        
+	} 
+	    
+    public static class ScanMapper extends TableMapper<ImmutableBytesWritable, BytesWritable> {
+
+        private int numRecords = 0;
+        private static final IntWritable one = new IntWritable(1);
+        Serializer<Result> serializer;
+        DataOutputBuffer out = null;
         
-        Job job = Job.getInstance(config);
-        Configuration conf = job.getConfiguration();
-        conf.set("mrscan.limit", "20000");
-        conf.set("mrscan.principal", "demouser");
-        job.setJobName("ObalTestScan");
-        job.setJarByClass(HMapRedScan.class);  
- 
-        TableMapReduceUtil.initTableMapperJob(                  
-                source,   // input table                 
-                scan,  // Scan instance to control CF and attribute selection                  
-                ScanMapper.class,  // mapper class                  
-                ImmutableBytesWritable.class,  // mapper output key                 
-                Result.class,   // mapper output value  
-                job);  
-        TableMapReduceUtil.initTableReducerJob(                 
-                "obal.garbage",  // output table                   
-                ScanReducer.class,  // reducer class  
-                job); 
-        
-        job.setNumReduceTasks(0);// No reducer actually needed here  
-  
-        return job.waitForCompletion(true) ? 0 : 1;        
-        
-    }  
-  
-    public static class ScanMapper extends TableMapper<ImmutableBytesWritable, ObjectWritable> {  
-    	
-    	String principal = null;
-    	
-    	protected void setup(Context context) throws IOException, InterruptedException {
-    		principal = context.getConfiguration().get("mrscan.principal");
-    	}
-    	 
-        public void map(ImmutableBytesWritable row, Result value, Context context)  
-                throws IOException, InterruptedException {  
-        	System.out.println("Row:"+row);
-        	ObjectWritable ow = new ObjectWritable(Result.class, value);
-            context.write(row, ow);  
-        }
-   
-        protected void cleanup(Context context) throws IOException, InterruptedException {
-        	// Nothing
-        }
-    }
-    
-    public static class ScanReducer extends TableReducer<ImmutableBytesWritable, ObjectWritable, ImmutableBytesWritable> {
-    	
-    	Serializer<Result> serializer;
-    	String feedback = "__DONE__";
-    	HttpClient httpClient = null;
-    	PostMethod post = null;
-    	
     	protected void setup(Context context) throws IOException, InterruptedException {
     		ResultSerialization rstSerialUtil = new ResultSerialization();
         	serializer = rstSerialUtil.getSerializer(Result.class);
-        	httpClient = new HttpClient();
-        	httpClient.getHostConfiguration().setHost("192.168.1.154", 8080, "http");
-        	post = new PostMethod("/demo/mapredresult/");
+        	out = new DataOutputBuffer();
     	}
-       
-    	public void reduce(ImmutableBytesWritable key, Iterable<ObjectWritable> values, Context context)
-                throws IOException, InterruptedException {
-       
-            for (ObjectWritable val : values) {
-//                PipedOutputStream out = new PipedOutputStream();
-//                serializer.open(out);
-//            	serializer.serialize(val);
-//            	sendToClient(out);
-            	System.out.println("----------"+key);
-            }            
-        }
-        
-        private void sendToClient(PipedOutputStream out){
-        	
-        	PipedInputStream in = new PipedInputStream();
-        	try {
-				out.connect(in);
-				RequestEntity entity=new InputStreamRequestEntity(in);
-	            post.setRequestEntity(entity);
-	             // execute the method
-	            httpClient.executeMethod(post);
-	            feedback = post.getResponseBodyAsString();	           
-	            System.out.println("-- feedback:" + feedback);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
+    	
+        @Override
+        public void map(ImmutableBytesWritable row, Result values, Context context) throws IOException {
+            // extract userKey from the compositeKey (userId + counter)
+            ImmutableBytesWritable userKey = new ImmutableBytesWritable(row.get(), 0, Bytes.SIZEOF_INT);
+            try {
+            	DataOutputBuffer out = new DataOutputBuffer();
+            	out.reset();
+                serializer.open(out);
+                serializer.serialize(values);
+                byte[] barray = out.getData();
+                
+            	BytesWritable one = new BytesWritable(barray);
+                context.write(userKey, one);
+            } catch (InterruptedException e) {
+                throw new IOException(e);
+            }
+            numRecords++;
+            if ((numRecords % 10000) == 0) {
+                context.setStatus("mapper processed " + numRecords + " records so far");
+            }
         }
         
         protected void cleanup(Context context) throws IOException, InterruptedException {
         	serializer = null;
-        	httpClient = null;
-        	post = null;
+        	out = null;
         }
     }
-    
+
+    public static class ScanReducer extends TableReducer<ImmutableBytesWritable, BytesWritable, ImmutableBytesWritable> {
+
+    	HttpClient httpClient = null;
+    	ThreadPoolExecutor threadPool = null;
+    	int count = 0;
+    	protected void setup(Context context) throws IOException, InterruptedException {
+    		
+        	httpClient = new HttpClient(new MultiThreadedHttpConnectionManager());
+        	httpClient.getHostConfiguration().setHost("192.168.1.8", 8080, "http");
+        	httpClient.getParams().setSoTimeout(2000);
+        	
+        	threadPool = new ThreadPoolExecutor(
+        			2, // core size
+        			5, // max size
+        			3, // ttl time
+        			TimeUnit.SECONDS, 
+        			new LinkedBlockingQueue<Runnable>(),
+        			new ThreadPoolExecutor.AbortPolicy());
+    	}
+    	
+        public void reduce(ImmutableBytesWritable key, Iterable<BytesWritable> values, Context context)
+                throws IOException, InterruptedException {
+            int sum = 0;
+            for (final BytesWritable val : values) {
+            	PostMethod post = new PostMethod("/demo/mapredresult/");
+            	ResultSendTask task = new ResultSendTask(httpClient, post, val);   	
+				threadPool.submit(task);
+                sum += 1;
+            }
+            
+            System.out.println(String.format("stats :   key : %d,  count : %d", Bytes.toInt(key.get()), sum));
+            //context.write(key, put);
+        }
+
+        protected void cleanup(Context context) throws IOException, InterruptedException {
+        	httpClient = null;
+        	threadPool.shutdown();
+        	threadPool = null;
+        }
+    }
+
+    public static class ResultSendTask implements Runnable{
+    	
+    	HttpClient httpclient = null;
+    	BytesWritable resultBytes = null;
+    	PostMethod post =  null;
+    	static int count = 0;
+    	int i = 0;
+    	
+    	public ResultSendTask(HttpClient httpclient,PostMethod post,BytesWritable resultBytes){
+    		i = count++;
+    		this.post = post;
+    		this.httpclient = httpclient;
+    		this.resultBytes = resultBytes;
+    	}
+    	
+		@Override
+		public void run() {
+			
+			String feedback ="NONE";
+			
+        	try {        		
+        		
+        		System.out.println("----start sending result:"+ i);
+        		DataInputBuffer dinbuf = new DataInputBuffer();
+        		dinbuf.reset(resultBytes.getBytes(),0,resultBytes.getLength());
+				RequestEntity entity=new InputStreamRequestEntity(dinbuf);
+	            post.setRequestEntity(entity);
+	             // execute the method
+	            httpclient.executeMethod(post);
+	            InputStream ins = post.getResponseBodyAsStream();	           
+	           	feedback = IOUtils.toString(ins) ;
+	            
+			} catch (IOException e) {
+		
+				e.printStackTrace();
+			} finally {
+	             // always release the connection after we're done 
+	             post.releaseConnection();
+	             System.out.println("----end sending result:" + i + " feedback:" + feedback);
+	        }
+			cleanup();
+		}
+    	
+    	private void cleanup(){
+    		
+    		this.post = null;
+    		this.httpclient = null;
+    		this.resultBytes = null;
+    	}
+    }
     public void init(){
     	
 		config = HBaseConfiguration.create();
@@ -184,7 +243,8 @@ public class HMapRedScan{
 		}
     }
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+    	
 		Properties prop = new Properties();
 
 		prop.setProperty("log4j.rootCategory", "DEBUG, CONSOLE");
@@ -205,6 +265,5 @@ public class HMapRedScan{
 			e.printStackTrace();
 		}
     }
-    
-    
-}  
+
+}
