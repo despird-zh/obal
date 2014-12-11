@@ -12,7 +12,7 @@ import com.obal.exception.AccessorException;
 import com.obal.exception.EntityException;
 import com.obal.exception.RingEventException;
 
-public class CacheHooker<K extends EntryKey>  extends EventHooker{
+public class CacheHooker<K extends EntryKey>  extends EventHooker<CacheInfo>{
 
 	public CacheHooker() {
 		super(EventType.CACHE);
@@ -22,7 +22,7 @@ public class CacheHooker<K extends EntryKey>  extends EventHooker{
 	@Override
 	public void processPayload(EventPayload payload) throws RingEventException {
 		
-		CacheInfo operData = (CacheInfo)payload.getData();
+		CacheInfo operData = (CacheInfo)payload;
 		 
 		if(CacheInfo.OP_PUT.equals(operData.operation(null))){
 			

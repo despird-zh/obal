@@ -3,39 +3,29 @@ package com.obal.disruptor;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+import com.lmax.disruptor.RingBuffer;
 import com.obal.exception.RingEventException;
 
-public abstract class EventHooker {
+public abstract class EventHooker<T extends EventPayload> {
 
 	private boolean blocked = false; 
 	
-	private EventType type;
+	private EventType eventType;
+	
+	private RingBuffer<RingEvent> ringBuffer = null;
 	
 	/**
 	 * Constructor:specify the eventype supported 
 	 **/
-	public EventHooker(EventType type){
+	public EventHooker(EventType eventType){
 		
-		this.type = type;
+		this.eventType = eventType;
 	}
 	
-	/**
-	 * Check if the hooker match the event type 
-	 * 
-	 * @param payload the payload of ringevent
-	 * @param checkBlock true:check hooker is blocked or not; false:don't check block state
-	 **/
-	public boolean match(EventPayload payload, boolean checkBlock){
+	public boolean isBlocked(){
 		
-		if(checkBlock)
-			
-			return this.type == payload.getType() && !this.blocked ;
-		else{
-			
-			return this.type == payload.getType() ;
-		}
+		return this.blocked;
 	}
-	
 	/**
 	 * Set the block switch flag
 	 * 
@@ -49,9 +39,19 @@ public abstract class EventHooker {
 	/**
 	 * Get the supported EventType 
 	 **/
-	public EventType getType(){
+	public EventType getEventType(){
 		
-		return type;
+		return eventType;
+	}
+	
+	protected void setRingBuffer(RingBuffer<RingEvent> ringBuffer){
+		
+		this.ringBuffer = ringBuffer;		
+	}
+	
+	public EventProducer<T> getProducer(){
+		
+		return new EventProducer<T>(ringBuffer, eventType);
 	}
 	
 	/**
@@ -74,15 +74,16 @@ public abstract class EventHooker {
 			return false;
 		}
 		// step 3
-		EventHooker that = (EventHooker) other;
+		EventHooker<?> that = (EventHooker<?>) other;
 		// step 4
 		return new EqualsBuilder()
-			.append(this.type, that.type).isEquals();
+			.append(this.eventType, that.eventType).isEquals();
 	}
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder(17, 37).append(this.type)
+		return new HashCodeBuilder(17, 37).append(this.eventType)
 				.toHashCode();
 	}
+
 }

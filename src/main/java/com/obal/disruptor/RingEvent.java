@@ -11,8 +11,14 @@ import com.lmax.disruptor.EventFactory;
  **/
 public class RingEvent {
 	
+	private EventType eventType;
+	
 	private EventPayload payload;
-
+	
+	public void setEventType(EventType eventType){
+		
+		this.eventType = eventType;
+	}
 	/**
 	 * The payload of event 
 	 **/
@@ -27,7 +33,7 @@ public class RingEvent {
 		
 		EventPayload rtv = this.payload;
 		this.payload = null;
-		
+		this.eventType = EventType.UNKNOWN;
 		return rtv;
 	}
 	/**
@@ -35,13 +41,7 @@ public class RingEvent {
 	 **/
 	public EventType getEventType(){
 		
-		if(this.payload == null)
-			
-			return EventType.UNKNOWN;
-		else{
-			
-			return this.payload.getType();
-		}
+		return this.eventType;
 	}
 	
 	/**

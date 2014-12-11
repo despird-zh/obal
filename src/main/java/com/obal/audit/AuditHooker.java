@@ -24,7 +24,7 @@ import com.obal.disruptor.EventPayload;
 import com.obal.disruptor.EventType;
 import com.obal.exception.RingEventException;
 
-public class AuditHooker extends EventHooker{
+public class AuditHooker extends EventHooker<AuditInfo>{
 
 	public AuditHooker() {
 		super(EventType.AUDIT);
@@ -32,7 +32,7 @@ public class AuditHooker extends EventHooker{
 
 	@Override
 	public void processPayload(EventPayload payload) throws RingEventException {
-		AuditInfo ai = (AuditInfo)payload.getData();
+		AuditInfo ai = (AuditInfo)payload;
 		
 		System.out.println("---:"+ai.getKey());
 	}

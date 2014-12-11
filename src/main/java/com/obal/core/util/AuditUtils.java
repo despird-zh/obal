@@ -21,13 +21,7 @@ public class AuditUtils {
 	
 	public static void doAudit(AuditInfo auditevent){
 		
-		EventPayload payload = new EventPayload(EventType.AUDIT);
-		payload.setData(auditevent);
-		EventDispatcher.getInstance().sendPayload(payload);
+		EventDispatcher.getInstance().sendPayload(auditevent,EventType.AUDIT);
 	}
-		
-	public static EventPayload newAuditPayload(){
-		
-		return new EventPayload(EventType.AUDIT);
-	}
+
 }

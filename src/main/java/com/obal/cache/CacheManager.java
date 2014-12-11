@@ -27,6 +27,7 @@ import com.obal.core.util.AccessorUtils;
 import com.obal.core.util.CoreConstants;
 import com.obal.disruptor.EventDispatcher;
 import com.obal.disruptor.EventPayload;
+import com.obal.disruptor.EventType;
 import com.obal.disruptor.RingEventUtils;
 import com.obal.exception.AccessorException;
 import com.obal.exception.EntityException;
@@ -76,12 +77,10 @@ public class CacheManager{
 	 **/
 	public <K extends EntryKey> void cachePut(K entry){
 		
-		EventPayload payload = RingEventUtils.newCachePayload();
 		CacheInfo data = new CacheInfo();
 		data.setPutEntryData(entry);
 		
-		payload.setData(data);
-		EventDispatcher.getInstance().sendPayload(payload);
+		EventDispatcher.getInstance().sendPayload(data,EventType.CACHE);
  
 	}
 	
@@ -95,12 +94,10 @@ public class CacheManager{
 	 **/
 	public void cachePutAttr(EntryKey entryKey, String attrName, Object value){
 		
-		EventPayload payload = RingEventUtils.newCachePayload();
 		CacheInfo data = new CacheInfo();
 		data.setPutAttrData(entryKey.getKey(), entryKey.getEntityName(), attrName, value);
 		
-		payload.setData(data);
-		EventDispatcher.getInstance().sendPayload(payload);
+		EventDispatcher.getInstance().sendPayload(data,EventType.CACHE);
  
 	}
 	
@@ -182,12 +179,10 @@ public class CacheManager{
 	 **/
 	public void cacheDel(String entityName, String ...keys){
 		
-		EventPayload payload = RingEventUtils.newCachePayload();
 		CacheInfo data = new CacheInfo();
 		data.setDelData(entityName, keys);
 		
-		payload.setData(data);
-		EventDispatcher.getInstance().sendPayload(payload);
+		EventDispatcher.getInstance().sendPayload(data,EventType.CACHE);
 	
 	}
 	

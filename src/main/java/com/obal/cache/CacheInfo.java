@@ -20,6 +20,7 @@
 package com.obal.cache;
 
 import com.obal.core.EntryKey;
+import com.obal.disruptor.EventPayload;
 
 /**
  * CacheEvent is the placeholder element in disruptor RingBuffer, it holds the entry information
@@ -29,7 +30,7 @@ import com.obal.core.EntryKey;
  * @version 0.1 2014-3-1
  * @since 0.1
  **/
-public class CacheInfo{
+public class CacheInfo implements EventPayload{
 	
 	public static final String OP_PUT = "_PUT_ENTRY";
 	public static final String OP_PUT_ATTR = "_PUT_ATTR";

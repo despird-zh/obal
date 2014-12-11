@@ -21,10 +21,10 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
 import com.lmax.disruptor.EventFactory;
-
 import com.obal.core.EntryInfo;
+import com.obal.disruptor.EventPayload;
 
-public class AuditInfo extends EntryInfo{
+public class AuditInfo extends EntryInfo implements EventPayload{
 
 	private static final long serialVersionUID = 1L;
 

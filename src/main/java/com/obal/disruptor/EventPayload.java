@@ -7,42 +7,6 @@ package com.obal.disruptor;
  * @version 0.1 2014-3-2
  *
  **/
-public class EventPayload {
-	
-	private EventType type;
-	
-	private Object data;
-	
-	/**
-	 * Constructor  
-	 **/
-	public EventPayload(EventType type) {
-		
-		this.type = type;
-
-	}
-	
-	/**
-	 * Get the event type of payload 
-	 **/
-	public EventType getType() {
-		return type;
-	}
-
-	/**
-	 * Get the data of payload 
-	 **/
-	public Object getData(){
-		
-		return this.data;
-	}
-	
-	/**
-	 * Set data of payload 
-	 **/
-	public void setData(Object data){
-		
-		this.data = data;
-	}
+public interface EventPayload {
 
 }

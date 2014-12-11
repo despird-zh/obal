@@ -2,28 +2,32 @@ package com.obal.disruptor;
 
 public class RingEventUtils {
 
-	public static void sendPayload(EventPayload payload){
+	public static void sendPayload(EventPayload payload, EventType eventType){
 		
-		EventDispatcher.getInstance().sendPayload(payload);
+		EventDispatcher.getInstance().sendPayload(payload,eventType);
 	}
 	
-	public static void regEventHooker(EventHooker eventHooker){
+	public static void regEventHooker(EventHooker<?> eventHooker){
 		
 		EventDispatcher.getInstance().regEventHooker(eventHooker);
 	}
 	
-	public static void unRegEventHooker(EventType type){
+	public static void unRegEventHooker(EventType eventType){
 		
-		EventDispatcher.getInstance().unRegEventHooker(type);
+		EventDispatcher.getInstance().unRegEventHooker(eventType);
 	}
 	
-	public static void blockEventHooker(EventType type, boolean blocked){
+	public static void blockEventHooker(EventType eventType, boolean blocked){
 		
-		EventDispatcher.getInstance().blockEventHooker(type, blocked);
+		EventDispatcher.getInstance().blockEventHooker(eventType, blocked);
 	}
 	
-	public static EventPayload newCachePayload(){
+	public static EventProducer<?> getEventProducer(EventType eventType){
 		
-		return new EventPayload(EventType.CACHE);
+		EventHooker<?> hooker = EventDispatcher.getInstance().getEventHooker(eventType);
+		if(null != hooker)
+			return hooker.getProducer();
+		else
+			return null;
 	}
 }

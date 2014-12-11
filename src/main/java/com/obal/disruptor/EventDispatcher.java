@@ -36,7 +36,7 @@ public class EventDispatcher {
 	RingEventHandler handler = new RingEventHandler();
 
 	/** the event hooker list */
-	Map<EventType, EventHooker> hookers = new HashMap<EventType, EventHooker>();
+	Map<EventType, EventHooker<?>> hookers = new HashMap<EventType, EventHooker<?>>();
 
 	/** single instance */
 	private static EventDispatcher instance;
@@ -95,16 +95,21 @@ public class EventDispatcher {
 		disruptor.handleEventsWith(handler);
 	}
 
+	public EventHooker<?> getEventHooker(EventType eventType){
+		
+		return hookers.get(eventType);
+	}
 	/**
 	 * dispatch event payload to respective hooker
 	 **/
 	private void onRingEvent(RingEvent ringevent, long sequence, boolean endOfBatch) {
 		
 		// After take payload, it is removed from ring event instance.
+		EventType eventType = ringevent.getEventType();
 		EventPayload payload = ringevent.takePayload();
-		EventHooker eventHooker = hookers.get(payload.getType());
+		EventHooker<?> eventHooker = hookers.get(eventType);
 
-		if (eventHooker != null && eventHooker.match(payload,true)) {
+		if (eventHooker != null && !eventHooker.isBlocked()) {
 
 			try {
 
@@ -112,12 +117,12 @@ public class EventDispatcher {
 
 			} catch (RingEventException e) {
 
-				LOGGER.error("Error when processing event[{}] payload", e, payload.getType());
+				LOGGER.error("Error when processing event[{}] payload", e, eventType);
 			}
 
 		}else{
 			
-			LOGGER.warn("eventhooker not exist or unmatch type:{}", payload.getType());
+			LOGGER.warn("eventhooker not exist or unmatch type:{}", eventType);
 		}
 
 	}
@@ -125,14 +130,15 @@ public class EventDispatcher {
 	/**
 	 * publish event payload
 	 **/
-	public void sendPayload(EventPayload payload){
+	public void sendPayload(EventPayload payload,EventType eventType){
 		
 		RingBuffer<RingEvent> ringBuffer = disruptor.getRingBuffer();
 		long sequence = ringBuffer.next();  // Grab the next sequence
 	    try
 	    {
 	    	RingEvent event = ringBuffer.get(sequence); // Get the entry in the Disruptor
-	        event.setPayload(payload);  
+	        event.setEventType(eventType);
+	    	event.setPayload(payload);  
 	    }
 	    finally
 	    {
@@ -145,17 +151,20 @@ public class EventDispatcher {
 	 * 
 	 * @param eventHooker the hooker of event 
 	 **/
-	public void regEventHooker(EventHooker eventHooker) {
+	public void regEventHooker(EventHooker<?> eventHooker) {
 
-		hookers.put(eventHooker.getType(),eventHooker);
+		hookers.put(eventHooker.getEventType(),eventHooker);
+		eventHooker.setRingBuffer(disruptor.getRingBuffer());
 	}
 	
 	/**
 	 * Unregister the specified type of hooker 
 	 **/
-	public void unRegEventHooker(EventType type){
+	public void unRegEventHooker(EventType eventType){
 		
-		hookers.remove(type);
+		EventHooker<?> eventHooker = hookers.remove(eventType);
+		eventHooker.setRingBuffer(null);// unbind reference to buffer.
+		
 	}
 	
 	/**
@@ -164,9 +173,9 @@ public class EventDispatcher {
 	 * @param type the ringevent type
 	 * @param blocked the flag of block or not 
 	 **/
-	public void blockEventHooker(EventType type,boolean blocked){
+	public void blockEventHooker(EventType eventType,boolean blocked){
 		
-		EventHooker eventHooker = hookers.get(type);
+		EventHooker<?> eventHooker = hookers.get(eventType);
 		if(null != eventHooker)
 			eventHooker.setBlocked(blocked);
 	}
