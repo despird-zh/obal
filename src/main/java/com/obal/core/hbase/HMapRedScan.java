@@ -208,6 +208,7 @@ public class HMapRedScan {
     		this.resultBytes = null;
     	}
     }
+    
     public void init(){
     	
 		config = HBaseConfiguration.create();
@@ -224,10 +225,6 @@ public class HMapRedScan {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-    }
-    
-    public static void main(String[] args) throws Exception {
-
     }
 
 }

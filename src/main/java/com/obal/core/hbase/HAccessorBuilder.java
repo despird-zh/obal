@@ -146,4 +146,14 @@ public class HAccessorBuilder extends AccessorBuilder{
 			accessor.setEmbed(true);
 		}
 	}
+	
+	/**
+	 * Get the configuration object 
+	 * 
+	 * @return Configuration the configuration of Hbase Connection
+	 **/
+	public Configuration getConfiguration(){
+		
+		return this.config;
+	}
 }
