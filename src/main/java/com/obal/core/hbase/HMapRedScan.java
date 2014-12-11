@@ -60,23 +60,7 @@ public class HMapRedScan {
 	    conf.set("mrscan.principal", "demouser");
 	    job.setJobName("ObalTestScan");
 	    job.setJarByClass(HMapRedScan.class);  
-        /**--------------------*/
-//	    Job job = new Job(conf, "Hbase_FreqCounter1");
-//        job.setJarByClass(FreqCounter2.class);
-//        Scan scan = new Scan();
-//        String columns = "c0"; // comma seperated
-//        scan.addFamily(columns.getBytes());
-//        //scan.setFilter(new FirstKeyOnlyFilter());
-//        TableMapReduceUtil.initTableMapperJob(
-//        		"obal.meta.attr", 
-//        		scan, 
-//        		Mapper1.class, 
-//        		ImmutableBytesWritable.class,
-//        		BytesWritable.class, 
-//                job);
-//        TableMapReduceUtil.initTableReducerJob("summary_user", Reducer1.class, job);
-//        System.exit(job.waitForCompletion(true) ? 0 : 1);
-        /**--------------------*/
+
 	    TableMapReduceUtil.initTableMapperJob(                  
 	         source,   // input table                 
 	         scan,  // Scan instance to control CF and attribute selection                  
@@ -96,7 +80,6 @@ public class HMapRedScan {
     public static class ScanMapper extends TableMapper<ImmutableBytesWritable, BytesWritable> {
 
         private int numRecords = 0;
-        private static final IntWritable one = new IntWritable(1);
         Serializer<Result> serializer;
         DataOutputBuffer out = null;
         
@@ -244,26 +227,7 @@ public class HMapRedScan {
     }
     
     public static void main(String[] args) throws Exception {
-    	
-		Properties prop = new Properties();
 
-		prop.setProperty("log4j.rootCategory", "DEBUG, CONSOLE");
-		prop.setProperty("log4j.appender.CONSOLE", "org.apache.log4j.ConsoleAppender");
-		prop.setProperty("log4j.appender.CONSOLE.layout", "org.apache.log4j.PatternLayout");
-		prop.setProperty("log4j.appender.CONSOLE.layout.ConversionPattern", "%d{HH:mm:ss,SSS} [%t] %-5p %C{1} : %m%n");
-		
-		PropertyConfigurator.configure(prop);
-    	String source = "obal.meta.attr";
-    	Scan scan = new Scan();
-    	scan.addFamily("c0".getBytes());
-    	HMapRedScan hmrScan = new HMapRedScan(source, scan);
-    	hmrScan.init();
-    	try {
-			hmrScan.scan();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
     }
 
 }
