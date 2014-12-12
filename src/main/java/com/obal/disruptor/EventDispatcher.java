@@ -122,7 +122,7 @@ public class EventDispatcher {
 
 		}else{
 			
-			LOGGER.warn("eventhooker not exist or unmatch type:{}", eventType);
+			LOGGER.warn("EventHooker not exist or unmatch type:{}", eventType);
 		}
 
 	}
@@ -163,14 +163,14 @@ public class EventDispatcher {
 	public void unRegEventHooker(EventType eventType){
 		
 		EventHooker<?> eventHooker = hookers.remove(eventType);
-		eventHooker.setRingBuffer(null);// unbind reference to buffer.
+		eventHooker.setRingBuffer(null);// clear reference to buffer.
 		
 	}
 	
 	/**
 	 * Block the event hooker
 	 * 
-	 * @param type the ringevent type
+	 * @param type the type of hooker 
 	 * @param blocked the flag of block or not 
 	 **/
 	public void blockEventHooker(EventType eventType,boolean blocked){
@@ -183,7 +183,7 @@ public class EventDispatcher {
 	/**
 	 * Class RingEventHandler to process event payload 
 	 **/
-	public static class RingEventHandler implements EventHandler<RingEvent> {
+	private static class RingEventHandler implements EventHandler<RingEvent> {
 
 		@Override
 		public void onEvent(RingEvent ringevent, long sequence,

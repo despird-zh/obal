@@ -22,10 +22,14 @@ public abstract class EventHooker<T extends EventPayload> {
 		this.eventType = eventType;
 	}
 	
+	/**
+	 * The hooker is blocked or not, if hooker is blocked it ignore any event. 
+	 **/
 	public boolean isBlocked(){
 		
 		return this.blocked;
 	}
+	
 	/**
 	 * Set the block switch flag
 	 * 
