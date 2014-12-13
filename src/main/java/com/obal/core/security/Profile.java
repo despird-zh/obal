@@ -22,28 +22,32 @@ package com.obal.core.security;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonProperty;
+
 /**
  * Profile store the setting of principal 
  *  
  **/
 public class Profile {
 	
-	private Map<String, Object> setting = null;
+	private Map<String, Object> settings = null;
 	
 	/**
 	 * Default constructor 
 	 **/
 	public Profile(){
 		
-		setting = new HashMap<String, Object>();
+		settings = new HashMap<String, Object>();
 	}
 
 	/**
 	 * Default constructor 
 	 **/
-	public Profile(Map<String, Object> setting){
+	@JsonCreator
+	public Profile(@JsonProperty("settings") Map<String, Object> setting){
 		
-		this.setting = setting;
+		this.settings = setting;
 	}
 
 	/**
@@ -51,17 +55,18 @@ public class Profile {
 	 **/
 	public void setSetting(String key, Object value){
 		
-		this.setting.put(key, value);
+		this.settings.put(key, value);
 	}
 	
 	/**
 	 * Get vlaue of setting by key
 	 * @param key the key of setting 
 	 **/
+	@JsonProperty("settings")
 	@SuppressWarnings("unchecked")
 	public <K> K getSetting(String key){
 		
-		return (K)this.setting.get(key);
+		return (K)this.settings.get(key);
 	}
 	
 	/**
@@ -69,6 +74,14 @@ public class Profile {
 	 **/
 	public Map<String, Object> getSettings(){
 		
-		return this.setting;
+		return this.settings;
+	}
+	
+	/**
+	 * Get setting map  
+	 **/
+	public void setSettings(Map<String, Object> settings){
+		
+		this.settings = settings;
 	}
 }

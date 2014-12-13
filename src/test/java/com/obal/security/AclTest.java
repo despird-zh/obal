@@ -63,11 +63,11 @@ public class AclTest extends BlankTester{
 			System.out.println(eacl2.name());
 			List<EntryAce> aces = eacl2.allAces();
 			for(EntryAce ace:aces){
-				System.out.println("------ACE value:");
-				System.out.println(ace.type());
-				System.out.println(ace.name());
-				System.out.println(ace.privilege());
-				System.out.println(ace.permissions());
+				System.out.print("------ACE value:");
+				System.out.print("/type:"+ace.type());
+				System.out.print("/name"+ace.name());
+				System.out.print("/priv"+ace.privilege());
+				System.out.println("/perms"+ace.permissions());
 			}
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
@@ -81,6 +81,7 @@ public class AclTest extends BlankTester{
 		}
 		
 	}
+	
 	protected void setUp() throws Exception {  
 	     initLog4j();  
 	     super.setUp();  

@@ -20,9 +20,14 @@
 package com.obal.core.security;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
 
 import com.obal.core.EntryKey;
 import com.obal.meta.EntityConstants;
@@ -34,8 +39,9 @@ import com.obal.meta.EntityConstants;
  * @version 1.0 2014-01-01
  * @see com.obal.core.security.Profile
  **/
+@JsonIgnoreProperties({"keyBytes","profile"})
 public class Principal extends EntryKey{
-
+	
 	/**
 	 * Constructor for new Principal
 	 * 
@@ -60,7 +66,8 @@ public class Principal extends EntryKey{
 	 * @param password the password
 	 * @param source the account source
 	 **/	
-	public Principal(String account, String name, String password, String source) {
+	@JsonCreator
+	public Principal(@JsonProperty("account") String account, @JsonProperty("name") String name, @JsonProperty("password") String password, @JsonProperty("source") String source) {
 		
 		super(EntityConstants.ENTITY_PRINCIPAL, null);
 		this.account = account;
@@ -80,34 +87,55 @@ public class Principal extends EntryKey{
 
 	/** the user profile info holder */
 	private Profile profile = null;
+	private Set<String> groups;
+	private Set<String> roles;
 	
 	/**
 	 * Get Account information 
 	 **/
+	@JsonProperty("account")
 	public String account() {
 		return account;
 	}
 	
+	@JsonProperty("name")
 	public String name() {
 		return name;
 	}
 
+	@JsonProperty("password")
 	public String password() {
 		return password;
 	}
 
+	@JsonProperty("source")
 	public String source() {
 		return source;
 	}
+	
 	
 	public Profile getProfile() {
 		
 		return profile;
 	}
+	
 	public void setProfile(Profile profile) {
 		
 		this.profile = profile;
 	}	
+	
+	@JsonProperty("settings")
+	public Map<String, Object> getProfileSettings(){
+		
+		return this.profile.getSettings();
+	}
+	
+	@JsonProperty("settings")
+	public void setProfileSettings(Map<String, Object> settings){
+		
+		this.profile = new Profile();
+		this.profile.setSettings(settings);;
+	}
 	
 	public boolean inGroup(String group){
 		
@@ -119,14 +147,21 @@ public class Principal extends EntryKey{
 		return false;
 	}
 	
-	public List<UserGroup> getUserGroups(){
+	public void setGroups(Set<String> groups){
 		
-		return null;
+		this.groups = groups;
+	}
+	public Set<String> getGroups(){
+		
+		return this.groups;
 	}
 	
-	public List<UserRole> getUserRoles(){
+	public void setRoles(Set<String> roles){
+		this.roles = roles;
+	}
+	public Set<String> getRoles(){
 		
-		return null;
+		return this.roles;
 	}
 	
 	@Override
