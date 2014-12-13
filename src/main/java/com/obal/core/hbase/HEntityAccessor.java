@@ -105,7 +105,6 @@ public abstract class HEntityAccessor<GB extends EntryKey> extends EntityAccesso
 	 **/
 	public abstract HEntryWrapper<GB> getEntryWrapper();
 	
-	@Deprecated
 	@Override
 	public List<GB> doScanEntry(EntryFilter<?> scanfilter) throws AccessorException{
 		
