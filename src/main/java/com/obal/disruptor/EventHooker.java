@@ -53,7 +53,10 @@ public abstract class EventHooker<T extends EventPayload> {
 		this.ringBuffer = ringBuffer;		
 	}
 	
-	public EventProducer<T> getProducer(){
+	public EventProducer<T> getProducer() throws RingEventException{
+		
+		if(null == ringBuffer)
+			throw new RingEventException("The RingBuffer not initialized yet.");
 		
 		return new EventProducer<T>(ringBuffer, eventType);
 	}

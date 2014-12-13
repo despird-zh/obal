@@ -33,10 +33,15 @@ public class EventType {
 	}
 
 	@Override
-	public int hashCode() {
+	public int hashCode(){
 		return new HashCodeBuilder(17, 37).append(this.type).toHashCode();
 	}
 	
+	@Override
+	public String toString(){
+		
+		return "type:"+String.valueOf(type);
+	}
 	public static EventType AUDIT   = new EventType(10); // audit event
 	public static EventType CACHE   = new EventType(11); // cache event
 	public static EventType UNKNOWN = new EventType(12); // unknow event

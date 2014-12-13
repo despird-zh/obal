@@ -1,5 +1,7 @@
 package com.obal.disruptor;
 
+import com.obal.exception.RingEventException;
+
 public class RingEventUtils {
 
 	public static void sendPayload(EventPayload payload, EventType eventType){
@@ -25,9 +27,14 @@ public class RingEventUtils {
 	public static EventProducer<?> getEventProducer(EventType eventType){
 		
 		EventHooker<?> hooker = EventDispatcher.getInstance().getEventHooker(eventType);
+		try{
 		if(null != hooker)
 			return hooker.getProducer();
 		else
 			return null;
+		}catch(RingEventException ree){
+			
+			return null;
+		}
 	}
 }
