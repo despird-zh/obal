@@ -37,7 +37,7 @@ import org.apache.hadoop.mapreduce.Job;
  * remote listening servlet directly.
  * </p>
  * 
- * @author desprid
+ * @author despird
  * @version 0.1 2014-3-1
  */
 public class HMapRedHttpScan {
