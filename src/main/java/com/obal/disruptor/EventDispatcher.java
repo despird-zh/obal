@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
+import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,17 +26,19 @@ public class EventDispatcher {
 
 	static Logger LOGGER = LoggerFactory.getLogger(EventDispatcher.class);
 
+	private AtomicInteger hookerIdGenerator = new AtomicInteger(100); 
+	
 	/** the executor pool */
-	ExecutorService executor = null;
+	private ExecutorService executor = null;
 
 	/** the disruptor instance */
-	Disruptor<RingEvent> disruptor = null;
+	private Disruptor<RingEvent> disruptor = null;
 
 	/** the event handler */
-	RingEventHandler handler = new RingEventHandler();
+	private RingEventHandler handler = new RingEventHandler();
 
 	/** the event hooker list */
-	Map<EventType, EventHooker<?>> hookers = new HashMap<EventType, EventHooker<?>>();
+	private Map<EventType, EventHooker<?>> hookers = new HashMap<EventType, EventHooker<?>>();
 
 	/** single instance */
 	private static EventDispatcher instance;
@@ -153,6 +155,11 @@ public class EventDispatcher {
 	 **/
 	public void regEventHooker(EventHooker<?> eventHooker) {
 
+		if(null == eventHooker.getEventType()){
+			
+			EventType eventType = new EventType(hookerIdGenerator.incrementAndGet());
+			eventHooker.setEventType(eventType);
+		}
 		hookers.put(eventHooker.getEventType(),eventHooker);
 		eventHooker.setRingBuffer(disruptor.getRingBuffer());
 	}

@@ -48,6 +48,11 @@ public abstract class EventHooker<T extends EventPayload> {
 		return eventType;
 	}
 	
+	public void setEventType(EventType eventType){
+		
+		this.eventType = eventType;
+	}
+	
 	protected void setRingBuffer(RingBuffer<RingEvent> ringBuffer){
 		
 		this.ringBuffer = ringBuffer;		

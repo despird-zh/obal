@@ -21,6 +21,7 @@ import com.obal.meta.EntityAttr;
 
 public class HMapRepHooker<K extends EntryKey> extends GenericHooker<DataOutputBuffer>{
 
+	
 	List<K> resultList = new ArrayList<K>();
 	
 	HEntryWrapper<K> wrapper = null;
