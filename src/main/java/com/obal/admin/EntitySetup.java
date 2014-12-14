@@ -13,9 +13,7 @@ import com.obal.meta.GenericEntity;
 
 public class EntitySetup {
 
-	public EntitySetup() {
-
-	}
+	public EntitySetup() {}
 
 	public void setup() {
 
