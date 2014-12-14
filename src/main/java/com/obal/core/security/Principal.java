@@ -19,7 +19,9 @@
  */
 package com.obal.core.security;
 
+import java.util.Date;
 import java.util.Map;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.codehaus.jackson.annotate.JsonCreator;
@@ -27,6 +29,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import com.obal.core.EntryKey;
+import com.obal.core.ITraceable;
 import com.obal.meta.EntityConstants;
 
 /**
@@ -37,7 +40,7 @@ import com.obal.meta.EntityConstants;
  * @see com.obal.core.security.Profile
  **/
 @JsonIgnoreProperties({"keyBytes","profile"})
-public class Principal extends EntryKey{
+public class Principal extends EntryKey implements ITraceable{
 	
 	
 	public Principal(String key){
@@ -205,5 +208,56 @@ public class Principal extends EntryKey{
 	public int hashCode() {
 		return new HashCodeBuilder(17, 37).append(this.source)
 				.append(this.account).toHashCode();
+	}
+
+	private String creator;
+	private String modifier;
+	private Date newCreate;
+	private Date lastModify;
+	@Override
+	public String getCreator() {
+		
+		return this.creator;
+	}
+
+	@Override
+	public void setCreator(String creator) {
+		
+		this.creator = creator;
+		
+	}
+
+	@Override
+	public String getModifier() {
+		
+		return this.modifier;
+	}
+
+	@Override
+	public void setModifier(String modifier) {
+		
+		this.modifier = modifier;
+	}
+
+	@Override
+	public Date getNewCreate() {
+		
+		return this.newCreate;
+	}
+
+	@Override
+	public void setNewCreate(Date newCreate) {
+		this.newCreate = newCreate;
+	}
+
+	@Override
+	public Date getLastModify() {
+		
+		return this.lastModify;
+	}
+
+	@Override
+	public void setLastModify(Date lastModify) {
+		this.lastModify = lastModify;
 	}
 }

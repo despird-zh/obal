@@ -2,9 +2,11 @@ package com.obal.core.security.hbase;
 
 import java.util.List;
 import java.util.Map;
+
 import org.apache.hadoop.hbase.client.Put;
 import org.apache.hadoop.hbase.client.Result;
 
+import com.obal.core.ITraceable;
 import com.obal.core.hbase.HEntryWrapper;
 import com.obal.core.security.Principal;
 import com.obal.exception.WrapperException;
@@ -56,17 +58,56 @@ public class UserWrapper extends HEntryWrapper<Principal>{
 				continue;
 			}			
 		}
-		
-		
-		
+				
 		return princ;
 	}
 
 	@Override
 	public Put parse(List<EntityAttr> attrs, Principal entryInfo)
 			throws WrapperException {
+		byte[] keybytes = entryInfo.getKeyBytes();
+		if(keybytes == null)
+			throw new WrapperException("The entrykey's cannot be null");
 		
-		return null;
+		Put put = new Put(entryInfo.getKeyBytes());
+
+        for(EntityAttr attr:attrs){
+			Object val = null;
+			if("i_account".equals(attr.getAttrName())){
+				val = entryInfo.getAccount();
+				super.putPrimitiveValue(put, attr, val);
+				continue;
+			}else if("i_name".equals(attr.getAttrName())){
+				
+				val = entryInfo.getName();
+				super.putPrimitiveValue(put, attr, val);
+				continue;
+			}else if("i_source".equals(attr.getAttrName())){
+				
+				val = entryInfo.getSource();
+				super.putPrimitiveValue(put, attr, val);
+				continue;
+			}else if("i_password".equals(attr.getAttrName())){
+				
+				val = entryInfo.getPassword();
+				super.putPrimitiveValue(put, attr, val);
+				continue;
+			}else if("i_groups".equals(attr.getAttrName())){
+				
+				Map<String,Object> mapval = entryInfo.getGroups();
+				super.putMapValue(put, attr, mapval);
+				continue;
+			}else if("i_roles".equals(attr.getAttrName())){
+				
+				Map<String,Object> mapval = entryInfo.getRoles();
+				super.putMapValue(put, attr, mapval);
+				continue;
+			}
+        	
+        }
+        
+        super.parseTraceable(put, (ITraceable)entryInfo);
+        return put;
 	}
 
 	@Override

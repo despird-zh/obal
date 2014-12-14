@@ -60,6 +60,7 @@ public class EntryKey {
 	
 	public byte[] getKeyBytes(){
 		
+		if(this.key == null) return null;
 		return getKey().getBytes();
 	}
 
