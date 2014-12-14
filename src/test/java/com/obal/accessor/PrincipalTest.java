@@ -2,9 +2,11 @@ package com.obal.accessor;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.obal.core.CoreManager;
+import com.obal.core.EntryFilter;
 import com.obal.core.security.Principal;
 import com.obal.core.security.hbase.UserAccessor;
 import com.obal.core.util.AccessorUtils;
@@ -16,7 +18,9 @@ public class PrincipalTest extends BlankTester{
 
 	public void testCore(){
 		
+		UserAccessor pa = null;
 		Principal princ = new Principal("demo1","demouser1","demopwd","demosrc");
+		princ.setKey("101001");
 		try {
 			Map<String,Object> groups = new HashMap<String,Object>();
 			groups.put("gk1","group1");
@@ -27,8 +31,7 @@ public class PrincipalTest extends BlankTester{
 			roles.put("rk1","role1");
 			roles.put("rk2","role2");
 			princ.setRoles(roles);
-			UserAccessor pa = AccessorUtils.getEntityAccessor(princ, "obal.user");
-			princ.setKey("101001");
+			pa = AccessorUtils.getEntityAccessor(princ, "obal.user");
 			
 			princ.setCreator("crt01");
 			princ.setModifier("mdfier01");
@@ -36,9 +39,19 @@ public class PrincipalTest extends BlankTester{
 			princ.setLastModify(new Date());
 			pa.doPutEntry(princ);
 			
+			pa.doPutEntryAttr("101001", "i_name", "newdemoname");
+
+			List<Principal> pl = pa.doScanEntry(null);
+			
+			Principal princ2 = pa.doGetEntry("101001");
+			System.out.println("p-name:"+princ2.getName());
+			
 		} catch (EntityException | AccessorException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally{
+			
+			AccessorUtils.releaseAccessor(pa);
 		}
 	}
 		

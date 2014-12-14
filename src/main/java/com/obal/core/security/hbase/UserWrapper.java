@@ -58,7 +58,8 @@ public class UserWrapper extends HEntryWrapper<Principal>{
 				continue;
 			}			
 		}
-				
+		
+		wrapTraceable(princ, rawEntry);
 		return princ;
 	}
 
