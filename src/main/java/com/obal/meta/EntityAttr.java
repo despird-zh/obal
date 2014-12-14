@@ -20,8 +20,10 @@
 
 package com.obal.meta;
 
+import java.util.Date;
+
 import com.obal.core.EntryKey;
-import com.obal.core.util.CoreConstants;
+import com.obal.core.ITraceable;
 
 /**
  * EntryAttr wrap the setting of entry attribute.
@@ -29,7 +31,7 @@ import com.obal.core.util.CoreConstants;
  * @author G.Obal
  * @since 0.1
  **/
-public class EntityAttr {
+public class EntityAttr implements ITraceable{
 
 	public AttrType type = AttrType.STRING;
 	public AttrMode mode = AttrMode.PRIMITIVE;
@@ -227,5 +229,57 @@ public class EntityAttr {
 	public void setEntryKey(EntryKey entryKey){
 		
 		this.entryKey = entryKey;		
+	}
+	
+
+	private String creator;
+	private String modifier;
+	private Date newCreate;
+	private Date lastModify;
+	@Override
+	public String getCreator() {
+		
+		return this.creator;
+	}
+
+	@Override
+	public void setCreator(String creator) {
+		
+		this.creator = creator;
+		
+	}
+
+	@Override
+	public String getModifier() {
+		
+		return this.modifier;
+	}
+
+	@Override
+	public void setModifier(String modifier) {
+		
+		this.modifier = modifier;
+	}
+
+	@Override
+	public Date getNewCreate() {
+		
+		return this.newCreate;
+	}
+
+	@Override
+	public void setNewCreate(Date newCreate) {
+		this.newCreate = newCreate;
+	}
+
+	@Override
+	public Date getLastModify() {
+		
+		return this.lastModify;
+	}
+
+	@Override
+	public void setLastModify(Date lastModify) {
+		this.lastModify = lastModify;
 	}
 }

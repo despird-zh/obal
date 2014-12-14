@@ -78,7 +78,10 @@ public class MetaAttrAccessor extends HGenericAccessor implements IMetaAttrAcces
 			attr.setPrimary((Boolean)minfo.get("i_primary"));
 			attr.setRequired((Boolean)minfo.get("i_required"));
 			attr.setReadonly((Boolean)minfo.get("i_readonly"));
-			
+			attr.setCreator((String)minfo.get("i_creator"));
+			attr.setNewCreate((Date)minfo.get("i_newcreate"));
+			attr.setCreator((String)minfo.get("i_modifier"));
+			attr.setLastModify((Date)minfo.get("i_lastmodify"));
 		}catch(EntityException ee){
 			
 			throw new AccessorException("Error when build embed accessor:{}",ee,EntityConstants.ENTITY_META_ATTR);
@@ -91,10 +94,10 @@ public class MetaAttrAccessor extends HGenericAccessor implements IMetaAttrAcces
 	}
 
 	@Override
-	public List<EntityAttr> getAttrList(String entryName) throws AccessorException {
+	public List<EntityAttr> getAttrList(String entityName) throws AccessorException {
 		
 		Filter filter1 = new RowFilter(CompareFilter.CompareOp.EQUAL,
-				new BinaryComparator(entryName.getBytes()));
+				new BinaryComparator(entityName.getBytes()));
 		AttrAccessor attraccessor = null;
 		List<RawEntry> attrs = null;
 		List<EntityAttr> rtv = null;
@@ -122,6 +125,10 @@ public class MetaAttrAccessor extends HGenericAccessor implements IMetaAttrAcces
 				attr.setRequired((Boolean)minfo.get("i_required"));
 				attr.setReadonly((Boolean)minfo.get("i_readonly"));
 				
+				attr.setCreator((String)minfo.get("i_creator"));
+				attr.setNewCreate((Date)minfo.get("i_newcreate"));
+				attr.setCreator((String)minfo.get("i_modifier"));
+				attr.setLastModify((Date)minfo.get("i_lastmodify"));
 				rtv.add(attr);
 			}
 		}catch(EntityException ee){
@@ -155,8 +162,8 @@ public class MetaAttrAccessor extends HGenericAccessor implements IMetaAttrAcces
 			minfo.put("i_mode", attr.mode.toString());
 			minfo.put("i_entity", attr.getEntityName());
 			
-			minfo.put("i_creator",attraccessor.getEntitySchema().getPrincipal().getName());
-			minfo.put("i_modifier",attraccessor.getEntitySchema().getPrincipal().getName());
+			minfo.put("i_creator",attraccessor.getPrincipal().getName());
+			minfo.put("i_modifier",attraccessor.getPrincipal().getName());
 			minfo.put("i_newcreate", new Date());
 			minfo.put("i_lastmodify", new Date());
 						
@@ -190,6 +197,11 @@ public class MetaAttrAccessor extends HGenericAccessor implements IMetaAttrAcces
 			meta.setDescription((String)minfo.get("i_description"));
 			meta.setEntityName((String)minfo.get("i_entity_name"));
 			meta.setSchemas((List<String>)minfo.get("i_schemas"));	
+			meta.setTraceable((Boolean) minfo.get("i_traceable"));
+			meta.setCreator((String)minfo.get("i_creator"));
+			meta.setNewCreate((Date)minfo.get("i_newcreate"));
+			meta.setCreator((String)minfo.get("i_modifier"));
+			meta.setLastModify((Date)minfo.get("i_lastmodify"));
 			
 		}catch (EntityException ee){
 			
@@ -221,10 +233,15 @@ public class MetaAttrAccessor extends HGenericAccessor implements IMetaAttrAcces
 				meta.setEntityName((String)ri.get("i_entity_name"));
 				meta.setDescription((String)ri.get("i_description"));
 				meta.setSchemas((List<String>)ri.get("i_schemas"));	
+				meta.setTraceable((Boolean) ri.get("i_traceable"));
+				meta.setCreator((String)ri.get("i_creator"));
+				meta.setNewCreate((Date)ri.get("i_newcreate"));
+				meta.setCreator((String)ri.get("i_modifier"));
+				meta.setLastModify((Date)ri.get("i_lastmodify"));
 				Map<String, String> attrMap =(Map<String, String>) ri.get("i_attributes");
 				
 				for(Map.Entry<String, String> et:attrMap.entrySet()){
-					
+					// value is key of attribute
 					EntityAttr attr = getEntityAttr(et.getValue());
 					meta.addAttr(attr);
 				}
@@ -253,12 +270,13 @@ public class MetaAttrAccessor extends HGenericAccessor implements IMetaAttrAcces
 			minfo.put("i_entity_name", meta.getEntityName());
 			minfo.put("i_schema_class", meta.getSchemaClass());
 			minfo.put("i_description", meta.getDescription());
-			minfo.put("i_creator",metaAccr.getEntitySchema().getPrincipal().getName());
-			minfo.put("i_modifier",metaAccr.getEntitySchema().getPrincipal().getName());
+			minfo.put("i_traceable", meta.getTraceable());
+			minfo.put("i_creator",metaAccr.getPrincipal().getName());
+			minfo.put("i_modifier",metaAccr.getPrincipal().getName());
 			minfo.put("i_newcreate", new Date());
 			minfo.put("i_lastmodify", new Date());
 			minfo.put("i_schemas", meta.getSchemas());
-						
+			
 			EntryKey mkey = metaAccr.doPutEntry(minfo);
 			
 			Map<String,String> attrmap = new HashMap<String,String>();

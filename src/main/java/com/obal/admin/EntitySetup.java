@@ -69,13 +69,7 @@ public class EntitySetup {
 		meta.addAttr(attr);
 		attr = new EntityAttr("i_password", "c0", "password");
 		meta.addAttr(attr);
-		attr = new EntityAttr("i_creator", "c0", "creator");
-		meta.addAttr(attr);
-		attr = new EntityAttr("i_modifier", "c0", "modifier");
-		meta.addAttr(attr);
-		attr = new EntityAttr("i_newcreate", AttrType.DATE, "c0", "newcreate");
-		meta.addAttr(attr);
-		attr = new EntityAttr("i_lastmodify", AttrType.DATE, "c0", "lastmodify");
+		attr = new EntityAttr("i_traceable",AttrType.BOOL, "c0", "traceable");
 		meta.addAttr(attr);
 		attr = new EntityAttr("i_groups", AttrMode.MAP, AttrType.STRING, "c1", "groups");
 		meta.addAttr(attr);
@@ -95,19 +89,11 @@ public class EntitySetup {
 
 		EntityAttr attr = new EntityAttr("i_group_name", "c0", "groupname");
 		meta.addAttr(attr);
-		attr = new EntityAttr("i_users", AttrMode.MAP, AttrType.STRING, "c1",
-				"u");
+		attr = new EntityAttr("i_users", AttrMode.MAP, AttrType.STRING, "c1","users");
 		meta.addAttr(attr);
-		attr = new EntityAttr("i_groups", AttrMode.MAP, AttrType.STRING, "c1",
-				"g");
+		attr = new EntityAttr("i_groups", AttrMode.MAP, AttrType.STRING, "c1","groups");
 		meta.addAttr(attr);
-		attr = new EntityAttr("i_creator", "c0", "creator");
-		meta.addAttr(attr);
-		attr = new EntityAttr("i_modifier", "c0", "modifier");
-		meta.addAttr(attr);
-		attr = new EntityAttr("i_newcreate", AttrType.DATE, "c0", "newcreate");
-		meta.addAttr(attr);
-		attr = new EntityAttr("i_lastmodify", AttrType.DATE, "c0", "lastmodify");
+		attr = new EntityAttr("i_traceable",AttrType.BOOL, "c0", "traceable");
 		meta.addAttr(attr);
 		
 		ea.setupSchema(meta);
@@ -123,16 +109,9 @@ public class EntitySetup {
 
 		EntityAttr attr = new EntityAttr("i_role_name", "c0", "rolename");
 		meta.addAttr(attr);
-		attr = new EntityAttr("i_users", AttrMode.MAP, AttrType.STRING, "c1",
-				"u");
+		attr = new EntityAttr("i_users", AttrMode.MAP, AttrType.STRING, "c1", "users");
 		meta.addAttr(attr);
-		attr = new EntityAttr("i_creator", "c0", "creator");
-		meta.addAttr(attr);
-		attr = new EntityAttr("i_modifier", "c0", "modifier");
-		meta.addAttr(attr);
-		attr = new EntityAttr("i_newcreate", AttrType.DATE, "c0", "newcreate");
-		meta.addAttr(attr);
-		attr = new EntityAttr("i_lastmodify", AttrType.DATE, "c0", "lastmodify");
+		attr = new EntityAttr("i_traceable",AttrType.BOOL, "c0", "traceable");
 		meta.addAttr(attr);
 
 		ea.setupSchema(meta);

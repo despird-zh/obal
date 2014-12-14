@@ -22,6 +22,7 @@ package com.obal.meta;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,8 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 import com.obal.core.EntryKey;
+import com.obal.core.ITraceable;
+
 
 /**
  * The meta information of Entry records.
@@ -42,7 +45,7 @@ import com.obal.core.EntryKey;
  * @see com.obal.meta.BaseEntity
  * @see com.obal.core.EntryKey
  **/
-public class EntityMeta{
+public class EntityMeta implements ITraceable{
 
 	private String schemaClazz = null;
 	private Map<String, EntityAttr> attrMap = new HashMap<String, EntityAttr>();
@@ -50,6 +53,7 @@ public class EntityMeta{
 	private String description;
 	private List<String> schemas;
 	private EntryKey entryKey = null;
+	private Boolean traceable = false;
 	/**
 	 * Entry Meta constructor 
 	 * 
@@ -339,5 +343,66 @@ public class EntityMeta{
 	public void setSchemas(List<String> schemas){
 		
 		this.schemas = schemas;
+	}
+	
+	public void setTraceable(Boolean traceable){
+		
+		this.traceable = traceable;
+	}
+	
+	public Boolean getTraceable(){
+		
+		return this.traceable;
+	}
+
+	private String creator;
+	private String modifier;
+	private Date newCreate;
+	private Date lastModify;
+	@Override
+	public String getCreator() {
+		
+		return this.creator;
+	}
+
+	@Override
+	public void setCreator(String creator) {
+		
+		this.creator = creator;
+		
+	}
+
+	@Override
+	public String getModifier() {
+		
+		return this.modifier;
+	}
+
+	@Override
+	public void setModifier(String modifier) {
+		
+		this.modifier = modifier;
+	}
+
+	@Override
+	public Date getNewCreate() {
+		
+		return this.newCreate;
+	}
+
+	@Override
+	public void setNewCreate(Date newCreate) {
+		this.newCreate = newCreate;
+	}
+
+	@Override
+	public Date getLastModify() {
+		
+		return this.lastModify;
+	}
+
+	@Override
+	public void setLastModify(Date lastModify) {
+		this.lastModify = lastModify;
 	}
 }

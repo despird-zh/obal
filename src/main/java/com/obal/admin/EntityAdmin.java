@@ -10,6 +10,7 @@ import com.obal.core.security.Principal;
 import com.obal.core.util.AccessorUtils;
 import com.obal.exception.AccessorException;
 import com.obal.exception.EntityException;
+import com.obal.meta.EntityAttr;
 import com.obal.meta.EntityConstants;
 import com.obal.meta.EntityManager;
 import com.obal.meta.EntityMeta;
@@ -111,10 +112,14 @@ public class EntityAdmin {
 
 		IAdminAccessor aa = getAdminAccessor(princ);
 		IMetaAttrAccessor metaAttrAccessor = null;
+		List<EntityAttr> attrs = meta.getAllAttrs();
+		if(meta.getTraceable()){
+			List<EntityAttr>  traceAttrs = EntityManager.getInstance().getEntityMeta(EntityConstants.ENTITY_TRACEABLE).getAllAttrs();
+			attrs.addAll(traceAttrs);
+		}
 		try {
 
-			aa.createSchema(meta.getEntityName(),
-					meta.getAllAttrs());
+			aa.createSchema(meta.getEntityName(),attrs);
 
 			metaAttrAccessor = AccessorUtils.getGenericAccessor(princ,
 					EntityConstants.ENTITY_META_GENERAL);
