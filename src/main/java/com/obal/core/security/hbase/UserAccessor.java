@@ -1,11 +1,11 @@
 package com.obal.core.security.hbase;
 
 import com.obal.core.hbase.HEntryWrapper;
-import com.obal.core.accessor.RawEntry;
 import com.obal.core.hbase.HEntityAccessor;
+import com.obal.core.security.Principal;
 import com.obal.meta.BaseEntity;
 
-public class UserAccessor extends HEntityAccessor<RawEntry> {
+public class UserAccessor extends HEntityAccessor<Principal> {
 
 	public UserAccessor(BaseEntity schema) {
 		super(schema);
@@ -13,9 +13,9 @@ public class UserAccessor extends HEntityAccessor<RawEntry> {
 	}
 
 	@Override
-	public HEntryWrapper<RawEntry> getEntryWrapper() {
-		// TODO Auto-generated method stub
-		return null;
+	public HEntryWrapper<Principal> getEntryWrapper() {
+		
+		return new UserWrapper();
 	}
 
 }

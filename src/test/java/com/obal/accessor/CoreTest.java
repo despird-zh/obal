@@ -9,7 +9,7 @@ public class CoreTest extends BlankTester{
 		
 		System.out.println("--------core test");
 	}
-	
+		
 	protected void setUp() throws Exception {  
 		initLog4j();
 		CoreManager.initial();
