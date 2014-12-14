@@ -77,9 +77,9 @@ public class EntitySetup {
 		meta.addAttr(attr);
 		attr = new EntityAttr("i_lastmodify", AttrType.DATE, "c0", "lastmodify");
 		meta.addAttr(attr);
-		attr = new EntityAttr("i_group", AttrMode.MAP, AttrType.STRING, "c1", "group");
+		attr = new EntityAttr("i_groups", AttrMode.MAP, AttrType.STRING, "c1", "groups");
 		meta.addAttr(attr);
-		attr = new EntityAttr("i_role", AttrMode.MAP, AttrType.STRING, "c1", "role");
+		attr = new EntityAttr("i_roles", AttrMode.MAP, AttrType.STRING, "c1", "roles");
 		meta.addAttr(attr);
 		ea.setupSchema(meta);
 

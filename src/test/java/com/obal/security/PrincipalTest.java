@@ -1,10 +1,8 @@
 package com.obal.security;
 
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -25,14 +23,14 @@ public class PrincipalTest extends BlankTester{
 		pf.setSetting("pk3", "v3");
 		pf.setSetting("pk4", "v4");
 		princ.setProfile(pf);
-		Set<String> groups = new HashSet<String>();
-		groups.add("group1");
-		groups.add("group2");
+		Map<String,Object> groups = new HashMap<String,Object>();
+		groups.put("gk1","group1");
+		groups.put("gk2","group2");
 		princ.setGroups(groups);
 		
-		Set<String> roles = new HashSet<String>();
-		roles.add("role1");
-		roles.add("role2");
+		Map<String,Object> roles = new HashMap<String,Object>();
+		roles.put("rk1","role1");
+		roles.put("rk2","role2");
 		princ.setRoles(roles);
 		
 		ObjectMapper mapper = new ObjectMapper();
@@ -41,17 +39,17 @@ public class PrincipalTest extends BlankTester{
 			String val = mapper.writeValueAsString(princ);
 			System.out.println(val);
 			Principal princ2 = mapper.readValue(val, Principal.class);
-			System.out.println(princ2.name());
-			System.out.println(princ2.account());
-			System.out.println(princ2.source());
-			System.out.println(princ2.password());
+			System.out.println(princ2.getName());
+			System.out.println(princ2.getAccount());
+			System.out.println(princ2.getSource());
+			System.out.println(princ2.getPassword());
 			Map<String,Object> settings = princ2.getProfileSettings();
 			for(Map.Entry<String, Object> ent:settings.entrySet()){
 				System.out.println("key:"+ent.getKey()+"/val:"+ent.getValue());
 			}
-			Set<String> grps = princ2.getGroups();
+			Map<String,Object> grps = princ2.getGroups();
 			System.out.println("grps:"+grps);
-			Set<String> rls = princ2.getRoles();
+			Map<String,Object> rls = princ2.getRoles();
 			System.out.println("rls:"+rls);
 			
 		} catch (JsonGenerationException e) {

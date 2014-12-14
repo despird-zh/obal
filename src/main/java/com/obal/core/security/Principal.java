@@ -19,10 +19,7 @@
  */
 package com.obal.core.security;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.codehaus.jackson.annotate.JsonCreator;
@@ -42,6 +39,11 @@ import com.obal.meta.EntityConstants;
 @JsonIgnoreProperties({"keyBytes","profile"})
 public class Principal extends EntryKey{
 	
+	
+	public Principal(String key){
+		
+		super("obal.user",key);
+	}
 	/**
 	 * Constructor for new Principal
 	 * 
@@ -87,32 +89,49 @@ public class Principal extends EntryKey{
 
 	/** the user profile info holder */
 	private Profile profile = null;
-	private Set<String> groups;
-	private Set<String> roles;
+	private Map<String,Object> groups;
+	private Map<String,Object> roles;
 	
 	/**
 	 * Get Account information 
 	 **/
 	@JsonProperty("account")
-	public String account() {
+	public String getAccount() {
 		return account;
 	}
 	
+	public void setAccount(String account){
+		
+		this.account = account;
+	}
+	
 	@JsonProperty("name")
-	public String name() {
+	public String getName() {
 		return name;
 	}
 
+	public void setName(String name){
+		
+		this.name = name;
+	}
 	@JsonProperty("password")
-	public String password() {
+	public String getPassword() {
 		return password;
 	}
 
+	public void setPassword(String password){
+		
+		this.password = password;
+	}
 	@JsonProperty("source")
-	public String source() {
+	public String getSource() {
 		return source;
 	}
 	
+	public void setSource(String source){
+		
+		this.source = source;
+	}
 	
 	public Profile getProfile() {
 		
@@ -147,19 +166,19 @@ public class Principal extends EntryKey{
 		return false;
 	}
 	
-	public void setGroups(Set<String> groups){
+	public void setGroups(Map<String,Object> groups){
 		
 		this.groups = groups;
 	}
-	public Set<String> getGroups(){
+	public Map<String,Object> getGroups(){
 		
 		return this.groups;
 	}
 	
-	public void setRoles(Set<String> roles){
+	public void setRoles(Map<String,Object> roles){
 		this.roles = roles;
 	}
-	public Set<String> getRoles(){
+	public Map<String,Object> getRoles(){
 		
 		return this.roles;
 	}
@@ -178,13 +197,13 @@ public class Principal extends EntryKey{
 		Principal that = (Principal) other;
 		// step 4
 		return new EqualsBuilder()
-			.append(this.source(), that.source())
-			.append(this.account(), that.account()).isEquals();
+			.append(this.source, that.source)
+			.append(this.account, that.account).isEquals();
 	}
 
 	@Override
 	public int hashCode() {
-		return new HashCodeBuilder(17, 37).append(this.source())
-				.append(this.account()).toHashCode();
+		return new HashCodeBuilder(17, 37).append(this.source)
+				.append(this.account).toHashCode();
 	}
 }

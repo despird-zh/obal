@@ -37,14 +37,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.obal.core.EntryKey;
+import com.obal.core.ITraceable;
 import com.obal.exception.WrapperException;
 import com.obal.meta.EntityAttr;
+import com.obal.meta.EntityConstants;
+import com.obal.meta.EntityManager;
 
+
+/**
+ * HEntryWrapper wrap or parse the java bean object.
+ * 
+ * @author despird-zh
+ * @version 0.1 2014-3-2
+ **/
 public abstract class HEntryWrapper<GB extends EntryKey> {
 
 	protected static ObjectMapper objectMapper = new ObjectMapper();
 	
 	public static Logger LOGGER = LoggerFactory.getLogger(HEntryWrapper.class);
+	
 	/**
 	 * Get primitive value from cell, primitive means int,long,double,string,date
 	 * 
@@ -406,4 +417,73 @@ public abstract class HEntryWrapper<GB extends EntryKey> {
 	 * @return GB the bean object. 
 	 **/
 	public abstract GB wrap(String entityName, Result rawEntry)throws WrapperException;
+	
+	/**
+	 * Wrap the trace infomation to traceable object
+	 * @param traceInfo the object to be traceable
+	 * @param rawEntry the Hbase Result object 
+	 **/
+	public void wrapTraceable(ITraceable traceInfo, Result rawEntry) throws WrapperException{
+		
+		List<EntityAttr> attrs = EntityManager.getInstance().getEntityMeta(EntityConstants.ENTITY_TRACEABLE).getAllAttrs();
+		for(EntityAttr attr: attrs){
+			byte[] column = attr.getColumn().getBytes();
+			byte[] qualifier = attr.getQualifier().getBytes();
+			byte[] cell = rawEntry.getValue(column, qualifier);
+			if("i_creator".equals(attr.getAttrName())){
+				String val = (String)getPrimitiveValue(attr, cell);
+				traceInfo.setCreator(val);
+				continue;
+			}else if("i_modifier".equals(attr.getAttrName())){
+				
+				String mval = (String)getPrimitiveValue(attr, cell);
+				traceInfo.setModifier(mval);
+				continue;
+			}else if("i_newcreate".equals(attr.getAttrName())){
+				
+				Date val = (Date)getPrimitiveValue(attr, cell);
+				traceInfo.setNewCreate(val);
+				continue;
+			}else if("i_lastmodify".equals(attr.getAttrName())){
+				
+				Date val = (Date)getPrimitiveValue(attr, cell);
+				traceInfo.setLastModify(val);
+				continue;
+			}
+		}
+	}
+	
+	/**
+	 * Parse the traceable data into Put 
+	 * 
+	 * @param put the Put operation
+	 * @param traceInfo the traceable object
+	 **/
+	public void parseTraceable(Put put, ITraceable traceInfo){
+		
+		List<EntityAttr> attrs = EntityManager.getInstance().getEntityMeta(EntityConstants.ENTITY_TRACEABLE).getAllAttrs();
+		for(EntityAttr attr: attrs){
+			
+			if("i_creator".equals(attr.getAttrName())){
+				Object val = traceInfo.getCreator();
+				putPrimitiveValue(put, attr, val);
+				continue;
+			}else if("i_modifier".equals(attr.getAttrName())){
+				
+				Object val = traceInfo.getModifier();
+				putPrimitiveValue(put, attr, val);
+				continue;
+			}else if("i_newcreate".equals(attr.getAttrName())){
+				
+				Object val = traceInfo.getNewCreate();
+				putPrimitiveValue(put, attr, val);
+				continue;
+			}else if("i_lastmodify".equals(attr.getAttrName())){
+				
+				Object val = traceInfo.getLastModify();
+				putPrimitiveValue(put, attr, val);
+				continue;
+			}
+		}
+	}
 }

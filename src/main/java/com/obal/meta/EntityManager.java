@@ -168,7 +168,7 @@ public class EntityManager {
 	
 	/** initial the meta schema*/
 	private void initialMetaSchema(){
-		
+		/** ---------- obal.meta.attr ------------- */
 		EntityMeta meta = new EntityMeta(EntityConstants.ENTITY_META_ATTR);
 		meta.setSchemaClass(GenericEntity.class.getName());
 		EntityAttr attr = new EntityAttr("i_attr_name","c0","attr_name");
@@ -204,7 +204,7 @@ public class EntityManager {
 		GenericEntity ae = new GenericEntity(meta);
 		metaMap.put(ae.getEntityName(), ae.getEntityMeta());
 		schemaMap.put(ae.getEntityName(), ae);
-		/** -------------------------------------------- */
+		/** ---------- obal.meta.info ------------- */
 		meta = new EntityMeta(EntityConstants.ENTITY_META_INFO);
 		meta.setSchemaClass(GenericEntity.class.getName());
 		attr = new EntityAttr("i_schema_class","c0","schemaclass");
@@ -228,6 +228,20 @@ public class EntityManager {
 		GenericEntity me = new GenericEntity(meta);
 		metaMap.put(me.getEntityName(), me.getEntityMeta());
 		schemaMap.put(me.getEntityName(), me);
+		/** ---------- obal.traceable ------------- */
+		meta = new EntityMeta(EntityConstants.ENTITY_TRACEABLE);
+		meta.setSchemaClass(GenericEntity.class.getName());
+		attr = new EntityAttr("i_creator","c0","creator");
+		meta.addAttr(attr);
+		attr = new EntityAttr("i_modifier","c0","modifier");
+		meta.addAttr(attr);
+		attr = new EntityAttr("i_newcreate",AttrType.DATE,"c0","newcreate");
+		meta.addAttr(attr);
+		attr = new EntityAttr("i_lastmodify",AttrType.DATE,"c0","lastmodify");
+		meta.addAttr(attr);
+		GenericEntity te = new GenericEntity(meta);
+		metaMap.put(te.getEntityName(), te.getEntityMeta());
+		schemaMap.put(te.getEntityName(), te);
 	}
 
 }

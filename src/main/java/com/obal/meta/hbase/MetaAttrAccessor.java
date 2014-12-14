@@ -155,8 +155,8 @@ public class MetaAttrAccessor extends HGenericAccessor implements IMetaAttrAcces
 			minfo.put("i_mode", attr.mode.toString());
 			minfo.put("i_entity", attr.getEntityName());
 			
-			minfo.put("i_creator",attraccessor.getEntitySchema().getPrincipal().name());
-			minfo.put("i_modifier",attraccessor.getEntitySchema().getPrincipal().name());
+			minfo.put("i_creator",attraccessor.getEntitySchema().getPrincipal().getName());
+			minfo.put("i_modifier",attraccessor.getEntitySchema().getPrincipal().getName());
 			minfo.put("i_newcreate", new Date());
 			minfo.put("i_lastmodify", new Date());
 						
@@ -253,8 +253,8 @@ public class MetaAttrAccessor extends HGenericAccessor implements IMetaAttrAcces
 			minfo.put("i_entity_name", meta.getEntityName());
 			minfo.put("i_schema_class", meta.getSchemaClass());
 			minfo.put("i_description", meta.getDescription());
-			minfo.put("i_creator",metaAccr.getEntitySchema().getPrincipal().name());
-			minfo.put("i_modifier",metaAccr.getEntitySchema().getPrincipal().name());
+			minfo.put("i_creator",metaAccr.getEntitySchema().getPrincipal().getName());
+			minfo.put("i_modifier",metaAccr.getEntitySchema().getPrincipal().getName());
 			minfo.put("i_newcreate", new Date());
 			minfo.put("i_lastmodify", new Date());
 			minfo.put("i_schemas", meta.getSchemas());
