@@ -77,7 +77,7 @@ public class HAccessorBuilder extends AccessorBuilder{
 		try {
 
 			String path = file.getCanonicalPath();
-			System.out.println("===:" + path);
+			LOGGER.debug("hadoop.home->{}",path);
 			System.setProperty("hadoop.home.dir", path + "/target/classes");
 
 		} catch (IOException e) {

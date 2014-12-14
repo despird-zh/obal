@@ -1,5 +1,8 @@
 package com.obal.core;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.obal.admin.EntityAdmin;
 import com.obal.audit.AuditHooker;
 import com.obal.cache.CacheHooker;
@@ -10,6 +13,8 @@ import com.obal.meta.EntityManager;
 
 public class CoreManager {
 
+	static Logger LOGGER = LoggerFactory.getLogger(CoreManager.class);
+	
 	private static CoreManager coreInstance;
 	
 	private int state = -1;
@@ -30,10 +35,13 @@ public class CoreManager {
 	}
 	
 	private void setup(){
-		
+		// initial the eventdispatcher
 		this.eventDispatcher = EventDispatcher.getInstance();
+		// prepare the meta infor & attr data
 		this.entityManager = EntityManager.getInstance();
+		// initial the admin instance
 		this.entityAdmin = EntityAdmin.getInstance();		
+		// initial the cache manager
 		this.cacheManager = CacheManager.getInstance();
 	}
 	

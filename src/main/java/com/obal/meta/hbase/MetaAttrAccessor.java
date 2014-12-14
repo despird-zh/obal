@@ -29,6 +29,8 @@ import org.apache.hadoop.hbase.filter.BinaryComparator;
 import org.apache.hadoop.hbase.filter.CompareFilter;
 import org.apache.hadoop.hbase.filter.Filter;
 import org.apache.hadoop.hbase.filter.RowFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.obal.core.AccessorFactory;
 import com.obal.core.EntryFilter;
@@ -49,6 +51,8 @@ import com.obal.meta.accessor.IMetaAttrAccessor;
 
 public class MetaAttrAccessor extends HGenericAccessor implements IMetaAttrAccessor{
 
+	static Logger LOGGER = LoggerFactory.getLogger(MetaAttrAccessor.class);
+	
 	@Override
 	public EntityAttr getEntityAttr(String attrKey) throws AccessorException {
 		
@@ -61,7 +65,7 @@ public class MetaAttrAccessor extends HGenericAccessor implements IMetaAttrAcces
 			String attrName = (String)minfo.get("i_attr_name");
 			String column = (String)minfo.get("i_column");
 			String qualifier = (String)minfo.get("i_qualifier");
-			System.out.println("---qualifier:"+qualifier);
+			LOGGER.debug("the qualifier:"+qualifier);
 			AttrType type = AttrType.valueOf((String)minfo.get("i_type"));
 			AttrMode mode = AttrMode.valueOf((String)minfo.get("i_mode"));
 			
