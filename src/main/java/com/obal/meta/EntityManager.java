@@ -213,6 +213,8 @@ public class EntityManager {
 		meta.addAttr(attr);
 		attr = new EntityAttr("i_description","c0","description");
 		meta.addAttr(attr);
+		attr = new EntityAttr("i_traceable",AttrType.BOOL,"c0","traceable");
+		meta.addAttr(attr);
 		attr = new EntityAttr("i_creator","c0","creator");
 		meta.addAttr(attr);
 		attr = new EntityAttr("i_modifier","c0","modifier");

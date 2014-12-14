@@ -56,7 +56,7 @@ public class EntitySetup {
 		EntityMeta meta = new EntityMeta(EntityConstants.ENTITY_PRINCIPAL);
 		meta.setSchemaClass(GenericEntity.class.getName());
 		meta.setDescription("user schema ");
-
+		meta.setTraceable(true);
 		EntityAttr attr = new EntityAttr("i_account", "c0", "account");
 		meta.addAttr(attr);
 		attr = new EntityAttr("i_domain", "c0", "domain");
@@ -66,8 +66,6 @@ public class EntitySetup {
 		attr = new EntityAttr("i_source", "c0", "source");
 		meta.addAttr(attr);
 		attr = new EntityAttr("i_password", "c0", "password");
-		meta.addAttr(attr);
-		attr = new EntityAttr("i_traceable",AttrType.BOOL, "c0", "traceable");
 		meta.addAttr(attr);
 		attr = new EntityAttr("i_groups", AttrMode.MAP, AttrType.STRING, "c1", "groups");
 		meta.addAttr(attr);
@@ -84,14 +82,12 @@ public class EntitySetup {
 		EntityMeta meta = new EntityMeta(EntityConstants.ENTITY_USER_GROUP);
 		meta.setSchemaClass(GenericEntity.class.getName());
 		meta.setDescription("user Group schema ");
-
+		meta.setTraceable(true);
 		EntityAttr attr = new EntityAttr("i_group_name", "c0", "groupname");
 		meta.addAttr(attr);
 		attr = new EntityAttr("i_users", AttrMode.MAP, AttrType.STRING, "c1","users");
 		meta.addAttr(attr);
 		attr = new EntityAttr("i_groups", AttrMode.MAP, AttrType.STRING, "c1","groups");
-		meta.addAttr(attr);
-		attr = new EntityAttr("i_traceable",AttrType.BOOL, "c0", "traceable");
 		meta.addAttr(attr);
 		
 		ea.setupSchema(meta);
@@ -104,12 +100,10 @@ public class EntitySetup {
 		EntityMeta meta = new EntityMeta(EntityConstants.ENTITY_USER_ROLE);
 		meta.setSchemaClass(GenericEntity.class.getName());
 		meta.setDescription("user Group schema ");
-
+		meta.setTraceable(true);
 		EntityAttr attr = new EntityAttr("i_role_name", "c0", "rolename");
 		meta.addAttr(attr);
 		attr = new EntityAttr("i_users", AttrMode.MAP, AttrType.STRING, "c1", "users");
-		meta.addAttr(attr);
-		attr = new EntityAttr("i_traceable",AttrType.BOOL, "c0", "traceable");
 		meta.addAttr(attr);
 
 		ea.setupSchema(meta);
