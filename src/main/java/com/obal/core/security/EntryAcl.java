@@ -19,6 +19,9 @@ import com.obal.core.util.CoreConstants;
  **/
 public class EntryAcl {
 
+	public static int PERFER_PRIVILEGE = 11;
+	public static int PERFER_GRANULAR = 12;
+	
 	private String aclName = null;
 	
 	private List<EntryAce> aces = new ArrayList<EntryAce>();
@@ -122,6 +125,39 @@ public class EntryAcl {
 		return gaces;
 	}
 
+	/**
+	 * CheckObject is readable or not
+	 * 
+	 * @param principal the principal object
+	 * @return boolean true:object could be read on behalf of principal; false:not readable
+	 **/
+	public boolean checkReadable(Principal principal){
+		
+		AclPrivilege readPriv = AclPrivilege.NONE;
+		
+		for(EntryAce ace:aces){
+			
+			if(CoreConstants.ACE_TYPE_USER.equals(ace.type()) && ace.name().equals(principal.getAccount())){
+				
+				readPriv = readPriv.priority() < ace.privilege().priority() ? ace.privilege():readPriv;
+				
+			}else if(CoreConstants.ACE_TYPE_GROUP.equals(ace.type()) && principal.inGroup(ace.name())){
+				
+				readPriv = readPriv.priority() < ace.privilege().priority() ? ace.privilege():readPriv;
+					
+			}else if(CoreConstants.ACE_TYPE_ROLE.equals(ace.type()) && principal.inRole(ace.name())){
+				
+				readPriv = readPriv.priority() < ace.privilege().priority() ? ace.privilege():readPriv;
+					
+			}
+			
+			if(readPriv != AclPrivilege.NONE)
+				return true;
+		}
+		
+		return false;
+	}
+	
 	@Override
 	public boolean equals(Object other) {
 		

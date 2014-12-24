@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="obal_project" basedir="." default="build_core_jar">
+
+	<property environment="env" />
+    <property name="project.root" value="${basedir}" />
+	<property name="dir.java.src" value="src/main/java" />
+	<property name="dir.java.res" value="src/main/resources" />
+	<property name="dir.java.class" value="target/classes" />
+	<property name="dir.java.ext" value="ext" />
+	<!-- Properties and Paths -->
+	<property file="build.properties" />
+	
+	<path id="project.class.path">
+		<pathelement location="${dir.java.class}"/>
+		<fileset dir="${dir.lib}" id="lib.path">
+			<include name="**/*.jar"/>
+		</fileset>	   
+	</path>
+
+	<!-- ============ Core.jar Processing start -->
+	<property name="obal.core.version" value="1.0"/>
+	<property name="obal.core.name" value="obal.core-${obal.core.version}.jar"/>
+	<target name="build_core_jar" description="Build Obal Core jar">
+
+		<echo level="info">Building Hbase Side Core jar</echo>
+        <jar jarfile="${dir.java.ext}/${obal.core.name}" >
+			<fileset dir="${dir.java.class}">
+				<include name="**/obal/core/**/*.*"/>
+			</fileset>
+			<manifest>
+				<attribute name="Application-Name" value="obal.core.library"/>
+				<attribute name="Build-By" value="despird-zh"/>
+				<attribute name="Implementation-Vendor" value="despird-zh"/>
+				<attribute name="Implementation-Title" value="obal.core"/>
+				<attribute name="Implementation-Version" value="${obal.core.version}"/>
+				<attribute name="Caller-Allowable-Codebase" value="*"/>
+				<attribute name="Permissions" value="all-permissions"/>
+				<attribute name="Trusted-Library" value="true"/>
+			</manifest>
+        </jar>
+    </target>
+	<!-- ============ Core.jar Processing end -->
+</project>

@@ -39,10 +39,9 @@ import com.obal.meta.EntityConstants;
  * @version 1.0 2014-01-01
  * @see com.obal.core.security.Profile
  **/
-@JsonIgnoreProperties({"keyBytes","profile"})
+@JsonIgnoreProperties({"keyBytes","profile","creator","modifier","lastModify","newCreate"})
 public class Principal extends EntryKey implements ITraceable{
-	
-	
+		
 	public Principal(String key){
 		
 		super("obal.user",key);
@@ -117,6 +116,7 @@ public class Principal extends EntryKey implements ITraceable{
 		
 		this.name = name;
 	}
+	
 	@JsonProperty("password")
 	public String getPassword() {
 		return password;
@@ -126,6 +126,7 @@ public class Principal extends EntryKey implements ITraceable{
 		
 		this.password = password;
 	}
+	
 	@JsonProperty("source")
 	public String getSource() {
 		return source;
@@ -168,19 +169,23 @@ public class Principal extends EntryKey implements ITraceable{
 		
 		return false;
 	}
-	
+		
 	public void setGroups(Map<String,Object> groups){
 		
 		this.groups = groups;
 	}
+	
+	@JsonProperty("groups")
 	public Map<String,Object> getGroups(){
 		
 		return this.groups;
 	}
-	
+		
 	public void setRoles(Map<String,Object> roles){
 		this.roles = roles;
 	}
+	
+	@JsonProperty("roles")
 	public Map<String,Object> getRoles(){
 		
 		return this.roles;
@@ -214,6 +219,7 @@ public class Principal extends EntryKey implements ITraceable{
 	private String modifier;
 	private Date newCreate;
 	private Date lastModify;
+	
 	@Override
 	public String getCreator() {
 		

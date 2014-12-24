@@ -3,7 +3,6 @@ package com.obal.core.security;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.codehaus.jackson.annotate.JsonCreator;
@@ -28,8 +27,10 @@ import com.obal.core.util.CoreConstants;
  *   permissionSet:MOVE,AUDIT,APPROVE
  * </pre>
  * 
+ * group name:g1/g2/g3
+ * 
  **/
-public class EntryAce {
+public class EntryAce implements Comparable<EntryAce> {
 	
 	/** the role name */
 	private String name;
@@ -43,16 +44,19 @@ public class EntryAce {
 	/** the permission set */
 	private Set<String> permissionSet;
 	
+	private int typePriority = -1;
 	/**
 	 * Constructor for user ACE item.
 	 * 
 	 * @param combinedValue
 	 *  
 	 **/
-	public EntryAce(String combinedValue){
+	public EntryAce(String aceType, String name){
 		
-		initial(combinedValue);
-		
+		this.type = aceType;
+		this.name = name;
+		this.privilege = AclPrivilege.READ;
+		this.setTypePriotiry();
 	}
 	
 	/**
@@ -67,6 +71,7 @@ public class EntryAce {
 		this.type = CoreConstants.ACE_TYPE_USER;
 		this.name = name;
 		this.privilege = privilege;
+		this.setTypePriotiry();
 	}
 	
 	/**
@@ -82,8 +87,18 @@ public class EntryAce {
 		this.type = aceType;
 		this.name = name;
 		this.privilege = privilege;
+		this.setTypePriotiry();
 	}
 	
+	private void setTypePriotiry(){
+		
+		if(CoreConstants.ACE_TYPE_USER.equals(this.type))
+			this.typePriority = 3;
+		if(CoreConstants.ACE_TYPE_GROUP.equals(this.type))
+			this.typePriority = 2;
+		if(CoreConstants.ACE_TYPE_ROLE.equals(this.type))
+			this.typePriority = 1;
+	}
 	/**
 	 * Constructor 
 	 * 
@@ -151,28 +166,6 @@ public class EntryAce {
 		return sbuf.toString();
 	}
 	
-	/**
-	 * Initial object with combined value string 
-	 **/
-	public void initial(String combinedValue){
-		
-		String[] values = StringUtils.split(combinedValue, CoreConstants.VALUE_SEPARATOR);
-		this.name = values[0];
-		this.type = values[1];
-		this.privilege = AclPrivilege.valueOf(values[2]);
-		
-		String[] permArray = StringUtils.split(values[4], CoreConstants.COLLECT_ELM_SEPARATOR);
-		
-		if(permissionSet == null)
-			permissionSet = new HashSet<String>();
-		else
-			permissionSet.clear();
-		
-		for(String perm:permArray){
-			permissionSet.add(perm);
-		}
-	}
-	
 	@Override
 	public boolean equals(Object other) {
 		// step 1
@@ -186,7 +179,7 @@ public class EntryAce {
 		// step 3
 		EntryAce that = (EntryAce) other;
 		// step 4
-		int sumPerms = 0;
+		/*int sumPerms = 0;
 		if(null != permissionSet){
 			for(String perm:permissionSet){
 				
@@ -201,31 +194,43 @@ public class EntryAce {
 				
 				sumPermsThat += perm.hashCode();
 			}
-		}
+		}*/
 		return new EqualsBuilder()
 			.append(this.type, that.type())
-			.append(this.name, that.name())
-			.append(this.privilege, that.privilege())
-			.append(sumPerms, sumPermsThat).isEquals();
+			.append(this.name, that.name()).isEquals();
+			//.append(this.privilege, that.privilege())
+			//.append(sumPerms, sumPermsThat)
 		
 	}
 
 	@Override
 	public int hashCode() {
 		
-		int sumPerms = 0;
+		/*int sumPerms = 0;
 		if(null != permissionSet){
 			for(String perm:permissionSet){
 				
 				sumPerms += perm.hashCode();
 			}
-		}
+		}*/
 		
 		return new HashCodeBuilder(17, 37)
 			.append(this.type)
-			.append(this.name)
-			.append(this.privilege)
-			.append(sumPerms)
-			.toHashCode();
+			.append(this.name).toHashCode();
+			//.append(this.privilege)
+			//.append(sumPerms)
+			
+	}
+	
+	@Override
+	public int compareTo(EntryAce o) {
+
+	    if(this.type.equals(o.type)){
+	    	
+	    	return this.name.compareTo(o.name);
+	    }else {
+	    	
+	    	return this.typePriority - o.typePriority;
+	    }
 	}
 }
