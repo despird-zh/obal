@@ -7,10 +7,10 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.obal.core.CoreConstants;
 import com.obal.core.security.AclPrivilege;
 import com.obal.core.security.EntryAce;
 import com.obal.core.security.EntryAcl;
-import com.obal.core.util.CoreConstants;
 import com.obal.test.BlankTester;
 
 public class AclTest extends BlankTester{

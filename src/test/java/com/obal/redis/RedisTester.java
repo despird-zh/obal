@@ -14,7 +14,6 @@ import com.obal.admin.IAdminAccessor;
 import com.obal.core.EntryKey;
 import com.obal.core.accessor.RawEntry;
 import com.obal.core.security.Principal;
-import com.obal.core.util.AccessorUtils;
 import com.obal.exception.AccessorException;
 import com.obal.exception.EntityException;
 import com.obal.meta.AttrMode;
@@ -25,6 +24,7 @@ import com.obal.meta.EntityMeta;
 import com.obal.meta.GenericEntity;
 import com.obal.meta.accessor.IMetaAttrAccessor;
 import com.obal.test.BlankTester;
+import com.obal.util.AccessorUtils;
 
 public class RedisTester extends BlankTester{
 

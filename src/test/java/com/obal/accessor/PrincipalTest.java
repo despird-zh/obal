@@ -9,10 +9,10 @@ import com.obal.core.CoreManager;
 import com.obal.core.EntryFilter;
 import com.obal.core.security.Principal;
 import com.obal.core.security.hbase.UserAccessor;
-import com.obal.core.util.AccessorUtils;
 import com.obal.exception.AccessorException;
 import com.obal.exception.EntityException;
 import com.obal.test.BlankTester;
+import com.obal.util.AccessorUtils;
 
 public class PrincipalTest extends BlankTester{
 

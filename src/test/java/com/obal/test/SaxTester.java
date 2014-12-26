@@ -2,8 +2,8 @@ package com.obal.test;
 
 import javax.xml.parsers.*;
 
+import com.obal.common.EnvConfigHelper;
 import com.obal.core.CoreConfig;
-import com.obal.util.EnvConfigHelper;
 
 import java.io.*;
 //import com.sun.org.apache.xerces.internal.parsers.SAXParser;

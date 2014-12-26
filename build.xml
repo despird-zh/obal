@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="obal_project" basedir="." default="build_core_jar">
-
+	<property file ="build.properties" /> 
 	<property environment="env" />
     <property name="project.root" value="${basedir}" />
 	<property name="dir.java.src" value="src/main/java" />
@@ -40,4 +40,10 @@
         </jar>
     </target>
 	<!-- ============ Core.jar Processing end -->
+	<target name="scp_send_file" description="ssh send file">
+		<scp file ="${dir.java.ext}/obal.core-1.0.jar"
+		todir ="${ssh.user}:${ssh.password}@${ssh.server}:${server.target.path}"
+		trust ="true"
+		verbose ="true"/>
+	</target>
 </project>

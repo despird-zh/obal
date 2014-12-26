@@ -1,9 +1,9 @@
 package com.obal.audit;
 
 import com.obal.audit.AuditInfo;
-import com.obal.core.util.AuditUtils;
 import com.obal.disruptor.EventDispatcher;
 import com.obal.test.BlankTester;
+import com.obal.util.AuditUtils;
 
 public class AuditTest extends BlankTester{
 
