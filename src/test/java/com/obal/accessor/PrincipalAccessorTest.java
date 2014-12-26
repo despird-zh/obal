@@ -14,7 +14,7 @@ import com.obal.exception.EntityException;
 import com.obal.test.BlankTester;
 import com.obal.util.AccessorUtils;
 
-public class PrincipalTest extends BlankTester{
+public class PrincipalAccessorTest extends BlankTester{
 
 	public void testCore(){
 		
