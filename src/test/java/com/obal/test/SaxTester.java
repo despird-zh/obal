@@ -2,7 +2,7 @@ package com.obal.test;
 
 import javax.xml.parsers.*;
 
-import com.obal.common.EnvConfigHelper;
+import com.obal.aop.EnvConfigHelper;
 import com.obal.core.CoreConfig;
 
 import java.io.*;

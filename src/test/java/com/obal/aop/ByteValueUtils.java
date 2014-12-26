@@ -1,4 +1,4 @@
-package com.obal.common;
+package com.obal.aop;
 
 public class ByteValueUtils {
 		

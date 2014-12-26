@@ -28,9 +28,9 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.CodeSignature;
 
+import com.obal.aop.AspectUtils;
 import com.obal.aop.CacheTestAccessor;
 import com.obal.aop.DemoBean;
-import com.obal.common.AspectUtils;
 
 @Aspect
 public abstract class AuditAspect {

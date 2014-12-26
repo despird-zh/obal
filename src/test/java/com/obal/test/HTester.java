@@ -14,6 +14,7 @@ import java.util.List;
 
 
 
+
 import org.apache.hadoop.conf.Configuration;  
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.HBaseConfiguration;  
@@ -40,7 +41,7 @@ import org.apache.hadoop.hbase.filter.SingleColumnValueFilter;
 import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp;  
 import org.apache.hadoop.hbase.util.Bytes;  
 
-import com.obal.common.ByteValueUtils;
+import com.obal.aop.ByteValueUtils;
   
 public class HTester extends BlankTester{  
   
