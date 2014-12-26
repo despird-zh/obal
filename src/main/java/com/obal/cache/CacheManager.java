@@ -20,15 +20,15 @@
 package com.obal.cache;
 
 import com.obal.core.AccessorFactory;
+import com.obal.core.CoreConstants;
 import com.obal.core.EntryKey;
 import com.obal.core.IEntityAccessor;
 import com.obal.core.security.Principal;
-import com.obal.core.util.AccessorUtils;
-import com.obal.core.util.CoreConstants;
 import com.obal.disruptor.EventDispatcher;
 import com.obal.disruptor.EventType;
 import com.obal.exception.AccessorException;
 import com.obal.exception.EntityException;
+import com.obal.util.AccessorUtils;
 
 /**
  * CacheManager provide entrance to get/put entry in-out backend cache.

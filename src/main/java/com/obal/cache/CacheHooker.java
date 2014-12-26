@@ -1,10 +1,10 @@
 package com.obal.cache;
 
 import com.obal.core.AccessorFactory;
+import com.obal.core.CoreConstants;
 import com.obal.core.EntryKey;
 import com.obal.core.IEntityAccessor;
 import com.obal.core.security.Principal;
-import com.obal.core.util.CoreConstants;
 import com.obal.disruptor.EventHooker;
 import com.obal.disruptor.EventPayload;
 import com.obal.disruptor.EventType;

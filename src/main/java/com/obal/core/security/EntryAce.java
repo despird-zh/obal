@@ -8,7 +8,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import com.obal.core.util.CoreConstants;
+import com.obal.core.CoreConstants;
 
 /**
  * EntryAce is the access control setting for operator, it could be set at three levels.

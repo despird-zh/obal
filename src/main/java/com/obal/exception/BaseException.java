@@ -6,7 +6,7 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.Properties;
 
-import com.obal.util.MessageFormatter;
+import com.obal.common.MessageFormatter;
 
 
 public class BaseException extends Exception {

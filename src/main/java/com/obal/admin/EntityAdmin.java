@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 
 import com.obal.core.AccessorFactory;
 import com.obal.core.security.Principal;
-import com.obal.core.util.AccessorUtils;
 import com.obal.exception.AccessorException;
 import com.obal.exception.EntityException;
 import com.obal.meta.EntityAttr;
@@ -15,6 +14,7 @@ import com.obal.meta.EntityConstants;
 import com.obal.meta.EntityManager;
 import com.obal.meta.EntityMeta;
 import com.obal.meta.accessor.IMetaAttrAccessor;
+import com.obal.util.AccessorUtils;
 
 /**
  * EntityAdmin in charge of the entity loading and create, drop etc. operation.

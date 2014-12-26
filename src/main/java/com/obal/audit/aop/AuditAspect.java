@@ -30,7 +30,7 @@ import org.aspectj.lang.reflect.CodeSignature;
 
 import com.obal.aop.CacheTestAccessor;
 import com.obal.aop.DemoBean;
-import com.obal.util.AspectUtils;
+import com.obal.common.AspectUtils;
 
 @Aspect
 public abstract class AuditAspect {

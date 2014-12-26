@@ -1,4 +1,4 @@
-package com.obal.core.util;
+package com.obal.core;
 
 public class CoreConstants {
 	

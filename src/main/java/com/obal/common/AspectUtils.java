@@ -1,4 +1,4 @@
-package com.obal.util;
+package com.obal.common;
 
 import java.lang.reflect.Field;
 import java.util.List;

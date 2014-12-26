@@ -17,7 +17,7 @@
  * under the License.
  * 
  */
-package com.obal.core.util;
+package com.obal.util;
 
 import com.obal.core.AccessorFactory;
 import com.obal.core.IBaseAccessor;

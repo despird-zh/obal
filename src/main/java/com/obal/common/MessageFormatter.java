@@ -1,4 +1,4 @@
-package com.obal.util;
+package com.obal.common;
 
 /* 
  * Copyright (c) 2004-2007 QOS.ch

@@ -17,7 +17,7 @@
  * under the License.
  * 
  */
-package com.obal.core.util;
+package com.obal.util;
 
 import java.util.List;
 

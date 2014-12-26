@@ -28,8 +28,8 @@ import org.slf4j.LoggerFactory;
 
 import redis.clients.jedis.Jedis;
 
+import com.obal.core.CoreConstants;
 import com.obal.core.accessor.RawEntry;
-import com.obal.core.util.CoreConstants;
 import com.obal.exception.AccessorException;
 import com.obal.meta.EntityAttr;
 import com.obal.meta.EntityConstants;

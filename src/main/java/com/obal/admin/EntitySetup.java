@@ -1,8 +1,6 @@
 package com.obal.admin;
 
 import com.obal.core.security.Principal;
-import com.obal.core.util.AccessorUtils;
-import com.obal.core.util.EntityUtils;
 import com.obal.exception.AccessorException;
 import com.obal.meta.AttrMode;
 import com.obal.meta.AttrType;
@@ -10,6 +8,8 @@ import com.obal.meta.EntityAttr;
 import com.obal.meta.EntityConstants;
 import com.obal.meta.EntityMeta;
 import com.obal.meta.GenericEntity;
+import com.obal.util.AccessorUtils;
+import com.obal.util.EntityUtils;
 
 public class EntitySetup {
 

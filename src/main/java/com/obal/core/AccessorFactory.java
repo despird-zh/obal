@@ -33,7 +33,6 @@ import com.obal.core.accessor.EntityAccessor;
 import com.obal.core.accessor.GenericAccessor;
 import com.obal.core.security.Principal;
 import com.obal.core.security.PrincipalAware;
-import com.obal.core.util.CoreConstants;
 import com.obal.exception.EntityException;
 
 /**

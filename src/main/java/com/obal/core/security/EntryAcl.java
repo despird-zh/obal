@@ -6,7 +6,7 @@ import java.util.List;
 import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import com.obal.core.util.CoreConstants;
+import com.obal.core.CoreConstants;
 
 /**
  * EntryAcl is the entry access control list, item of it is access control setting for visitor

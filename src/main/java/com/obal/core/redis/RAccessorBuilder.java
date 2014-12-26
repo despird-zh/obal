@@ -27,10 +27,10 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 import com.obal.core.AccessorBuilder;
+import com.obal.core.CoreConstants;
 import com.obal.core.IBaseAccessor;
 import com.obal.core.security.Principal;
 import com.obal.core.security.PrincipalAware;
-import com.obal.core.util.CoreConstants;
 import com.obal.exception.EntityException;
 /**
  * Jedis-wise implementation of AccessorBuilder.

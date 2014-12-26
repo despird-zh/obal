@@ -31,10 +31,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.obal.core.AccessorBuilder;
+import com.obal.core.CoreConstants;
 import com.obal.core.IBaseAccessor;
 import com.obal.core.security.Principal;
 import com.obal.core.security.PrincipalAware;
-import com.obal.core.util.CoreConstants;
 import com.obal.exception.EntityException;
 /**
  * Hbase-wise implementation of AccessorBuilder.

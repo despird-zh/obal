@@ -29,10 +29,10 @@ import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 
 import com.obal.core.AccessorFactory;
+import com.obal.core.CoreConstants;
 import com.obal.core.EntryFilter;
 import com.obal.core.EntryKey;
 import com.obal.core.accessor.EntityAccessor;
-import com.obal.core.util.CoreConstants;
 import com.obal.exception.AccessorException;
 import com.obal.meta.BaseEntity;
 import com.obal.meta.EntityAttr;

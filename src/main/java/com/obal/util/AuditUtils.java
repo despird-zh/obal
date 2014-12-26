@@ -1,4 +1,4 @@
-package com.obal.core.util;
+package com.obal.util;
 
 import com.obal.audit.AuditHooker;
 import com.obal.audit.AuditInfo;

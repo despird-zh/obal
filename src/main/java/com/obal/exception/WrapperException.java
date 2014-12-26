@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import com.obal.util.MessageFormatter;
+import com.obal.common.MessageFormatter;
 
 public class WrapperException  extends BaseException{
 

@@ -1,4 +1,4 @@
-package com.obal.util;
+package com.obal.common;
 
 import javax.xml.parsers.*;
 
