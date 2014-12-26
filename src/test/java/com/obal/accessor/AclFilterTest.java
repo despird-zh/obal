@@ -12,7 +12,7 @@ import com.obal.test.BlankTester;
 
 public class AclFilterTest extends BlankTester{
 	
-	public void testCore(){
+	public void testSerialize(){
 		Principal princ = new Principal("demo1","demouser1","demopwd","demosrc");
 		princ.setKey("101001");
 

@@ -20,6 +20,7 @@
 package com.obal.core.security;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -150,7 +151,7 @@ public class Principal extends EntryKey implements ITraceable{
 	@JsonProperty("settings")
 	public Map<String, Object> getProfileSettings(){
 		
-		return this.profile.getSettings();
+		return this.profile == null? new HashMap<String, Object>():this.profile.getSettings();
 	}
 	
 	@JsonProperty("settings")

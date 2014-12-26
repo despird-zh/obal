@@ -129,20 +129,23 @@ public class HAclFilter extends FilterBase {
 	 */
 	public byte[] toByteArray() {
 		
-		ByteBuffer bbuf = ByteBuffer.allocateDirect(2048);
+		ByteBuffer buffer = ByteBuffer.allocateDirect(2048);		
+		byte[] bytes = null;
 		
-		byte[] byteArray = null;
+		bytes = getByteArray(COLFAMILY);		
+		buffer.put(bytes).put(FLD_SEPARATOR);
 		
-		byteArray = getByteArray(COLFAMILY);
-		bbuf.put(byteArray).put(FLD_SEPARATOR);
+		bytes = getByteArray(QUALIFIER);
+		buffer.put(bytes).put(FLD_SEPARATOR);
 		
-		byteArray = getByteArray(QUALIFIER);
-		bbuf.put(byteArray).put(FLD_SEPARATOR);
+		bytes = getByteArray(PRINCIPAL);
+		buffer.put(bytes);
 		
-		byteArray = getByteArray(PRINCIPAL);
-		bbuf.put(byteArray);
-		bbuf.flip();
-		return bbuf.array();
+		buffer.flip();		
+		bytes = new byte[buffer.remaining()]; 
+		buffer.get(bytes);
+		
+		return bytes;
 	}
 
 	/**
@@ -156,21 +159,25 @@ public class HAclFilter extends FilterBase {
 	public static HAclFilter parseFrom(final byte[] pbBytes)
 			throws DeserializationException {
 		
-		int endIndex = Bytes.indexOf(pbBytes, FLD_SEPARATOR);
+		int length = Bytes.indexOf(pbBytes, FLD_SEPARATOR);
 		int offset = 0;
-		byte[] colfamily = Bytes.copy(pbBytes, offset, endIndex);
+		byte[] colfamily = Bytes.copy(pbBytes, offset, length);
 		
-		offset = endIndex + FLD_SEPARATOR.length;		
-		Bytes.zero(pbBytes, 0, offset);		
-		endIndex = Bytes.indexOf(pbBytes, FLD_SEPARATOR);
-		byte[] qualifier = Bytes.copy(pbBytes, offset, endIndex);
+		length = length + FLD_SEPARATOR.length;		
+		Bytes.zero(pbBytes, offset, length );
 		
-		offset = endIndex + FLD_SEPARATOR.length;	
-		Bytes.zero(pbBytes, 0, offset);		
-		endIndex = pbBytes.length;
-		byte[] principal = Bytes.copy(pbBytes, offset,endIndex);
-		HAclFilter aclFilter = new HAclFilter(colfamily, qualifier);
+		offset = offset + length;
+		length = Bytes.indexOf(pbBytes, FLD_SEPARATOR) - offset;
+		byte[] qualifier = Bytes.copy(pbBytes, offset, length );
 		
+		length = length + FLD_SEPARATOR.length;		
+		Bytes.zero(pbBytes, offset, length );
+		
+		offset = offset + length;		
+		length = pbBytes.length - offset;
+		byte[] principal = Bytes.copy(pbBytes, offset,length);
+		
+		HAclFilter aclFilter = new HAclFilter(colfamily, qualifier);		
 		aclFilter.setPrincipal(Bytes.toString(principal));
 		
 		return aclFilter;
