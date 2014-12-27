@@ -83,7 +83,7 @@ public class EntityAdmin {
 			EntityManager smgr = EntityManager.getInstance();
 			
 			imeta = AccessorUtils.getGenericAccessor(princ,
-					EntityConstants.ENTITY_META_GENERAL);
+					EntityConstants.ENTITY_META_GENERIC);
 			// query all the entity list data.
 			List<EntityMeta> entrymetas = imeta.getEntityMetaList();
 			for (EntityMeta em : entrymetas) {
@@ -124,7 +124,7 @@ public class EntityAdmin {
 			aa.createSchema(meta.getEntityName(),attrs);
 
 			metaAttrAccessor = AccessorUtils.getGenericAccessor(princ,
-					EntityConstants.ENTITY_META_GENERAL);
+					EntityConstants.ENTITY_META_GENERIC);
 			// save the entity info and entity attributes data.
 			metaAttrAccessor.putEntityMeta(meta);
 

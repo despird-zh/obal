@@ -19,7 +19,7 @@ public class EntityConstants {
 	 * 
 	 * @see IMetaAttrGeneral
 	 **/
-	public static String ENTITY_META_GENERAL = "obal.meta.general";
+	public static String ENTITY_META_GENERIC = "obal.meta.generic";
 	/**
 	 * the entity name of principal
 	 **/
