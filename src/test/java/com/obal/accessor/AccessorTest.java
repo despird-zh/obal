@@ -20,14 +20,14 @@ import com.obal.meta.EntityConstants;
 import com.obal.meta.EntityManager;
 import com.obal.meta.EntityMeta;
 import com.obal.meta.GenericEntity;
-import com.obal.meta.accessor.IMetaAttrAccessor;
+import com.obal.meta.accessor.IMetaGenericAccessor;
 import com.obal.test.BlankTester;
 import com.obal.util.AccessorUtils;
 
 public class AccessorTest extends BlankTester{
 
 	public void testMain(){
-		//self.createTestSchema();
+		//createTestSchema();
 		EntryKey key = this.doNewEntry();
 		//EntryKey key = new EntryKey("obal.test","1416631407433");
 		
@@ -223,7 +223,7 @@ public class AccessorTest extends BlankTester{
 		Principal princ = new Principal("useracc","demouser","pwd");
 		
 		IAdminAccessor aa = ea.getAdminAccessor(princ);
-		IMetaAttrAccessor imeta = null;
+		IMetaGenericAccessor imeta = null;
 		try {
 			
 			EntityMeta meta = new EntityMeta("obal.test");
@@ -284,7 +284,7 @@ public class AccessorTest extends BlankTester{
 		EntityAdmin eadmin = EntityAdmin.getInstance();
 		eadmin.loadEntityMeta();
 	     super.setUp();  
-	 }  
+	 }
 	  
 	 protected void tearDown() throws Exception {  
 	    

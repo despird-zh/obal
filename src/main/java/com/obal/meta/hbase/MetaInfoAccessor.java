@@ -28,11 +28,11 @@ import com.obal.core.hbase.HEntityAccessor;
 import com.obal.core.hbase.HRawWrapper;
 import com.obal.meta.BaseEntity;
 
-public class MetaAccessor extends HEntityAccessor<RawEntry>{
+public class MetaInfoAccessor extends HEntityAccessor<RawEntry>{
 
-	public static Logger LOGGER = LoggerFactory.getLogger(MetaAccessor.class);
+	public static Logger LOGGER = LoggerFactory.getLogger(MetaInfoAccessor.class);
 	
-	public MetaAccessor(BaseEntity schema) {
+	public MetaInfoAccessor(BaseEntity schema) {
 		super(schema);
 	}
 

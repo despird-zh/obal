@@ -22,7 +22,7 @@ import com.obal.meta.EntityAttr;
 import com.obal.meta.EntityConstants;
 import com.obal.meta.EntityMeta;
 import com.obal.meta.GenericEntity;
-import com.obal.meta.accessor.IMetaAttrAccessor;
+import com.obal.meta.accessor.IMetaGenericAccessor;
 import com.obal.test.BlankTester;
 import com.obal.util.AccessorUtils;
 
@@ -228,7 +228,7 @@ public class RedisTester extends BlankTester{
 		Principal princ = new Principal("useracc","demouser","pwd");
 		
 		IAdminAccessor aa = ea.getAdminAccessor(princ);
-		IMetaAttrAccessor imeta = null;
+		IMetaGenericAccessor imeta = null;
 		try {
 			
 			EntityMeta meta = new EntityMeta("obal.test");

@@ -13,7 +13,7 @@ import com.obal.meta.EntityAttr;
 import com.obal.meta.EntityConstants;
 import com.obal.meta.EntityManager;
 import com.obal.meta.EntityMeta;
-import com.obal.meta.accessor.IMetaAttrAccessor;
+import com.obal.meta.accessor.IMetaGenericAccessor;
 import com.obal.util.AccessorUtils;
 
 /**
@@ -77,16 +77,17 @@ public class EntityAdmin {
 	 **/
 	public void loadEntityMeta() {
 
-		IMetaAttrAccessor imeta = null;
+		IMetaGenericAccessor imeta = null;
 		Principal princ = new Principal("acc", "demo", "pwd");
 		try {
 			EntityManager smgr = EntityManager.getInstance();
+			
 			imeta = AccessorUtils.getGenericAccessor(princ,
 					EntityConstants.ENTITY_META_GENERAL);
-
+			// query all the entity list data.
 			List<EntityMeta> entrymetas = imeta.getEntityMetaList();
 			for (EntityMeta em : entrymetas) {
-
+				// save entity meta information to entity manager for later use.
 				smgr.putEntityMeta(em);
 			}
 
@@ -111,19 +112,20 @@ public class EntityAdmin {
 		Principal princ = new Principal("acc", "demo", "pwd");
 
 		IAdminAccessor aa = getAdminAccessor(princ);
-		IMetaAttrAccessor metaAttrAccessor = null;
+		IMetaGenericAccessor metaAttrAccessor = null;
 		List<EntityAttr> attrs = meta.getAllAttrs();
+		// check if the entity is traceable, true: append the traceable attributes.
 		if(meta.getTraceable()){
 			List<EntityAttr>  traceAttrs = EntityManager.getInstance().getEntityMeta(EntityConstants.ENTITY_TRACEABLE).getAllAttrs();
 			attrs.addAll(traceAttrs);
 		}
 		try {
-
+			// create the schema table and columnfamily
 			aa.createSchema(meta.getEntityName(),attrs);
 
 			metaAttrAccessor = AccessorUtils.getGenericAccessor(princ,
 					EntityConstants.ENTITY_META_GENERAL);
-
+			// save the entity info and entity attributes data.
 			metaAttrAccessor.putEntityMeta(meta);
 
 		} catch (AccessorException e) {

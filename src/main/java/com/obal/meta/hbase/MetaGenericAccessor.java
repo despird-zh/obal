@@ -46,17 +46,17 @@ import com.obal.meta.AttrType;
 import com.obal.meta.EntityAttr;
 import com.obal.meta.EntityConstants;
 import com.obal.meta.EntityMeta;
-import com.obal.meta.accessor.IMetaAttrAccessor;
+import com.obal.meta.accessor.IMetaGenericAccessor;
 import com.obal.util.AccessorUtils;
 
-public class MetaAttrAccessor extends HGenericAccessor implements IMetaAttrAccessor{
+public class MetaGenericAccessor extends HGenericAccessor implements IMetaGenericAccessor{
 
-	static Logger LOGGER = LoggerFactory.getLogger(MetaAttrAccessor.class);
+	static Logger LOGGER = LoggerFactory.getLogger(MetaGenericAccessor.class);
 	
 	@Override
 	public EntityAttr getEntityAttr(String attrKey) throws AccessorException {
 		
-		AttrAccessor attraccessor = null;
+		AttrInfoAccessor attraccessor = null;
 		EntityAttr attr = null;
 		try{
 			attraccessor = AccessorFactory.getInstance().buildEntityAccessor(this, EntityConstants.ENTITY_META_ATTR);
@@ -98,7 +98,7 @@ public class MetaAttrAccessor extends HGenericAccessor implements IMetaAttrAcces
 		
 		Filter filter1 = new RowFilter(CompareFilter.CompareOp.EQUAL,
 				new BinaryComparator(entityName.getBytes()));
-		AttrAccessor attraccessor = null;
+		AttrInfoAccessor attraccessor = null;
 		List<RawEntry> attrs = null;
 		List<EntityAttr> rtv = null;
 		try{
@@ -142,7 +142,7 @@ public class MetaAttrAccessor extends HGenericAccessor implements IMetaAttrAcces
 
 	@Override
 	public EntryKey putEntityAttr(EntityAttr attr) throws AccessorException {
-		AttrAccessor attraccessor = null;
+		AttrInfoAccessor attraccessor = null;
 		
 		try {
 			attraccessor = AccessorFactory.getInstance().buildEntityAccessor(this, EntityConstants.ENTITY_META_ATTR);
@@ -186,7 +186,7 @@ public class MetaAttrAccessor extends HGenericAccessor implements IMetaAttrAcces
 	@Override
 	public EntityMeta getEntityMeta(String entityName) throws AccessorException {
 
-		MetaAccessor metaAccr = null;
+		MetaInfoAccessor metaAccr = null;
 		EntityMeta meta = null;
 		try{
 			metaAccr = AccessorFactory.getInstance().buildEntityAccessor(this, EntityConstants.ENTITY_META_INFO);
@@ -216,7 +216,7 @@ public class MetaAttrAccessor extends HGenericAccessor implements IMetaAttrAcces
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<EntityMeta> getEntityMetaList() throws AccessorException {
-		MetaAccessor metaAccr = null;
+		MetaInfoAccessor metaAccr = null;
 		List<RawEntry> rlist = null;
 		List<EntityMeta> rtv = null;
 		try{
@@ -261,7 +261,7 @@ public class MetaAttrAccessor extends HGenericAccessor implements IMetaAttrAcces
 	@Override
 	public EntryKey putEntityMeta(EntityMeta meta) throws AccessorException {
 		
-		MetaAccessor metaAccr = null;
+		MetaInfoAccessor metaAccr = null;
 		try {
 			metaAccr = AccessorFactory.getInstance().buildEntityAccessor(this, EntityConstants.ENTITY_META_INFO);
 			EntryKey key = metaAccr.getEntitySchema().newKey();

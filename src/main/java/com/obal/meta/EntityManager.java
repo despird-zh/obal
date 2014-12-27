@@ -117,7 +117,7 @@ public class EntityManager {
 		EntityMeta entitymeta = metaMap.get(entityName);
 		// entitymeta not exist then return null
 		if(entitymeta == null) 
-			return null;
+			throw new MetaException("The entity meta[{}] not exist.",entityName);
 		
 		Class<BaseEntity> schemaclz = null ;
 		

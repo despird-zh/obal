@@ -144,7 +144,7 @@ public abstract class AccessorBuilder {
 	 * @param entityName 
 	 * @param principal
 	 * 
-	 * @return K the entryaccessor instance
+	 * @return K the EntityAccessor instance
 	 **/
 	protected <K> K newEntityAccessor(String entityName,Principal principal) throws EntityException{
 		
@@ -158,7 +158,7 @@ public abstract class AccessorBuilder {
 	 * @param accessorName 
 	 * @param entityName
 	 * 
-	 * @return K the entryaccessor instance
+	 * @return K the EntityAccessor instance
 	 **/
 	@SuppressWarnings("unchecked")
 	protected <K> K newEntityAccessor(Principal principal,String accessorName,String entityName) throws EntityException{
@@ -175,7 +175,7 @@ public abstract class AccessorBuilder {
 		try {
 			
 			schema = EntityManager.getInstance().getEntitySchema(entityName, principal);
-						
+			
 			constructor = (Constructor<K>)clazz.getConstructor(BaseEntity.class);			
 			result = constructor.newInstance(schema);
 			

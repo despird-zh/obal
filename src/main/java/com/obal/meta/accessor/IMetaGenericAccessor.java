@@ -8,7 +8,7 @@ import com.obal.exception.AccessorException;
 import com.obal.meta.EntityAttr;
 import com.obal.meta.EntityMeta;
 
-public interface IMetaAttrAccessor extends IBaseAccessor{
+public interface IMetaGenericAccessor extends IBaseAccessor{
 
 	public EntityAttr getEntityAttr(String attrId )throws AccessorException;
 	

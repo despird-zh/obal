@@ -18,12 +18,11 @@
 	</path>
 
 	<!-- ============ Core.jar Processing start -->
-	<property name="obal.core.version" value="1.0"/>
-	<property name="obal.core.name" value="obal.core-${obal.core.version}.jar"/>
+	<property name="obal.core.jar" value="obal.core-${obal.core.version}.jar"/>
 	<target name="build_core_jar" description="Build Obal Core jar">
 
 		<echo level="info">Building Hbase Side Core jar</echo>
-        <jar jarfile="${dir.java.ext}/${obal.core.name}" >
+        <jar jarfile="${dir.java.ext}/${obal.core.jar}" >
 			<fileset dir="${dir.java.class}">
 				<include name="**/obal/core/**/*.*"/>
 			</fileset>
@@ -40,10 +39,55 @@
         </jar>
     </target>
 	<!-- ============ Core.jar Processing end -->
-	<target name="scp_send_file" description="ssh send file">
-		<scp file ="${dir.java.ext}/obal.core-1.0.jar"
+	<target name="scp_send_file" description="ssh send file" depends="build_core_jar">
+		<echo message="---[ Try to create extlib directory ]---"/>
+		<sshexec host ="${ssh.server}" 
+		username ="${ssh.user}" 
+		password ="${ssh.password}" 
+		trust ="true" 
+		verbose ="false"
+		command ="
+				if [ ! -e ${server.target.path} ]; then
+					mkdir -p ${server.target.path};
+				fi;
+		"> 
+        </sshexec>
+		<echo message="---[ Try to remove library file ]---"/>
+		<sshexec host ="${ssh.server}" 
+		username ="${ssh.user}" 
+		password ="${ssh.password}" 
+		trust ="true" 
+		verbose ="false"
+		command ="
+				if [ -f ${server.target.path}/${obal.core.jar} ]; then
+                    rm ${server.target.path}/${obal.core.jar};
+                fi;
+		"> 
+        </sshexec> 
+		<echo message="---[ Copy local file to server ]---"/>
+		<scp file ="${dir.java.ext}/${obal.core.jar}"
 		todir ="${ssh.user}:${ssh.password}@${ssh.server}:${server.target.path}"
 		trust ="true"
-		verbose ="true"/>
+		verbose ="false"/>
+	</target>
+	
+	<target name="start-hbase" description="start hbase server">
+		<sshexec host ="${ssh.server}" 
+		username ="${ssh.user}" 
+		password ="${ssh.password}" 
+		trust ="true" 
+		verbose ="false"
+		command ="start-hbase.sh"> 
+        </sshexec> 
+	</target>
+	
+	<target name="stop-hbase" description="stop hbase server">
+		<sshexec host ="${ssh.server}" 
+		username ="${ssh.user}" 
+		password ="${ssh.password}" 
+		trust ="true" 
+		verbose ="false"
+		command ="stop-hbase.sh"> 
+        </sshexec> 
 	</target>
 </project>
