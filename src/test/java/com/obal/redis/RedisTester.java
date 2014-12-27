@@ -6,9 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.obal.accessor.AccessorTest;
 import com.obal.accessor.TestAccessor;
-import com.obal.admin.AdminTest;
 import com.obal.admin.EntityAdmin;
 import com.obal.admin.IAdminAccessor;
 import com.obal.core.EntryKey;
