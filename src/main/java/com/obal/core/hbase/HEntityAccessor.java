@@ -44,6 +44,7 @@ import org.slf4j.LoggerFactory;
 
 import com.obal.core.EntryFilter;
 import com.obal.core.EntryKey;
+import com.obal.core.ITraceable;
 import com.obal.core.accessor.EntityAccessor;
 import com.obal.exception.AccessorException;
 import com.obal.exception.MetaException;
@@ -54,7 +55,7 @@ import com.obal.meta.EntityAttr;
 /**
  * Base class of entry accessor, it holds HConnection object 
  * 
- * @author despird-zh
+ * @author despird
  * @version 0.1 2014-5-2
  * 
  **/
@@ -128,6 +129,10 @@ public abstract class HEntityAccessor<GB extends EntryKey> extends EntityAccesso
 			
 			for (Result r : rs) {  
 			     GB entry = wrapper.wrap(super.getEntitySchema().getEntityName(),r);
+			     // Extract the traceable information
+			     if(entry instanceof ITraceable){
+			    	 wrapper.wrapTraceable((ITraceable)entry, r);
+			     }
 			     result.add(entry);
 			}
 		} catch (IOException e) {
@@ -236,7 +241,10 @@ public abstract class HEntityAccessor<GB extends EntryKey> extends EntityAccesso
            HEntryWrapper<GB> wrapper = (HEntryWrapper<GB>)getEntryWrapper();
 
            rtv = wrapper.wrap(super.getEntitySchema().getEntityName(),r);
-           
+           // Extract the traceable information
+		   if(rtv instanceof ITraceable){
+			   wrapper.wrapTraceable((ITraceable)rtv, r);
+		   }
         } catch (IOException e) {  
         	
             throw new AccessorException("Error get entry row,key:{}",e,entryKey);
@@ -324,7 +332,12 @@ public abstract class HEntityAccessor<GB extends EntryKey> extends EntityAccesso
             HEntryWrapper<GB> wrapper = this.getEntryWrapper();
  
             Put put = (Put)wrapper.parse(entrySchema.getEntityMeta().getAllAttrs(),entryInfo);
-        	table.put(put);
+        	// for traceable set trace information
+            if(entryInfo instanceof ITraceable){
+        		
+        		wrapper.parseTraceable(put, (ITraceable)entryInfo);
+        	}
+            table.put(put);
         	table.flushCommits();
         	rtv = entryInfo;
         	
