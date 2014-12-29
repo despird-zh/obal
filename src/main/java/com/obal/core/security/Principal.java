@@ -19,7 +19,6 @@
  */
 package com.obal.core.security;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,8 +28,6 @@ import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
 
-import com.obal.core.EntryKey;
-import com.obal.core.ITraceable;
 import com.obal.core.accessor.TraceableEntry;
 import com.obal.meta.EntityConstants;
 
@@ -44,6 +41,9 @@ import com.obal.meta.EntityConstants;
 @JsonIgnoreProperties({"keyBytes","profile","creator","modifier","lastModify","newCreate"})
 public class Principal extends TraceableEntry{
 		
+
+	private static final long serialVersionUID = 1L;
+
 	public Principal(String key){
 		
 		super("obal.user",key);
