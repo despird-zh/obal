@@ -38,9 +38,10 @@ public class AclFilterTest extends BlankTester{
 			e.printStackTrace();
 		}
 		
-		System.out.println("--------core test");
+		System.out.println("--------Serialize test");
 	}
-		
+	
+	
 	protected void setUp() throws Exception {  
 		initLog4j();
 

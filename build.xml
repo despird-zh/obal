@@ -21,7 +21,7 @@
 	<property name="obal.core.jar" value="obal.core-${obal.core.version}.jar"/>
 	<target name="build_core_jar" description="Build Obal Core jar">
 
-		<echo level="info">Building Hbase Side Core jar</echo>
+		<echo message="---[ Building Hbase Side Core jar ]---"/>
         <jar jarfile="${dir.java.ext}/${obal.core.jar}" >
 			<fileset dir="${dir.java.class}">
 				<include name="**/obal/core/**/*.*"/>

@@ -57,6 +57,11 @@ public class EntryAcl {
 		}
 	}
 	
+	public void addEntryAce(EntryAce ace){
+		
+		this.aces.add(ace);
+	}
+	
 	/**
 	 * Get the acl name
 	 **/
